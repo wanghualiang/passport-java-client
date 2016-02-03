@@ -23,17 +23,22 @@ For more information, checkout [savantbuild.org](http://savantbuild.org/).
 
 ### Examples Usages:
 
+#### Build the Client
+
+```java
+PassportClient client = new PassportClient("5a826da2-1e3a-49df-85ba-cd88575e4e9d", "http://localhost:9011");
+```
+
 #### Login a user
 
 ```java
-String apiKey = "5a826da2-1e3a-49df-85ba-cd88575e4e9d";
 String applicationId = "68364852-7a38-4e15-8c48-394eceafa601";
-PassportClient client = new PassportClient(apiKey, "http://localhost:9011");
 
-ClientResponse<LoginResponse, Errors> result = client.login(new LoginRequest(applicationId, "joe@inversoft.com", null, "abc123"));
+LoginRequest request = new LoginRequest(applicationId, "joe@inversoft.com", null, "abc123");
+ClientResponse<LoginResponse, Errors> result = client.login(request);
 if (!result.wasSuccessful()) {
- // Error Handling
+ // Error
 }
 
-// Success
+// Hooray! Success
 ```
