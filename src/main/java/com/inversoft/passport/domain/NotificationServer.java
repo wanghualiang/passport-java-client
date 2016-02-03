@@ -1,0 +1,116 @@
+/*
+ * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
+ */
+package com.inversoft.passport.domain;
+
+import com.inversoft.passport.domain.util.Normalizer;
+import org.primeframework.json.ToString;
+
+import java.net.URI;
+import java.util.*;
+
+/**
+ * A server where notifications are sent. This includes user action notifications and any other notifications sent by
+ * Passport.
+ *
+ * @author Brian Pontarelli
+ */
+public class NotificationServer implements Buildable<NotificationServer> {
+  public List<UUID> applicationIds = new ArrayList<>();
+
+  public Integer connectTimeout;
+
+  public String description;
+
+  public boolean global;
+
+  public NotificationHeaders headers = new NotificationHeaders();
+
+  public String httpAuthenticationPassword;
+
+  public String httpAuthenticationUsername;
+
+  public UUID id;
+
+  public Integer readTimeout;
+
+  public String sslCertificate;
+
+  public URI url;
+
+  public NotificationServer() {
+  }
+
+  public NotificationServer(URI url) {
+    this(null, url, false, null, null, null, null, 1000, 2000);
+  }
+
+  public NotificationServer(UUID id, URI url, boolean global, String httpAuthenticationUsername,
+                            String httpAuthenticationPassword, String sslCertificate, Map<String, String> headers,
+                            int connectTimeout, int readTimeout, UUID... applicationIds) {
+    this.id = id;
+    this.url = url;
+    this.global = global;
+    this.httpAuthenticationUsername = httpAuthenticationUsername;
+    this.httpAuthenticationPassword = httpAuthenticationPassword;
+    this.sslCertificate = sslCertificate;
+
+    if (headers != null) {
+      this.headers.putAll(headers);
+    }
+
+    this.connectTimeout = connectTimeout;
+    this.readTimeout = readTimeout;
+    Collections.addAll(this.applicationIds, applicationIds);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof NotificationServer)) {
+      return false;
+    }
+    NotificationServer that = (NotificationServer) o;
+    return Objects.equals(global, that.global) &&
+        Objects.equals(applicationIds, that.applicationIds) &&
+        Objects.equals(connectTimeout, that.connectTimeout) &&
+        Objects.equals(description, that.description) &&
+        Objects.equals(headers, that.headers) &&
+        Objects.equals(httpAuthenticationPassword, that.httpAuthenticationPassword) &&
+        Objects.equals(httpAuthenticationUsername, that.httpAuthenticationUsername) &&
+        Objects.equals(readTimeout, that.readTimeout) &&
+        Objects.equals(sslCertificate, that.sslCertificate) &&
+        Objects.equals(url, that.url);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(applicationIds, connectTimeout, description, global, headers, httpAuthenticationPassword, httpAuthenticationUsername,
+        readTimeout, sslCertificate, url);
+  }
+
+  public void normalize() {
+    headers.normalize();
+    httpAuthenticationPassword = Normalizer.trim(httpAuthenticationPassword);
+    httpAuthenticationUsername = Normalizer.trim(httpAuthenticationUsername);
+    sslCertificate = Normalizer.trim(sslCertificate);
+  }
+
+  public String toString() {
+    return ToString.toString(this);
+  }
+}
