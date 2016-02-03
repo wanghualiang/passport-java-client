@@ -26,7 +26,8 @@ For more information, checkout [savantbuild.org](http://savantbuild.org/).
 #### Build the Client
 
 ```java
-PassportClient client = new PassportClient("5a826da2-1e3a-49df-85ba-cd88575e4e9d", "http://localhost:9011");
+String apiKey = "5a826da2-1e3a-49df-85ba-cd88575e4e9d";
+PassportClient client = new PassportClient(apiKey, "http://localhost:9011");
 ```
 
 #### Login a user
