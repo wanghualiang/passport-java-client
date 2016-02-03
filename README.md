@@ -20,3 +20,20 @@ $ sb int
 ```
 
 For more information, checkout [savantbuild.org](http://savantbuild.org/).
+
+### Examples Usages:
+
+#### Login a user
+
+```java
+String apiKey = "5a826da2-1e3a-49df-85ba-cd88575e4e9d";
+String applicationId = "68364852-7a38-4e15-8c48-394eceafa601";
+PassportClient client = new PassportClient(apiKey, "http://localhost:9011");
+
+ClientResponse<LoginResponse, Errors> result = client.login(new LoginRequest(applicationId, "joe@inversoft.com", null, "abc123"));
+if (!result.wasSuccessful()) {
+ // Error Handling
+}
+
+// Success
+```
