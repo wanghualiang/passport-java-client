@@ -1,4 +1,5 @@
-## Java Passport Client ![semver 2.0.0 compliant](http://img.shields.io/badge/semver-2.0.0-brightgreen.svg?style=flat-square)
+## Passport Java Client ![semver 2.0.0 compliant](http://img.shields.io/badge/semver-2.0.0-brightgreen.svg?style=flat-square)
+If you're integrating Passport with a Java application, this library will speed up your development time.
 
 For additional information and documentation on Passport refer to [https://www.inversoft.com](https://www.inversoft.com).
 
