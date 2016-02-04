@@ -15,16 +15,19 @@
  */
 package com.inversoft.passport.domain.api.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.inversoft.passport.domain.*;
-import org.primeframework.json.JacksonConstructor;
-
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.inversoft.json.JacksonConstructor;
+import com.inversoft.passport.domain.Buildable;
+import com.inversoft.passport.domain.User;
+import com.inversoft.passport.domain.UserAction;
+import com.inversoft.passport.domain.UserActionLog;
+import com.inversoft.passport.domain.UserActionReason;
 import static com.inversoft.passport.domain.util.Normalizer.trim;
 
 

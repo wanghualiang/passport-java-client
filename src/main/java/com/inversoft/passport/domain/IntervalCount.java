@@ -15,10 +15,10 @@
  */
 package com.inversoft.passport.domain;
 
-import org.primeframework.json.ToString;
-
 import java.util.Objects;
 import java.util.UUID;
+
+import com.inversoft.json.ToString;
 
 /**
  * Counts for an interval.

@@ -15,10 +15,10 @@
  */
 package com.inversoft.passport.domain;
 
-import org.primeframework.json.ToString;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+
+import com.inversoft.json.ToString;
 
 /**
  * Builds an HTTP URL Query string.

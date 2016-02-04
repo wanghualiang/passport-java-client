@@ -15,9 +15,9 @@
  */
 package com.inversoft.passport.domain;
 
-import com.inversoft.passport.domain.util.Normalizer;
-
 import java.util.HashMap;
+
+import com.inversoft.passport.domain.util.Normalizer;
 
 /**
  * Type for notification server headers.

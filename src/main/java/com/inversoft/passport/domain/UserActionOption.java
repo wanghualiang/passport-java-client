@@ -15,10 +15,9 @@
  */
 package com.inversoft.passport.domain;
 
-import org.primeframework.json.JacksonConstructor;
-
 import java.util.Objects;
 
+import com.inversoft.json.JacksonConstructor;
 import static com.inversoft.passport.domain.util.Normalizer.trim;
 
 /**

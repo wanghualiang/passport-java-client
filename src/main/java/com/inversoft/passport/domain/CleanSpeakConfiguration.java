@@ -16,7 +16,11 @@
 package com.inversoft.passport.domain;
 
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 import static com.inversoft.passport.domain.util.Normalizer.trim;
 

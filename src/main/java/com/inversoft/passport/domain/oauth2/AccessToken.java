@@ -16,15 +16,15 @@
 package com.inversoft.passport.domain.oauth2;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.primeframework.json.JacksonConstructor;
-import org.primeframework.json.ToString;
-
 import java.net.URI;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.inversoft.json.JacksonConstructor;
+import com.inversoft.json.ToString;
 
 /**
  * @author Daniel DeGroff

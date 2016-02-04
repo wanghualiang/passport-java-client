@@ -15,11 +15,16 @@
  */
 package com.inversoft.passport.domain;
 
-import com.inversoft.passport.domain.util.Normalizer;
-import org.primeframework.json.ToString;
-
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+
+import com.inversoft.json.ToString;
+import com.inversoft.passport.domain.util.Normalizer;
 
 /**
  * A server where notifications are sent. This includes user action notifications and any other notifications sent by

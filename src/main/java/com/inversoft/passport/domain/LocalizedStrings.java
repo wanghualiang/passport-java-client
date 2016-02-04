@@ -15,10 +15,10 @@
  */
 package com.inversoft.passport.domain;
 
-import com.inversoft.passport.domain.util.Normalizer;
-
 import java.util.Locale;
 import java.util.TreeMap;
+
+import com.inversoft.passport.domain.util.Normalizer;
 
 /**
  * Models a set of localized Strings that can be stored as JSON.

@@ -15,10 +15,10 @@
  */
 package com.inversoft.passport.domain;
 
-import com.inversoft.passport.domain.util.Normalizer;
-
 import java.time.ZonedDateTime;
 import java.util.Objects;
+
+import com.inversoft.passport.domain.util.Normalizer;
 
 /**
  * An audit log.

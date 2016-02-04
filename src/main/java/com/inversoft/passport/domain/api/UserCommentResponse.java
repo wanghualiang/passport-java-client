@@ -15,10 +15,10 @@
  */
 package com.inversoft.passport.domain.api;
 
-import com.inversoft.passport.domain.UserComment;
-import org.primeframework.json.JacksonConstructor;
-
 import java.util.List;
+
+import com.inversoft.json.JacksonConstructor;
+import com.inversoft.passport.domain.UserComment;
 
 /**
  * User Comment Response
@@ -26,9 +26,9 @@ import java.util.List;
  * @author Seth Musselman
  */
 public class UserCommentResponse {
-  public List<UserComment> userComments;
-
   public UserComment userComment;
+
+  public List<UserComment> userComments;
 
   @JacksonConstructor
   public UserCommentResponse() {

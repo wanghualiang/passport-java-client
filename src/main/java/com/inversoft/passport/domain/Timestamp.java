@@ -15,10 +15,10 @@
  */
 package com.inversoft.passport.domain;
 
-import org.primeframework.json.ToString;
-
 import java.time.ZonedDateTime;
 import java.util.Objects;
+
+import com.inversoft.json.ToString;
 
 /**
  * Timestamp.

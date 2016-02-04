@@ -15,10 +15,10 @@
  */
 package com.inversoft.passport.domain.api;
 
-import com.inversoft.passport.domain.UserActionReason;
-import org.primeframework.json.JacksonConstructor;
-
 import java.util.List;
+
+import com.inversoft.json.JacksonConstructor;
+import com.inversoft.passport.domain.UserActionReason;
 
 /**
  * User Action Reason API response object.

@@ -15,9 +15,9 @@
  */
 package com.inversoft.passport.domain.api.user;
 
+import com.inversoft.json.JacksonConstructor;
 import com.inversoft.passport.domain.User;
 import com.inversoft.passport.domain.UserRegistration;
-import org.primeframework.json.JacksonConstructor;
 
 /**
  * Registration API request object.
@@ -25,9 +25,9 @@ import org.primeframework.json.JacksonConstructor;
  * @author Brian Pontarelli
  */
 public class RegistrationResponse {
-  public User user;
-
   public UserRegistration registration;
+
+  public User user;
 
   @JacksonConstructor
   public RegistrationResponse() {

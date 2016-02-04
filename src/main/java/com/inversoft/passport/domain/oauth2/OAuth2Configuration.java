@@ -15,13 +15,12 @@
  */
 package com.inversoft.passport.domain.oauth2;
 
-import org.primeframework.json.ToString;
-
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.inversoft.json.ToString;
 import static com.inversoft.passport.domain.util.Normalizer.removeEmpty;
 import static com.inversoft.passport.domain.util.Normalizer.trim;
 

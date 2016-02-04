@@ -15,13 +15,12 @@
  */
 package com.inversoft.passport.domain;
 
-import com.inversoft.passport.domain.notification.UserActionNotification;
-import org.primeframework.json.ToString;
-
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.inversoft.json.ToString;
+import com.inversoft.passport.domain.notification.UserActionNotification;
 import static com.inversoft.passport.domain.util.Normalizer.trim;
 
 /**
@@ -53,12 +52,12 @@ public class UserComment {
 
   public static UserActionLog toUserActionLog(UserComment userComment) {
     return new UserActionLog().with((l) -> l.actioneeUserId = userComment.userId)
-        .with((l) -> l.actionerUserId = userComment.commenterId)
-        .with((l) -> l.comment = userComment.comment)
-        .with((l) -> l.createInstant = userComment.createInstant)
-        .with((l) -> l.notification = new UserActionNotification().with((n) -> n.actioneeUserId = userComment.userId)
-            .with((n) -> n.actionerUserId = userComment.commenterId)
-            .with((n) -> n.comment = userComment.comment));
+                              .with((l) -> l.actionerUserId = userComment.commenterId)
+                              .with((l) -> l.comment = userComment.comment)
+                              .with((l) -> l.createInstant = userComment.createInstant)
+                              .with((l) -> l.notification = new UserActionNotification().with((n) -> n.actioneeUserId = userComment.userId)
+                                                                                        .with((n) -> n.actionerUserId = userComment.commenterId)
+                                                                                        .with((n) -> n.comment = userComment.comment));
   }
 
   @Override

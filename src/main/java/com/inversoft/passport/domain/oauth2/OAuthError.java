@@ -16,8 +16,8 @@
 package com.inversoft.passport.domain.oauth2;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.primeframework.json.JacksonConstructor;
-import org.primeframework.json.ToString;
+import com.inversoft.json.JacksonConstructor;
+import com.inversoft.json.ToString;
 
 /**
  * @author Daniel DeGroff

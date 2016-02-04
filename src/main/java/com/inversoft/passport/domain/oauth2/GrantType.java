@@ -16,8 +16,7 @@
 package com.inversoft.passport.domain.oauth2;
 
 /**
- * Authorization Grant types as defined by the <a href="https://tools.ietf.org/html/rfc6749">The OAuth 2.0
- * Authorization
+ * Authorization Grant types as defined by the <a href="https://tools.ietf.org/html/rfc6749">The OAuth 2.0 Authorization
  * Framework - RFC 6749</a>.
  *
  * @author Daniel DeGroff

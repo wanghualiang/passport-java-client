@@ -15,24 +15,58 @@
  */
 package com.inversoft.passport.client;
 
-import com.inversoft.passport.domain.AuditLog;
-import com.inversoft.passport.domain.api.*;
-import com.inversoft.passport.domain.api.email.SendRequest;
-import com.inversoft.passport.domain.api.email.SendResponse;
-import com.inversoft.passport.domain.api.report.*;
-import com.inversoft.passport.domain.api.user.*;
-import com.inversoft.passport.domain.search.AuditLogSearchCriteria;
-import com.inversoft.passport.domain.search.UserSearchCriteria;
-import org.primeframework.error.Errors;
-import org.primeframework.rest.ClientResponse;
-import org.primeframework.rest.json.RESTClient;
-
 import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import com.inversoft.error.Errors;
+import com.inversoft.passport.domain.AuditLog;
+import com.inversoft.passport.domain.api.ApplicationRequest;
+import com.inversoft.passport.domain.api.ApplicationResponse;
+import com.inversoft.passport.domain.api.AuditLogRequest;
+import com.inversoft.passport.domain.api.AuditLogResponse;
+import com.inversoft.passport.domain.api.EmailTemplateRequest;
+import com.inversoft.passport.domain.api.EmailTemplateResponse;
+import com.inversoft.passport.domain.api.LoginRequest;
+import com.inversoft.passport.domain.api.LoginResponse;
+import com.inversoft.passport.domain.api.NotificationServerRequest;
+import com.inversoft.passport.domain.api.NotificationServerResponse;
+import com.inversoft.passport.domain.api.PreviewRequest;
+import com.inversoft.passport.domain.api.PreviewResponse;
+import com.inversoft.passport.domain.api.SystemConfigurationRequest;
+import com.inversoft.passport.domain.api.SystemConfigurationResponse;
+import com.inversoft.passport.domain.api.TwoFactorRequest;
+import com.inversoft.passport.domain.api.UserActionReasonRequest;
+import com.inversoft.passport.domain.api.UserActionReasonResponse;
+import com.inversoft.passport.domain.api.UserActionRequest;
+import com.inversoft.passport.domain.api.UserActionResponse;
+import com.inversoft.passport.domain.api.UserCommentRequest;
+import com.inversoft.passport.domain.api.UserCommentResponse;
+import com.inversoft.passport.domain.api.UserRequest;
+import com.inversoft.passport.domain.api.UserResponse;
+import com.inversoft.passport.domain.api.email.SendRequest;
+import com.inversoft.passport.domain.api.email.SendResponse;
+import com.inversoft.passport.domain.api.report.DailyActiveUserReportResponse;
+import com.inversoft.passport.domain.api.report.LoginReportResponse;
+import com.inversoft.passport.domain.api.report.MonthlyActiveUserReportResponse;
+import com.inversoft.passport.domain.api.report.RegistrationReportResponse;
+import com.inversoft.passport.domain.api.report.TotalsReportResponse;
+import com.inversoft.passport.domain.api.report.UserLoginReportResponse;
+import com.inversoft.passport.domain.api.user.ActionRequest;
+import com.inversoft.passport.domain.api.user.ActionResponse;
+import com.inversoft.passport.domain.api.user.ChangePasswordRequest;
+import com.inversoft.passport.domain.api.user.ForgotPasswordRequest;
+import com.inversoft.passport.domain.api.user.ImportRequest;
+import com.inversoft.passport.domain.api.user.RegistrationRequest;
+import com.inversoft.passport.domain.api.user.RegistrationResponse;
+import com.inversoft.passport.domain.api.user.SearchResponse;
+import com.inversoft.passport.domain.search.AuditLogSearchCriteria;
+import com.inversoft.passport.domain.search.UserSearchCriteria;
+import com.inversoft.rest.ClientResponse;
+import com.inversoft.rest.json.RESTClient;
 
 /**
  * Client that connects to a Passport server and provides access to the full set of Passport APIs.
@@ -68,10 +102,10 @@ public class PassportClient {
    */
   public ClientResponse<ActionResponse, Errors> actionUser(UUID actioneeUserId, ActionRequest request) {
     return start(ActionResponse.class).uri("/api/user/action")
-        .urlSegment(actioneeUserId)
-        .request(request)
-        .post()
-        .go();
+                                      .urlSegment(actioneeUserId)
+                                      .request(request)
+                                      .post()
+                                      .go();
   }
 
   /**
@@ -161,10 +195,10 @@ public class PassportClient {
    */
   public ClientResponse<ActionResponse, Errors> cancelAction(UUID actionId, ActionRequest request) {
     return start(ActionResponse.class).uri("/api/user/action")
-        .urlSegment(actionId)
-        .request(request)
-        .delete()
-        .go();
+                                      .urlSegment(actionId)
+                                      .request(request)
+                                      .delete()
+                                      .go();
   }
 
   /**
@@ -175,17 +209,16 @@ public class PassportClient {
    * @param request        The change password request that contains all of the information used to change the
    *                       password.
    * @return When successful, the response will contains no body, just a status code. If there was a validation error or
-   * any other type of error, this will return the Errors object in the response. Additionally, if Passport could not
-   * be
+   * any other type of error, this will return the Errors object in the response. Additionally, if Passport could not be
    * contacted because it is down or experiencing a failure, the response will contain an Exception, which could be an
    * IOException.
    */
   public ClientResponse<Void, Errors> changePassword(String verificationId, ChangePasswordRequest request) {
     return start(Void.TYPE).uri("/api/user/change-password")
-        .urlSegment(verificationId)
-        .request(request)
-        .post()
-        .go();
+                           .urlSegment(verificationId)
+                           .request(request)
+                           .post()
+                           .go();
   }
 
   /**
@@ -199,9 +232,9 @@ public class PassportClient {
    */
   public ClientResponse<Void, Errors> commentOnUser(UserCommentRequest request) {
     return start(Void.TYPE).uri("/api/user/comment")
-        .request(request)
-        .post()
-        .go();
+                           .request(request)
+                           .post()
+                           .go();
   }
 
   /**
@@ -216,10 +249,10 @@ public class PassportClient {
    */
   public ClientResponse<ApplicationResponse, Errors> createApplication(UUID applicationId, ApplicationRequest request) {
     return start(ApplicationResponse.class).uri("/api/application")
-        .urlSegment(applicationId)
-        .request(request)
-        .post()
-        .go();
+                                           .urlSegment(applicationId)
+                                           .request(request)
+                                           .post()
+                                           .go();
   }
 
   /**
@@ -229,8 +262,7 @@ public class PassportClient {
    * @param applicationId The id of the application to create the role on.
    * @param request       The application request that contains all of the information used to create the role.
    * @return When successful, the response will contains the role object. If there was a validation error or any other
-   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be
-   * contacted
+   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
    * because it is down or experiencing a failure, the response will contain an Exception, which could be an
    * IOException.
    */
@@ -238,17 +270,16 @@ public class PassportClient {
                                                                            ApplicationRequest request) {
     Objects.requireNonNull(applicationId);
     return start(ApplicationResponse.class).uri("/api/application")
-        .urlSegment(applicationId)
-        .urlSegment("role")
-        .request(request)
-        .post()
-        .go();
+                                           .urlSegment(applicationId)
+                                           .urlSegment("role")
+                                           .request(request)
+                                           .post()
+                                           .go();
   }
 
   /**
    * Creates an audit log with the message and user name (usually an email). Audit logs should be written anytime you
-   * make changes to the Passport database. When using the Passport Backend web interface, any changes are
-   * automatically
+   * make changes to the Passport database. When using the Passport Backend web interface, any changes are automatically
    * written to the audit log. However, if you are accessing the API, you must write the audit logs yourself.
    *
    * @param message    The message for the audit log.
@@ -260,32 +291,30 @@ public class PassportClient {
    */
   public ClientResponse<Void, Errors> createAuditLog(String message, String insertUser) {
     return start(Void.TYPE).uri("/api/system/audit-log")
-        .request(new AuditLogRequest(new AuditLog(null, insertUser, message)))
-        .post()
-        .go();
+                           .request(new AuditLogRequest(new AuditLog(null, insertUser, message)))
+                           .post()
+                           .go();
   }
 
   /**
-   * Creates an email template. You can optionally specify an id for the email template when calling this method, but
-   * it
+   * Creates an email template. You can optionally specify an id for the email template when calling this method, but it
    * is not required.
    *
    * @param emailTemplateId (Optional) The id for the template.
    * @param request         The email template request that contains all of the information used to create the email
    *                        template.
    * @return When successful, the response will contain the email template object. If there was a validation error or
-   * any other type of error, this will return the Errors object in the response. Additionally, if Passport could not
-   * be
+   * any other type of error, this will return the Errors object in the response. Additionally, if Passport could not be
    * contacted because it is down or experiencing a failure, the response will contain an Exception, which could be an
    * IOException.
    */
   public ClientResponse<EmailTemplateResponse, Errors> createEmailTemplate(UUID emailTemplateId,
                                                                            EmailTemplateRequest request) {
     return start(EmailTemplateResponse.class).uri("/api/email/template")
-        .urlSegment(emailTemplateId)
-        .request(request)
-        .post()
-        .go();
+                                             .urlSegment(emailTemplateId)
+                                             .request(request)
+                                             .post()
+                                             .go();
   }
 
   /**
@@ -293,22 +322,20 @@ public class PassportClient {
    * method, but it is not required.
    *
    * @param notificationServerId (Optional) The id for the notification server.
-   * @param request              The notification server request that contains all of the information used to create
-   *                             the
+   * @param request              The notification server request that contains all of the information used to create the
    *                             notification server.
    * @return When successful, the response will contain the notification server object. If there was a validation error
-   * or any other type of error, this will return the Errors object in the response. Additionally, if Passport could
-   * not
+   * or any other type of error, this will return the Errors object in the response. Additionally, if Passport could not
    * be contacted because it is down or experiencing a failure, the response will contain an Exception, which could be
    * an IOException.
    */
   public ClientResponse<NotificationServerResponse, Errors> createNotificationServer(UUID notificationServerId,
                                                                                      NotificationServerRequest request) {
     return start(NotificationServerResponse.class).uri("/api/notification-server")
-        .urlSegment(notificationServerId)
-        .request(request)
-        .post()
-        .go();
+                                                  .urlSegment(notificationServerId)
+                                                  .request(request)
+                                                  .post()
+                                                  .go();
   }
 
   /**
@@ -316,8 +343,7 @@ public class PassportClient {
    *
    * @param request The user request that contains all of the information used to create the user.
    * @return When successful, the response will contain the user object. If there was a validation error or any other
-   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be
-   * contacted
+   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
    * because it is down or experiencing a failure, the response will contain an Exception, which could be an
    * IOException.
    */
@@ -331,17 +357,16 @@ public class PassportClient {
    * @param userId  (Optional) The id for the user.
    * @param request The user request that contains all of the information used to create the user.
    * @return When successful, the response will contain the user object. If there was a validation error or any other
-   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be
-   * contacted
+   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
    * because it is down or experiencing a failure, the response will contain an Exception, which could be an
    * IOException.
    */
   public ClientResponse<UserResponse, Errors> createUser(UUID userId, UserRequest request) {
     return start(UserResponse.class).uri("/api/user")
-        .urlSegment(userId)
-        .request(request)
-        .post()
-        .go();
+                                    .urlSegment(userId)
+                                    .request(request)
+                                    .post()
+                                    .go();
   }
 
   /**
@@ -357,10 +382,10 @@ public class PassportClient {
    */
   public ClientResponse<UserActionResponse, Errors> createUserAction(UUID userActionId, UserActionRequest request) {
     return start(UserActionResponse.class).uri("/api/user-action")
-        .urlSegment(userActionId)
-        .request(request)
-        .post()
-        .go();
+                                          .urlSegment(userActionId)
+                                          .request(request)
+                                          .post()
+                                          .go();
   }
 
   /**
@@ -370,18 +395,17 @@ public class PassportClient {
    * @param request The user action reason request that contains all of the information used to create the user action
    *                reason.
    * @return When successful, the response will contain the user action reason object. If there was a validation error
-   * or any other type of error, this will return the Errors object in the response. Additionally, if Passport could
-   * not
+   * or any other type of error, this will return the Errors object in the response. Additionally, if Passport could not
    * be contacted because it is down or experiencing a failure, the response will contain an Exception, which could be
    * an IOException.
    */
   public ClientResponse<UserActionReasonResponse, Errors> createUserActionReason(UUID userActionReasonId,
                                                                                  UserActionReasonRequest request) {
     return start(UserActionReasonResponse.class).uri("/api/user-action-reason")
-        .urlSegment(userActionReasonId)
-        .request(request)
-        .post()
-        .go();
+                                                .urlSegment(userActionReasonId)
+                                                .request(request)
+                                                .post()
+                                                .go();
   }
 
   /**
@@ -389,16 +413,15 @@ public class PassportClient {
    *
    * @param applicationId The id of the application to deactivate.
    * @return When successful, the response will not contain a response object but only contains the status. If there was
-   * a validation error or any other type of error, this will return the Errors object in the response. Additionally,
-   * if
+   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
   public ClientResponse<Void, Errors> deactivateApplication(UUID applicationId) {
     return start(Void.TYPE).uri("/api/application")
-        .urlSegment(applicationId)
-        .delete()
-        .go();
+                           .urlSegment(applicationId)
+                           .delete()
+                           .go();
   }
 
   /**
@@ -406,16 +429,15 @@ public class PassportClient {
    *
    * @param userId The id of the application to deactivate.
    * @return When successful, the response will not contain a response object but only contains the status. If there was
-   * a validation error or any other type of error, this will return the Errors object in the response. Additionally,
-   * if
+   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
   public ClientResponse<Void, Errors> deactivateUser(UUID userId) {
     return start(Void.TYPE).uri("/api/user")
-        .urlSegment(userId)
-        .delete()
-        .go();
+                           .urlSegment(userId)
+                           .delete()
+                           .go();
   }
 
   /**
@@ -423,16 +445,15 @@ public class PassportClient {
    *
    * @param userActionId The id of the user action to deactivate.
    * @return When successful, the response will not contain a response object but only contains the status. If there was
-   * a validation error or any other type of error, this will return the Errors object in the response. Additionally,
-   * if
+   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
   public ClientResponse<Void, Errors> deactivateUserAction(UUID userActionId) {
     return start(Void.TYPE).uri("/api/user-action")
-        .urlSegment(userActionId)
-        .delete()
-        .go();
+                           .urlSegment(userActionId)
+                           .delete()
+                           .go();
   }
 
   /**
@@ -443,17 +464,16 @@ public class PassportClient {
    *
    * @param applicationId The id of the application to delete.
    * @return When successful, the response will not contain a response object but only contains the status. If there was
-   * a validation error or any other type of error, this will return the Errors object in the response. Additionally,
-   * if
+   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
   public ClientResponse<Void, Errors> deleteApplication(UUID applicationId) {
     return start(Void.TYPE).uri("/api/application")
-        .urlSegment(applicationId)
-        .urlParameter("hardDelete", true)
-        .delete()
-        .go();
+                           .urlSegment(applicationId)
+                           .urlParameter("hardDelete", true)
+                           .delete()
+                           .go();
   }
 
   /**
@@ -463,19 +483,18 @@ public class PassportClient {
    * @param applicationId The id of the application that contains the role.
    * @param roleId        The id of the role to delete.
    * @return When successful, the response will not contain a response object but only contains the status. If there was
-   * a validation error or any other type of error, this will return the Errors object in the response. Additionally,
-   * if
+   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
   public ClientResponse<Void, Errors> deleteApplicationRole(UUID applicationId, UUID roleId) {
     Objects.requireNonNull(applicationId);
     return start(Void.TYPE).uri("/api/application")
-        .urlSegment(applicationId)
-        .urlSegment("role")
-        .urlSegment(roleId)
-        .delete()
-        .go();
+                           .urlSegment(applicationId)
+                           .urlSegment("role")
+                           .urlSegment(roleId)
+                           .delete()
+                           .go();
   }
 
   /**
@@ -483,16 +502,15 @@ public class PassportClient {
    *
    * @param emailTemplateId The id of the email template to delete.
    * @return When successful, the response will not contain a response object but only contains the status. If there was
-   * a validation error or any other type of error, this will return the Errors object in the response. Additionally,
-   * if
+   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
   public ClientResponse<Void, Errors> deleteEmailTemplate(UUID emailTemplateId) {
     return start(Void.TYPE).uri("/api/email/template")
-        .urlSegment(emailTemplateId)
-        .delete()
-        .go();
+                           .urlSegment(emailTemplateId)
+                           .delete()
+                           .go();
   }
 
   /**
@@ -500,16 +518,15 @@ public class PassportClient {
    *
    * @param notificationServerId The id of the notification server to delete.
    * @return When successful, the response will not contain a response object but only contains the status. If there was
-   * a validation error or any other type of error, this will return the Errors object in the response. Additionally,
-   * if
+   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
   public ClientResponse<Void, Errors> deleteNotificationServer(UUID notificationServerId) {
     return start(Void.TYPE).uri("/api/notification-server")
-        .urlSegment(notificationServerId)
-        .delete()
-        .go();
+                           .urlSegment(notificationServerId)
+                           .delete()
+                           .go();
   }
 
   /**
@@ -518,18 +535,17 @@ public class PassportClient {
    * @param userId        The id of the user whose registration is being deleted.
    * @param applicationId The id of the application to remove the registration for.
    * @return When successful, the response will not contain a response object but only contains the status. If there was
-   * a validation error or any other type of error, this will return the Errors object in the response. Additionally,
-   * if
+   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
   public ClientResponse<Void, Errors> deleteRegistration(UUID userId, UUID applicationId) {
     Objects.requireNonNull(userId);
     return start(Void.TYPE).uri("/api/user/registration")
-        .urlSegment(userId)
-        .urlSegment(applicationId)
-        .delete()
-        .go();
+                           .urlSegment(userId)
+                           .urlSegment(applicationId)
+                           .delete()
+                           .go();
   }
 
   /**
@@ -538,37 +554,34 @@ public class PassportClient {
    *
    * @param userId The id of the user to delete.
    * @return When successful, the response will not contain a response object but only contains the status. If there was
-   * a validation error or any other type of error, this will return the Errors object in the response. Additionally,
-   * if
+   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
   public ClientResponse<Void, Errors> deleteUser(UUID userId) {
     return start(Void.TYPE).uri("/api/user")
-        .urlSegment(userId)
-        .urlParameter("hardDelete", true)
-        .delete()
-        .go();
+                           .urlSegment(userId)
+                           .urlParameter("hardDelete", true)
+                           .delete()
+                           .go();
   }
 
   /**
-   * Deletes the user action for the given id. This permanently deletes the user action and also any history and logs
-   * of
+   * Deletes the user action for the given id. This permanently deletes the user action and also any history and logs of
    * the action being applied to any users.
    *
    * @param userActionId The id of the user action to delete.
    * @return When successful, the response will not contain a response object but only contains the status. If there was
-   * a validation error or any other type of error, this will return the Errors object in the response. Additionally,
-   * if
+   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
   public ClientResponse<Void, Errors> deleteUserAction(UUID userActionId) {
     return start(Void.TYPE).uri("/api/user-action")
-        .urlSegment(userActionId)
-        .urlParameter("hardDelete", true)
-        .delete()
-        .go();
+                           .urlSegment(userActionId)
+                           .urlParameter("hardDelete", true)
+                           .delete()
+                           .go();
   }
 
   /**
@@ -576,16 +589,15 @@ public class PassportClient {
    *
    * @param userActionReasonId The id of the user action reason to delete.
    * @return When successful, the response will not contain a response object but only contains the status. If there was
-   * a validation error or any other type of error, this will return the Errors object in the response. Additionally,
-   * if
+   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
   public ClientResponse<Void, Errors> deleteUserActionReason(UUID userActionReasonId) {
     return start(Void.TYPE).uri("/api/user-action-reason")
-        .urlSegment(userActionReasonId)
-        .delete()
-        .go();
+                           .urlSegment(userActionReasonId)
+                           .delete()
+                           .go();
   }
 
   /**
@@ -593,16 +605,15 @@ public class PassportClient {
    *
    * @param request The request that contains the information about the user so that they can be emailed.
    * @return When successful, the response will not contain a response object but only contains the status. If there was
-   * a validation error or any other type of error, this will return the Errors object in the response. Additionally,
-   * if
+   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
   public ClientResponse<Void, Errors> forgotPassword(ForgotPasswordRequest request) {
     return start(Void.TYPE).uri("/api/user/forgot-password")
-        .request(request)
-        .post()
-        .go();
+                           .request(request)
+                           .post()
+                           .go();
   }
 
   /**
@@ -612,16 +623,15 @@ public class PassportClient {
    *
    * @param request The request that contains all of the information about all of the users to import.
    * @return When successful, the response will not contain a response object but only contains the status. If there was
-   * a validation error or any other type of error, this will return the Errors object in the response. Additionally,
-   * if
+   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
   public ClientResponse<Void, Errors> importUsers(ImportRequest request) {
     return start(Void.TYPE).uri("/api/user/import")
-        .request(request)
-        .post()
-        .go();
+                           .request(request)
+                           .post()
+                           .go();
   }
 
   /**
@@ -630,15 +640,14 @@ public class PassportClient {
    * @param loginRequest The login request that contains the user credentials used to log them in.
    * @return When successful, the response will contain the user that was logged in. This user object is complete and
    * contains all of the registrations and data for the user. If there was a validation error or any other type of
-   * error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
-   * because
+   * error, this will return the Errors object in the response. Additionally, if Passport could not be contacted because
    * it is down or experiencing a failure, the response will contain an Exception, which could be an IOException.
    */
   public ClientResponse<LoginResponse, Errors> login(LoginRequest loginRequest) {
     return start(LoginResponse.class).uri("/api/login")
-        .request(loginRequest)
-        .post()
-        .go();
+                                     .request(loginRequest)
+                                     .post()
+                                     .go();
   }
 
   /**
@@ -650,15 +659,14 @@ public class PassportClient {
    * @param userId        The id of the user that was logged in.
    * @param applicationId The id of the application that they logged into.
    * @return When successful, the response will not contain a response object but only contains the status. If there was
-   * a validation error or any other type of error, this will return the Errors object in the response. Additionally,
-   * if
+   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
   public ClientResponse<Void, Errors> loginPing(UUID userId, UUID applicationId) {
     return start(Void.TYPE).uri("/api/login/" + userId + "/" + applicationId)
-        .put()
-        .go();
+                           .put()
+                           .go();
   }
 
   /**
@@ -674,10 +682,10 @@ public class PassportClient {
    */
   public ClientResponse<ActionResponse, Errors> modifyAction(UUID actionId, ActionRequest request) {
     return start(ActionResponse.class).uri("/api/user/action")
-        .urlSegment(actionId)
-        .request(request)
-        .put()
-        .go();
+                                      .urlSegment(actionId)
+                                      .request(request)
+                                      .put()
+                                      .go();
   }
 
   /**
@@ -691,10 +699,10 @@ public class PassportClient {
    */
   public ClientResponse<ApplicationResponse, Errors> reactivateApplication(UUID applicationId) {
     return start(ApplicationResponse.class).uri("/api/application")
-        .urlSegment(applicationId)
-        .urlParameter("reactivate", true)
-        .put()
-        .go();
+                                           .urlSegment(applicationId)
+                                           .urlParameter("reactivate", true)
+                                           .put()
+                                           .go();
   }
 
   /**
@@ -702,17 +710,16 @@ public class PassportClient {
    *
    * @param userId The id of the user action to reactivate.
    * @return When successful, the response will contain the user that was reactivated. If there was a validation error
-   * or any other type of error, this will return the Errors object in the response. Additionally, if Passport could
-   * not
+   * or any other type of error, this will return the Errors object in the response. Additionally, if Passport could not
    * be contacted because it is down or experiencing a failure, the response will contain an Exception, which could be
    * an IOException.
    */
   public ClientResponse<UserResponse, Errors> reactivateUser(UUID userId) {
     return start(UserResponse.class).uri("/api/user")
-        .urlSegment(userId)
-        .urlParameter("reactivate", true)
-        .put()
-        .go();
+                                    .urlSegment(userId)
+                                    .urlParameter("reactivate", true)
+                                    .put()
+                                    .go();
   }
 
   /**
@@ -726,10 +733,10 @@ public class PassportClient {
    */
   public ClientResponse<UserActionResponse, Errors> reactivateUserAction(UUID userActionId) {
     return start(UserActionResponse.class).uri("/api/user-action")
-        .urlSegment(userActionId)
-        .urlParameter("reactivate", true)
-        .put()
-        .go();
+                                          .urlSegment(userActionId)
+                                          .urlParameter("reactivate", true)
+                                          .put()
+                                          .go();
   }
 
   /**
@@ -764,10 +771,10 @@ public class PassportClient {
    */
   public ClientResponse<RegistrationResponse, Errors> register(UUID userId, RegistrationRequest request) {
     return start(RegistrationResponse.class).uri("/api/user/registration")
-        .urlSegment(userId)
-        .request(request)
-        .post()
-        .go();
+                                            .urlSegment(userId)
+                                            .request(request)
+                                            .post()
+                                            .go();
   }
 
   /**
@@ -780,9 +787,9 @@ public class PassportClient {
    */
   public ClientResponse<Void, Void> resendEmailVerification(String email) {
     return startVoid(Void.TYPE).uri("/api/user/verify-email")
-        .urlParameter("email", email)
-        .put()
-        .go();
+                               .urlParameter("email", email)
+                               .put()
+                               .go();
   }
 
   /**
@@ -790,16 +797,15 @@ public class PassportClient {
    *
    * @param actionId The id of the action to retrieve.
    * @return When successful, the response will contain the the action that was previously taken on a user. If there was
-   * a validation error or any other type of error, this will return the Errors object in the response. Additionally,
-   * if
+   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
   public ClientResponse<ActionResponse, Errors> retrieveAction(UUID actionId) {
     return start(ActionResponse.class).uri("/api/user/action")
-        .urlSegment(actionId)
-        .get()
-        .go();
+                                      .urlSegment(actionId)
+                                      .get()
+                                      .go();
   }
 
   /**
@@ -813,8 +819,8 @@ public class PassportClient {
    */
   public ClientResponse<ActionResponse, Errors> retrieveActions(UUID userId) {
     return start(ActionResponse.class).uri("/api/user/action?userId=" + userId)
-        .get()
-        .go();
+                                      .get()
+                                      .go();
   }
 
   /**
@@ -827,9 +833,9 @@ public class PassportClient {
    */
   public ClientResponse<ApplicationResponse, Void> retrieveApplication(UUID applicationId) {
     return startVoid(ApplicationResponse.class).uri("/api/application")
-        .urlSegment(applicationId)
-        .get()
-        .go();
+                                               .urlSegment(applicationId)
+                                               .get()
+                                               .go();
   }
 
   /**
@@ -858,11 +864,11 @@ public class PassportClient {
   public ClientResponse<DailyActiveUserReportResponse, Errors> retrieveDailyActiveReport(UUID applicationId, long start,
                                                                                          long end) {
     return start(DailyActiveUserReportResponse.class).uri("/api/report/daily-active-user")
-        .urlParameter("start", start)
-        .urlParameter("end", end)
-        .urlParameter("applicationId", applicationId)
-        .get()
-        .go();
+                                                     .urlParameter("start", start)
+                                                     .urlParameter("end", end)
+                                                     .urlParameter("applicationId", applicationId)
+                                                     .get()
+                                                     .go();
   }
 
   /**
@@ -876,9 +882,9 @@ public class PassportClient {
    */
   public ClientResponse<EmailTemplateResponse, Void> retrieveEmailTemplate(UUID emailTemplateId) {
     return startVoid(EmailTemplateResponse.class).uri("/api/email/template")
-        .urlSegment(emailTemplateId)
-        .get()
-        .go();
+                                                 .urlSegment(emailTemplateId)
+                                                 .get()
+                                                 .go();
   }
 
   /**
@@ -894,9 +900,9 @@ public class PassportClient {
    */
   public ClientResponse<PreviewResponse, Errors> retrieveEmailTemplatePreview(PreviewRequest request) {
     return start(PreviewResponse.class).uri("/api/email/template/preview")
-        .request(request)
-        .post()
-        .go();
+                                       .request(request)
+                                       .post()
+                                       .go();
   }
 
   /**
@@ -919,9 +925,9 @@ public class PassportClient {
    */
   public ClientResponse<ApplicationResponse, Void> retrieveInactiveApplications() {
     return startVoid(ApplicationResponse.class).uri("/api/application")
-        .urlParameter("inactive", true)
-        .get()
-        .go();
+                                               .urlParameter("inactive", true)
+                                               .get()
+                                               .go();
   }
 
   /**
@@ -933,9 +939,9 @@ public class PassportClient {
    */
   public ClientResponse<UserActionResponse, Void> retrieveInactiveUserActions() {
     return startVoid(UserActionResponse.class).uri("/api/user-action")
-        .urlParameter("inactive", true)
-        .get()
-        .go();
+                                              .urlParameter("inactive", true)
+                                              .get()
+                                              .go();
   }
 
   /**
@@ -952,11 +958,11 @@ public class PassportClient {
    */
   public ClientResponse<LoginReportResponse, Errors> retrieveLoginReport(UUID applicationId, long start, long end) {
     return start(LoginReportResponse.class).uri("/api/report/login")
-        .urlParameter("start", start)
-        .urlParameter("end", end)
-        .urlParameter("applicationId", applicationId)
-        .get()
-        .go();
+                                           .urlParameter("start", start)
+                                           .urlParameter("end", end)
+                                           .urlParameter("applicationId", applicationId)
+                                           .get()
+                                           .go();
   }
 
   /**
@@ -975,11 +981,11 @@ public class PassportClient {
                                                                                              long start,
                                                                                              long end) {
     return start(MonthlyActiveUserReportResponse.class).uri("/api/report/monthly-active-user")
-        .urlParameter("start", start)
-        .urlParameter("end", end)
-        .urlParameter("applicationId", applicationId)
-        .get()
-        .go();
+                                                       .urlParameter("start", start)
+                                                       .urlParameter("end", end)
+                                                       .urlParameter("applicationId", applicationId)
+                                                       .get()
+                                                       .go();
   }
 
   /**
@@ -988,15 +994,14 @@ public class PassportClient {
    *
    * @param notificationServerId (Optional) The id of the notification server.
    * @return When successful, the response will contain the notification server for the id or all the notification
-   * servers. There are no errors associated with this request. Additionally, if Passport could not be contacted
-   * because
+   * servers. There are no errors associated with this request. Additionally, if Passport could not be contacted because
    * it is down or experiencing a failure, the response will contain an Exception, which could be an IOException.
    */
   public ClientResponse<NotificationServerResponse, Void> retrieveNotificationServer(UUID notificationServerId) {
     return startVoid(NotificationServerResponse.class).uri("/api/notification-server")
-        .urlSegment(notificationServerId)
-        .get()
-        .go();
+                                                      .urlSegment(notificationServerId)
+                                                      .get()
+                                                      .go();
   }
 
   /**
@@ -1016,17 +1021,16 @@ public class PassportClient {
    * @param userId        The id of the user.
    * @param applicationId The id of the application.
    * @return When successful, the response will contain the user registration object. If there was a validation error or
-   * any other type of error, this will return the Errors object in the response. Additionally, if Passport could not
-   * be
+   * any other type of error, this will return the Errors object in the response. Additionally, if Passport could not be
    * contacted because it is down or experiencing a failure, the response will contain an Exception, which could be an
    * IOException.
    */
   public ClientResponse<RegistrationResponse, Errors> retrieveRegistration(UUID userId, UUID applicationId) {
     return start(RegistrationResponse.class).uri("/api/user/registration")
-        .urlSegment(userId)
-        .urlSegment(applicationId)
-        .get()
-        .go();
+                                            .urlSegment(userId)
+                                            .urlSegment(applicationId)
+                                            .get()
+                                            .go();
   }
 
   /**
@@ -1044,11 +1048,11 @@ public class PassportClient {
   public ClientResponse<RegistrationReportResponse, Errors> retrieveRegistrationReport(UUID applicationId, long start,
                                                                                        long end) {
     return start(RegistrationReportResponse.class).uri("/api/report/registration")
-        .urlParameter("start", start)
-        .urlParameter("end", end)
-        .urlParameter("applicationId", applicationId)
-        .get()
-        .go();
+                                                  .urlParameter("start", start)
+                                                  .urlParameter("end", end)
+                                                  .urlParameter("applicationId", applicationId)
+                                                  .get()
+                                                  .go();
   }
 
   /**
@@ -1060,13 +1064,12 @@ public class PassportClient {
    */
   public ClientResponse<SystemConfigurationResponse, Void> retrieveSystemConfiguration() {
     return startVoid(SystemConfigurationResponse.class).uri("/api/system-configuration")
-        .get()
-        .go();
+                                                       .get()
+                                                       .go();
   }
 
   /**
-   * Retrieves the totals report. This contains all of the total counts for each application and the global
-   * registration
+   * Retrieves the totals report. This contains all of the total counts for each application and the global registration
    * count.
    *
    * @return When successful, the response will contain the total counts for logins and registrations for each
@@ -1076,8 +1079,8 @@ public class PassportClient {
    */
   public ClientResponse<TotalsReportResponse, Void> retrieveTotalReport() {
     return startVoid(TotalsReportResponse.class).uri("/api/report/totals")
-        .get()
-        .go();
+                                                .get()
+                                                .go();
   }
 
   /**
@@ -1085,16 +1088,15 @@ public class PassportClient {
    *
    * @param userId The id of the user.
    * @return When successful, the response will contain the user object. If there was a validation error or any other
-   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be
-   * contacted
+   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
    * because it is down or experiencing a failure, the response will contain an Exception, which could be an
    * IOException.
    */
   public ClientResponse<UserResponse, Errors> retrieveUser(UUID userId) {
     return start(UserResponse.class).uri("/api/user")
-        .urlSegment(userId)
-        .get()
-        .go();
+                                    .urlSegment(userId)
+                                    .get()
+                                    .go();
   }
 
   /**
@@ -1108,14 +1110,13 @@ public class PassportClient {
    */
   public ClientResponse<UserActionResponse, Void> retrieveUserAction(UUID userActionId) {
     return startVoid(UserActionResponse.class).uri("/api/user-action")
-        .urlSegment(userActionId)
-        .get()
-        .go();
+                                              .urlSegment(userActionId)
+                                              .get()
+                                              .go();
   }
 
   /**
-   * Retrieves the user action reason for the given id. If you pass in null for the id, this will return all of the
-   * user
+   * Retrieves the user action reason for the given id. If you pass in null for the id, this will return all of the user
    * action reasons.
    *
    * @param userActionReasonId (Optional) The id of the user action.
@@ -1126,9 +1127,9 @@ public class PassportClient {
    */
   public ClientResponse<UserActionReasonResponse, Void> retrieveUserActionReason(UUID userActionReasonId) {
     return startVoid(UserActionReasonResponse.class).uri("/api/user-action-reason")
-        .urlSegment(userActionReasonId)
-        .get()
-        .go();
+                                                    .urlSegment(userActionReasonId)
+                                                    .get()
+                                                    .go();
   }
 
   /**
@@ -1158,16 +1159,15 @@ public class PassportClient {
    *
    * @param email The email of the user.
    * @return When successful, the response will contain the user object. If there was a validation error or any other
-   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be
-   * contacted
+   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
    * because it is down or experiencing a failure, the response will contain an Exception, which could be an
    * IOException.
    */
   public ClientResponse<UserResponse, Errors> retrieveUserByEmail(String email) {
     return start(UserResponse.class).uri("/api/user")
-        .urlParameter("email", email)
-        .get()
-        .go();
+                                    .urlParameter("email", email)
+                                    .get()
+                                    .go();
   }
 
   /**
@@ -1175,16 +1175,15 @@ public class PassportClient {
    *
    * @param username The username of the user.
    * @return When successful, the response will contain the user object. If there was a validation error or any other
-   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be
-   * contacted
+   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
    * because it is down or experiencing a failure, the response will contain an Exception, which could be an
    * IOException.
    */
   public ClientResponse<UserResponse, Errors> retrieveUserByUsername(String username) {
     return start(UserResponse.class).uri("/api/user")
-        .urlParameter("username", username)
-        .get()
-        .go();
+                                    .urlParameter("username", username)
+                                    .get()
+                                    .go();
   }
 
   /**
@@ -1198,9 +1197,9 @@ public class PassportClient {
    */
   public ClientResponse<UserCommentResponse, Errors> retrieveUserComments(UUID userId) {
     return start(UserCommentResponse.class).uri("/api/user/comment")
-        .urlSegment(userId)
-        .get()
-        .go();
+                                           .urlSegment(userId)
+                                           .get()
+                                           .go();
   }
 
   /**
@@ -1211,19 +1210,18 @@ public class PassportClient {
    * @param offset The initial record. e.g. 0 is the last login, 100 will be the 100th most recent login.
    * @param limit  (Optional, defaults to 10) The number of records to retrieve.
    * @return When successful, the response will contain RawLogin records. If there was a validation error or any other
-   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be
-   * contacted
+   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
    * because it is down or experiencing a failure, the response will contain an Exception, which could be an
    * IOException.
    */
   public ClientResponse<UserLoginReportResponse, Errors> retrieveUserLoginReport(UUID userId, int offset,
                                                                                  Integer limit) {
     return start(UserLoginReportResponse.class).uri("/api/report/user-login")
-        .urlParameter("userId", userId)
-        .urlParameter("offset", offset)
-        .urlParameter("limit", limit != null ? limit : 10)
-        .get()
-        .go();
+                                               .urlParameter("userId", userId)
+                                               .urlParameter("offset", offset)
+                                               .urlParameter("limit", limit != null ? limit : 10)
+                                               .get()
+                                               .go();
   }
 
   /**
@@ -1237,15 +1235,15 @@ public class PassportClient {
    */
   public ClientResponse<AuditLogResponse, Void> searchAuditLogs(AuditLogSearchCriteria search) {
     return startVoid(AuditLogResponse.class).uri("/api/system/audit-log")
-        .urlParameter("search.user", search.user)
-        .urlParameter("search.message", search.message)
-        .urlParameter("search.end", search.end)
-        .urlParameter("search.start", search.start)
-        .urlParameter("search.orderBy", search.orderBy)
-        .urlParameter("search.startRow", search.startRow)
-        .urlParameter("search.numberOfResults", search.numberOfResults)
-        .get()
-        .go();
+                                            .urlParameter("search.user", search.user)
+                                            .urlParameter("search.message", search.message)
+                                            .urlParameter("search.end", search.end)
+                                            .urlParameter("search.start", search.start)
+                                            .urlParameter("search.orderBy", search.orderBy)
+                                            .urlParameter("search.startRow", search.startRow)
+                                            .urlParameter("search.numberOfResults", search.numberOfResults)
+                                            .get()
+                                            .go();
   }
 
   /**
@@ -1253,16 +1251,15 @@ public class PassportClient {
    *
    * @param ids The user ids to search for.
    * @return When successful, the response will contain the users that match the ids. If there was a validation error or
-   * any other type of error, this will return the Errors object in the response. Additionally, if Passport could not
-   * be
+   * any other type of error, this will return the Errors object in the response. Additionally, if Passport could not be
    * contacted because it is down or experiencing a failure, the response will contain an Exception, which could be an
    * IOException.
    */
   public ClientResponse<SearchResponse, Errors> searchUsers(Collection<UUID> ids) {
     return start(SearchResponse.class).uri("/api/user/search")
-        .urlParameter("ids", ids)
-        .get()
-        .go();
+                                      .urlParameter("ids", ids)
+                                      .get()
+                                      .go();
   }
 
   /**
@@ -1277,11 +1274,11 @@ public class PassportClient {
    */
   public ClientResponse<UserResponse, Errors> searchUsersByQueryString(UserSearchCriteria search) {
     return start(UserResponse.class).uri("/api/user/search")
-        .urlParameter("queryString", search.queryString)
-        .urlParameter("numberOfResults", search.numberOfResults)
-        .urlParameter("startRow", search.startRow)
-        .get()
-        .go();
+                                    .urlParameter("queryString", search.queryString)
+                                    .urlParameter("numberOfResults", search.numberOfResults)
+                                    .urlParameter("startRow", search.startRow)
+                                    .get()
+                                    .go();
   }
 
   /**
@@ -1291,17 +1288,16 @@ public class PassportClient {
    * @param emailTemplateId The id for the template.
    * @param request         The send email request that contains all of the information used to send the email.
    * @return When successful, the response will not contain a response object but only contains the status. If there was
-   * a validation error or any other type of error, this will return the Errors object in the response. Additionally,
-   * if
+   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
   public ClientResponse<SendResponse, Errors> sendEmail(UUID emailTemplateId, SendRequest request) {
     return start(SendResponse.class).uri("/api/email/send")
-        .urlSegment(emailTemplateId)
-        .request(request)
-        .post()
-        .go();
+                                    .urlSegment(emailTemplateId)
+                                    .request(request)
+                                    .post()
+                                    .go();
   }
 
   /**
@@ -1310,17 +1306,16 @@ public class PassportClient {
    * @param applicationId The id of the application to update.
    * @param request       The request that contains all of the new application information.
    * @return When successful, the response will contain the application. If there was a validation error or any other
-   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be
-   * contacted
+   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
    * because it is down or experiencing a failure, the response will contain an Exception, which could be an
    * IOException.
    */
   public ClientResponse<ApplicationResponse, Errors> updateApplication(UUID applicationId, ApplicationRequest request) {
     return start(ApplicationResponse.class).uri("/api/application")
-        .urlSegment(applicationId)
-        .request(request)
-        .put()
-        .go();
+                                           .urlSegment(applicationId)
+                                           .request(request)
+                                           .put()
+                                           .go();
   }
 
   /**
@@ -1330,20 +1325,19 @@ public class PassportClient {
    * @param roleId        The id of the role to update.
    * @param request       The request that contains all of the new role information.
    * @return When successful, the response will contain the role. If there was a validation error or any other type of
-   * error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
-   * because
+   * error, this will return the Errors object in the response. Additionally, if Passport could not be contacted because
    * it is down or experiencing a failure, the response will contain an Exception, which could be an IOException.
    */
   public ClientResponse<ApplicationResponse, Errors> updateApplicationRole(UUID applicationId, UUID roleId,
                                                                            ApplicationRequest request) {
     Objects.requireNonNull(applicationId);
     return start(ApplicationResponse.class).uri("/api/application")
-        .urlSegment(applicationId)
-        .urlSegment("role")
-        .urlSegment(roleId)
-        .request(request)
-        .put()
-        .go();
+                                           .urlSegment(applicationId)
+                                           .urlSegment("role")
+                                           .urlSegment(roleId)
+                                           .request(request)
+                                           .put()
+                                           .go();
   }
 
   /**
@@ -1352,18 +1346,17 @@ public class PassportClient {
    * @param emailTemplateId The id of the email template to update.
    * @param request         The request that contains all of the new email template information.
    * @return When successful, the response will contain the email template. If there was a validation error or any other
-   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be
-   * contacted
+   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
    * because it is down or experiencing a failure, the response will contain an Exception, which could be an
    * IOException.
    */
   public ClientResponse<EmailTemplateResponse, Errors> updateEmailTemplate(UUID emailTemplateId,
                                                                            EmailTemplateRequest request) {
     return start(EmailTemplateResponse.class).uri("/api/email/template")
-        .urlSegment(emailTemplateId)
-        .request(request)
-        .put()
-        .go();
+                                             .urlSegment(emailTemplateId)
+                                             .request(request)
+                                             .put()
+                                             .go();
   }
 
   /**
@@ -1379,10 +1372,10 @@ public class PassportClient {
   public ClientResponse<NotificationServerResponse, Errors> updateNotificationServer(UUID notificationServerId,
                                                                                      NotificationServerRequest request) {
     return start(NotificationServerResponse.class).uri("/api/notification-server")
-        .urlSegment(notificationServerId)
-        .request(request)
-        .put()
-        .go();
+                                                  .urlSegment(notificationServerId)
+                                                  .request(request)
+                                                  .put()
+                                                  .go();
   }
 
   /**
@@ -1391,18 +1384,17 @@ public class PassportClient {
    * @param userId  The id of the user whose registration is going to be updated.
    * @param request The request that contains all of the new registration information.
    * @return When successful, the response will contain the registration. If there was a validation error or any other
-   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be
-   * contacted
+   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
    * because it is down or experiencing a failure, the response will contain an Exception, which could be an
    * IOException.
    */
   public ClientResponse<RegistrationResponse, Errors> updateRegistration(UUID userId, RegistrationRequest request) {
     Objects.requireNonNull(userId);
     return start(RegistrationResponse.class).uri("/api/user/registration")
-        .urlSegment(userId)
-        .request(request)
-        .put()
-        .go();
+                                            .urlSegment(userId)
+                                            .request(request)
+                                            .put()
+                                            .go();
   }
 
   /**
@@ -1417,9 +1409,9 @@ public class PassportClient {
   public ClientResponse<SystemConfigurationResponse, Errors> updateSystemConfiguration(
       SystemConfigurationRequest request) {
     return start(SystemConfigurationResponse.class).uri("/api/system-configuration")
-        .request(request)
-        .put()
-        .go();
+                                                   .request(request)
+                                                   .put()
+                                                   .go();
   }
 
   /**
@@ -1428,16 +1420,15 @@ public class PassportClient {
    * @param userId  The id of the user to update.
    * @param request The request that contains all of the new user information.
    * @return When successful, the response will contain the user. If there was a validation error or any other type of
-   * error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
-   * because
+   * error, this will return the Errors object in the response. Additionally, if Passport could not be contacted because
    * it is down or experiencing a failure, the response will contain an Exception, which could be an IOException.
    */
   public ClientResponse<UserResponse, Errors> updateUser(UUID userId, UserRequest request) {
     return start(UserResponse.class).uri("/api/user")
-        .urlSegment(userId)
-        .request(request)
-        .put()
-        .go();
+                                    .urlSegment(userId)
+                                    .request(request)
+                                    .put()
+                                    .go();
   }
 
   /**
@@ -1446,16 +1437,15 @@ public class PassportClient {
    * @param userActionId The id of the user action to update.
    * @param request      The request that contains all of the new user action information.
    * @return When successful, the response will contain the user action. If there was a validation error or any other
-   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be
-   * contacted
+   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
    * because it is down or experiencing a failure, the response will contain an Exception, which could be an
    * IOException.
    */
   public ClientResponse<UserActionResponse, Errors> updateUserAction(UUID userActionId, UserActionRequest request) {
     return start(UserActionResponse.class).uri("/api/user-action/" + userActionId)
-        .request(request)
-        .put()
-        .go();
+                                          .request(request)
+                                          .put()
+                                          .go();
   }
 
   /**
@@ -1471,10 +1461,10 @@ public class PassportClient {
   public ClientResponse<UserActionReasonResponse, Errors> updateUserActionReason(UUID userActionReasonId,
                                                                                  UserActionReasonRequest request) {
     return start(UserActionReasonResponse.class).uri("/api/user-action-reason")
-        .urlSegment(userActionReasonId)
-        .request(request)
-        .put()
-        .go();
+                                                .urlSegment(userActionReasonId)
+                                                .request(request)
+                                                .put()
+                                                .go();
   }
 
   /**
@@ -1487,9 +1477,9 @@ public class PassportClient {
    */
   public ClientResponse<Void, Void> verifyEmail(String verificationId) {
     return startVoid(Void.TYPE).uri("/api/user/verify-email")
-        .urlSegment(verificationId)
-        .post()
-        .go();
+                               .urlSegment(verificationId)
+                               .post()
+                               .go();
   }
 
   /**
@@ -1503,22 +1493,22 @@ public class PassportClient {
    */
   public ClientResponse<Void, Errors> verifyTwoFactor(TwoFactorRequest request) {
     return start(Void.TYPE).uri("/api/two-factor")
-        .request(request)
-        .post()
-        .go();
+                           .request(request)
+                           .post()
+                           .go();
   }
 
   private <T> RESTClient<T, Errors> start(Class<T> type) {
     return new RESTClient<>(type, Errors.class).authorization(apiKey)
-        .url(baseURL)
-        .connectTimeout(connectTimeout)
-        .readTimeout(readTimeout);
+                                               .url(baseURL)
+                                               .connectTimeout(connectTimeout)
+                                               .readTimeout(readTimeout);
   }
 
   private <T> RESTClient<T, Void> startVoid(Class<T> type) {
     return new RESTClient<>(type, Void.TYPE).authorization(apiKey)
-        .url(baseURL)
-        .connectTimeout(connectTimeout)
-        .readTimeout(readTimeout);
+                                            .url(baseURL)
+                                            .connectTimeout(connectTimeout)
+                                            .readTimeout(readTimeout);
   }
 }

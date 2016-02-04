@@ -15,14 +15,20 @@
  */
 package com.inversoft.passport.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.primeframework.json.ToString;
-
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.inversoft.json.ToString;
 import static com.inversoft.passport.domain.util.Normalizer.toLowerCase;
 import static com.inversoft.passport.domain.util.Normalizer.trim;
 
@@ -155,8 +161,8 @@ public class User implements Buildable<User> {
 
   public UserData getDataForApplication(UUID id) {
     Optional<UserRegistration> registration = getRegistrations().stream()
-        .filter((reg) -> reg.applicationId.equals(id))
-        .findFirst();
+                                                                .filter((reg) -> reg.applicationId.equals(id))
+                                                                .findFirst();
     if (registration.isPresent()) {
       return registration.get().data;
     }
@@ -191,8 +197,8 @@ public class User implements Buildable<User> {
 
   public UserRegistration getRegistrationForApplication(UUID id) {
     Optional<UserRegistration> registration = getRegistrations().stream()
-        .filter((reg) -> reg.applicationId.equals(id))
-        .findFirst();
+                                                                .filter((reg) -> reg.applicationId.equals(id))
+                                                                .findFirst();
     if (registration.isPresent()) {
       return registration.get();
     }
@@ -206,8 +212,8 @@ public class User implements Buildable<User> {
 
   public Set<String> getRoleNamesForApplication(UUID id) {
     Optional<UserRegistration> registration = getRegistrations().stream()
-        .filter((reg) -> reg.applicationId.equals(id))
-        .findFirst();
+                                                                .filter((reg) -> reg.applicationId.equals(id))
+                                                                .findFirst();
     if (registration.isPresent()) {
       return registration.get().roles;
     }

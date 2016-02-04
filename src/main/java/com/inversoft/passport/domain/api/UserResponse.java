@@ -15,11 +15,11 @@
  */
 package com.inversoft.passport.domain.api;
 
+import java.util.List;
+
+import com.inversoft.json.JacksonConstructor;
 import com.inversoft.passport.domain.User;
 import com.inversoft.passport.domain.search.SearchResults;
-import org.primeframework.json.JacksonConstructor;
-
-import java.util.List;
 
 /**
  * User API response object.
@@ -27,11 +27,11 @@ import java.util.List;
  * @author Brian Pontarelli
  */
 public class UserResponse {
+  public Long total;
+
   public User user;
 
   public List<User> users;
-
-  public Long total;
 
   @JacksonConstructor
   public UserResponse() {

@@ -15,7 +15,7 @@
  */
 package com.inversoft.passport.domain.api.user;
 
-import org.primeframework.json.JacksonConstructor;
+import com.inversoft.json.JacksonConstructor;
 
 /**
  * Change password request object.

@@ -13,22 +13,22 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/.savant/cache/org/primeframework/prime-rest/1.0.0/prime-rest-1.0.0.jar!/" />
+          <root url="jar://$USER_HOME$/.savant/cache/com/inversoft/restify/1.2.0/restify-1.2.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.savant/cache/org/primeframework/prime-rest/1.0.0/prime-rest-1.0.0-src.jar!/" />
+          <root url="jar://$USER_HOME$/.savant/cache/com/inversoft/restify/1.2.0/restify-1.2.0-src.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/.savant/cache/org/primeframework/prime-json/2.0.0/prime-json-2.0.0.jar!/" />
+          <root url="jar://$USER_HOME$/.savant/cache/com/inversoft/jackson5/2.3.0/jackson5-2.3.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.savant/cache/org/primeframework/prime-json/2.0.0/prime-json-2.0.0-src.jar!/" />
+          <root url="jar://$USER_HOME$/.savant/cache/com/inversoft/jackson5/2.3.0/jackson5-2.3.0-src.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
@@ -46,22 +46,11 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/.savant/cache/org/primeframework/prime-tools/1.1.0/prime-tools-1.1.0.jar!/" />
+          <root url="jar://$USER_HOME$/.savant/cache/com/inversoft/java-error/2.1.0/java-error-2.1.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.savant/cache/org/primeframework/prime-tools/1.1.0/prime-tools-1.1.0-src.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$USER_HOME$/.savant/cache/org/primeframework/prime-error/1.0.0/prime-error-1.0.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME$/.savant/cache/org/primeframework/prime-error/1.0.0/prime-error-1.0.0-src.jar!/" />
+          <root url="jar://$USER_HOME$/.savant/cache/com/inversoft/java-error/2.1.0/java-error-2.1.0-src.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>

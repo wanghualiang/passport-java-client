@@ -15,8 +15,8 @@
  */
 package com.inversoft.passport.domain.api;
 
+import com.inversoft.json.JacksonConstructor;
 import com.inversoft.passport.domain.SystemConfiguration;
-import org.primeframework.json.JacksonConstructor;
 
 /**
  * Response for the system configuration API.

@@ -16,11 +16,11 @@
 package com.inversoft.passport.domain.api.report;
 
 
-import org.primeframework.json.JacksonConstructor;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import com.inversoft.json.JacksonConstructor;
 
 /**
  * The response from the total report. This report stores the total numbers for each application.

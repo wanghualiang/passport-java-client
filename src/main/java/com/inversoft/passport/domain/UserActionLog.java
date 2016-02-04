@@ -15,13 +15,16 @@
  */
 package com.inversoft.passport.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.inversoft.passport.domain.notification.UserActionNotification;
-import org.primeframework.json.ToString;
-
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.inversoft.json.ToString;
+import com.inversoft.passport.domain.notification.UserActionNotification;
 import static com.inversoft.passport.domain.util.Normalizer.trim;
 
 /**

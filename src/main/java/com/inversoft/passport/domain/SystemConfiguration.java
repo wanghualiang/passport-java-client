@@ -15,12 +15,12 @@
  */
 package com.inversoft.passport.domain;
 
-import org.primeframework.json.ToString;
-
 import java.net.URI;
 import java.time.ZoneId;
 import java.util.Objects;
 import java.util.UUID;
+
+import com.inversoft.json.ToString;
 
 /**
  * @author Brian Pontarelli

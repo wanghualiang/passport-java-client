@@ -15,11 +15,14 @@
  */
 package com.inversoft.passport.domain;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+
+import com.inversoft.json.ToString;
 import com.inversoft.passport.domain.oauth2.OAuth2Configuration;
-import org.primeframework.json.ToString;
-
-import java.util.*;
-
 import static com.inversoft.passport.domain.util.Normalizer.trim;
 
 /**

@@ -15,11 +15,11 @@
  */
 package com.inversoft.passport.domain.api;
 
+import java.util.List;
+
+import com.inversoft.json.JacksonConstructor;
 import com.inversoft.passport.domain.Application;
 import com.inversoft.passport.domain.ApplicationRole;
-import org.primeframework.json.JacksonConstructor;
-
-import java.util.List;
 
 /**
  * The Application API response.

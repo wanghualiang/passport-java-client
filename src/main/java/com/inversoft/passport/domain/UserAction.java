@@ -15,11 +15,15 @@
  */
 package com.inversoft.passport.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.inversoft.passport.domain.util.Normalizer;
-import org.primeframework.json.ToString;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
-import java.util.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.inversoft.json.ToString;
+import com.inversoft.passport.domain.util.Normalizer;
 
 /**
  * An action that can be executed on a user (discipline or reward potentially).

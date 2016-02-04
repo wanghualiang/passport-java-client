@@ -16,8 +16,8 @@
 package com.inversoft.passport.domain.api.user;
 
 
+import com.inversoft.json.JacksonConstructor;
 import com.inversoft.passport.domain.search.UserSearchCriteria;
-import org.primeframework.json.JacksonConstructor;
 
 /**
  * Search API response.

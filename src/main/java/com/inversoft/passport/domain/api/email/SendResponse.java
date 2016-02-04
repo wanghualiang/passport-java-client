@@ -16,11 +16,11 @@
 package com.inversoft.passport.domain.api.email;
 
 
-import org.primeframework.json.JacksonConstructor;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import com.inversoft.json.JacksonConstructor;
 
 /**
  * @author Daniel DeGroff

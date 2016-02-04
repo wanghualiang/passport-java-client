@@ -15,11 +15,11 @@
  */
 package com.inversoft.passport.domain;
 
-import org.primeframework.json.ToString;
-
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
+
+import com.inversoft.json.ToString;
 
 /**
  * Raw login information for each time a user logs into an application.

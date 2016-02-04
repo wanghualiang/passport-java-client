@@ -21,13 +21,13 @@ import java.time.ZonedDateTime;
  * @author Brian Pontarelli
  */
 public class AuditLogSearchCriteria extends BaseSearchCriteria {
-  public String user;
-
   public ZonedDateTime end;
 
   public String message;
 
   public ZonedDateTime start;
+
+  public String user;
 
   @Override
   public void prepare() {

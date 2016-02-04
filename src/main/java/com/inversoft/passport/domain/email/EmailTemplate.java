@@ -15,13 +15,17 @@
  */
 package com.inversoft.passport.domain.email;
 
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.inversoft.json.ToString;
 import com.inversoft.passport.domain.Buildable;
 import com.inversoft.passport.domain.LocalizedStrings;
 import com.inversoft.passport.domain.util.Normalizer;
-import org.primeframework.json.ToString;
-
-import java.util.*;
 
 /**
  * Stores an email template used to send emails to users.

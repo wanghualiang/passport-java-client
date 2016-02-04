@@ -15,9 +15,9 @@
  */
 package com.inversoft.passport.domain.api.user;
 
+import com.inversoft.json.JacksonConstructor;
 import com.inversoft.passport.domain.User;
 import com.inversoft.passport.domain.UserRegistration;
-import org.primeframework.json.JacksonConstructor;
 
 /**
  * Registration API request object.
@@ -42,7 +42,8 @@ public class RegistrationRequest {
     this.registration = registration;
   }
 
-  public RegistrationRequest(User user, UserRegistration registration, boolean sendSetPasswordEmail, boolean skipVerification) {
+  public RegistrationRequest(User user, UserRegistration registration, boolean sendSetPasswordEmail,
+                             boolean skipVerification) {
     this.user = user;
     this.registration = registration;
     this.sendSetPasswordEmail = sendSetPasswordEmail;

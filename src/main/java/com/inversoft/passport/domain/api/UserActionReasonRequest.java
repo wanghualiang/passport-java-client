@@ -15,8 +15,8 @@
  */
 package com.inversoft.passport.domain.api;
 
+import com.inversoft.json.JacksonConstructor;
 import com.inversoft.passport.domain.UserActionReason;
-import org.primeframework.json.JacksonConstructor;
 
 /**
  * User Action Reason API request object.

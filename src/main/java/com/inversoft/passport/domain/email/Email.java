@@ -15,11 +15,11 @@
  */
 package com.inversoft.passport.domain.email;
 
-import org.primeframework.json.ToString;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import com.inversoft.json.ToString;
 
 /**
  * This class is an abstraction of a simple email message.

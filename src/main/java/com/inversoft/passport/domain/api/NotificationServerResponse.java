@@ -15,9 +15,9 @@
  */
 package com.inversoft.passport.domain.api;
 
-import com.inversoft.passport.domain.NotificationServer;
-
 import java.util.List;
+
+import com.inversoft.passport.domain.NotificationServer;
 
 /**
  * Notification Server API response object.

@@ -15,10 +15,10 @@
  */
 package com.inversoft.passport.domain.api.report;
 
-import com.inversoft.passport.domain.RawLogin;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.inversoft.passport.domain.RawLogin;
 
 /**
  * Response for the user login report.

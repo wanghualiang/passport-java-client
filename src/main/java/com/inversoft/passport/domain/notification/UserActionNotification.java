@@ -16,14 +16,18 @@
 package com.inversoft.passport.domain.notification;
 
 
-import com.inversoft.passport.domain.Buildable;
-import com.inversoft.passport.domain.email.Email;
-import org.primeframework.json.ToString;
-
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+
+import com.inversoft.json.ToString;
+import com.inversoft.passport.domain.Buildable;
+import com.inversoft.passport.domain.email.Email;
 
 /**
  * Models the user action notification (and can be converted to JSON).
@@ -51,8 +55,7 @@ public class UserActionNotification implements Buildable<UserActionNotification>
   public ZonedDateTime createInstant;
 
   /**
-   * The email that the notification server should email to the user. This should only be included if notifyUser is
-   * true
+   * The email that the notification server should email to the user. This should only be included if notifyUser is true
    * (i think)
    */
   public Email email;

@@ -32,17 +32,17 @@ public class UserSearchCriteria extends BaseSearchCriteria {
 
   public ZonedDateTime fromLastLoginInstant;
 
+  public String fullName;
+
   public UUID id;
 
-  public String fullName;
+  public String queryString;
 
   public Sort sort = Sort.asc;
 
   public ZonedDateTime toLastLoginInstant;
 
   public String username;
-
-  public String queryString;
 
   @Override
   public void prepare() {

@@ -16,13 +16,13 @@
 package com.inversoft.passport.domain;
 
 
-import org.primeframework.json.ToString;
-
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+
+import com.inversoft.json.ToString;
 
 /**
  * A historical state of a user log event. Since events can be modified, this stores the historical state.

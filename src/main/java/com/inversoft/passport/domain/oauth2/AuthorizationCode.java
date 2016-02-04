@@ -15,12 +15,12 @@
  */
 package com.inversoft.passport.domain.oauth2;
 
-import com.inversoft.passport.domain.User;
-import org.primeframework.json.ToString;
-
 import java.net.URI;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+
+import com.inversoft.json.ToString;
+import com.inversoft.passport.domain.User;
 
 /**
  * @author Daniel DeGroff

@@ -15,9 +15,9 @@
  */
 package com.inversoft.passport.domain.api;
 
-import org.primeframework.json.JacksonConstructor;
-
 import java.util.UUID;
+
+import com.inversoft.json.JacksonConstructor;
 
 /**
  * Login API request object.

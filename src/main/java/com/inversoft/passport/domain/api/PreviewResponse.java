@@ -15,9 +15,9 @@
  */
 package com.inversoft.passport.domain.api;
 
+import com.inversoft.json.JacksonConstructor;
 import com.inversoft.passport.domain.email.Email;
-import org.primeframework.error.Errors;
-import org.primeframework.json.JacksonConstructor;
+import com.inversoft.error.Errors;
 
 /**
  * @author Seth Musselman
