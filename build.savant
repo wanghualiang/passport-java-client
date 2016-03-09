@@ -14,7 +14,7 @@ project(group: "com.inversoft.passport", name: "passport-java-client", version: 
 
   dependencies {
     group(name: "compile") {
-      dependency(id: "com.inversoft:restify:2.0.0")
+      dependency(id: "com.inversoft:restify:2.0.1")
       dependency(id: "com.inversoft:java-error:2.1.0")
       dependency(id: "com.inversoft:jackson5:2.3.0")
       dependency(id: "com.fasterxml.jackson.core:jackson-annotations:2.4.2")
@@ -24,7 +24,6 @@ project(group: "com.inversoft.passport", name: "passport-java-client", version: 
   publications {
     standard()
   }
-
 }
 
 // Plugins

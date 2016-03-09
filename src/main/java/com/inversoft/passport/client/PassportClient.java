@@ -1511,7 +1511,7 @@ public class PassportClient {
 
   private <T> RESTClient<T, Void> startVoid(Class<T> type) {
     return new RESTClient<T, Void>().authorization(apiKey)
-                                    .successResponseHandler(new JSONResponseHandler<>(type))
+                                    .successResponseHandler(type != Void.TYPE ? new JSONResponseHandler<>(type) : null)
                                     .url(baseURL)
                                     .connectTimeout(connectTimeout)
                                     .readTimeout(readTimeout);
