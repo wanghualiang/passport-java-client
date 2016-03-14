@@ -1501,19 +1501,19 @@ public class PassportClient {
   }
 
   private <T> RESTClient<T, Errors> start(Class<T> type) {
-    return new RESTClient<T, Errors>().authorization(apiKey)
-                                      .successResponseHandler(type != Void.TYPE ? new JSONResponseHandler<>(type) : null)
-                                      .errorResponseHandler(new JSONResponseHandler<>(Errors.class))
-                                      .url(baseURL)
-                                      .connectTimeout(connectTimeout)
-                                      .readTimeout(readTimeout);
+    return new RESTClient<>(type, Errors.class).authorization(apiKey)
+                                               .successResponseHandler(type != Void.TYPE ? new JSONResponseHandler<>(type) : null)
+                                               .errorResponseHandler(new JSONResponseHandler<>(Errors.class))
+                                               .url(baseURL)
+                                               .connectTimeout(connectTimeout)
+                                               .readTimeout(readTimeout);
   }
 
   private <T> RESTClient<T, Void> startVoid(Class<T> type) {
-    return new RESTClient<T, Void>().authorization(apiKey)
-                                    .successResponseHandler(type != Void.TYPE ? new JSONResponseHandler<>(type) : null)
-                                    .url(baseURL)
-                                    .connectTimeout(connectTimeout)
-                                    .readTimeout(readTimeout);
+    return new RESTClient<>(type, Void.TYPE).authorization(apiKey)
+                                            .successResponseHandler(type != Void.TYPE ? new JSONResponseHandler<>(type) : null)
+                                            .url(baseURL)
+                                            .connectTimeout(connectTimeout)
+                                            .readTimeout(readTimeout);
   }
 }
