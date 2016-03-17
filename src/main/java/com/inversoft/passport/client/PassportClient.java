@@ -639,14 +639,16 @@ public class PassportClient {
   /**
    * Logs a user in.
    *
-   * @param loginRequest The login request that contains the user credentials used to log them in.
+   * @param loginRequest    The login request that contains the user credentials used to log them in.
+   * @param callerIPAddress The IP address of the end-user that is logging in.
    * @return When successful, the response will contain the user that was logged in. This user object is complete and
    * contains all of the registrations and data for the user. If there was a validation error or any other type of
    * error, this will return the Errors object in the response. Additionally, if Passport could not be contacted because
    * it is down or experiencing a failure, the response will contain an Exception, which could be an IOException.
    */
-  public ClientResponse<LoginResponse, Errors> login(LoginRequest loginRequest) {
+  public ClientResponse<LoginResponse, Errors> login(LoginRequest loginRequest, String callerIPAddress) {
     return start(LoginResponse.class).uri("/api/login")
+                                     .header("X-Forwarded-For", callerIPAddress)
                                      .bodyHandler(new JSONBodyHandler(loginRequest))
                                      .post()
                                      .go();
