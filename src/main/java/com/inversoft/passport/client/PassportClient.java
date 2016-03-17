@@ -660,15 +660,17 @@ public class PassportClient {
    * application where they no longer have a session. This helps correctly track login counts, times and helps with
    * reporting.
    *
-   * @param userId        The id of the user that was logged in.
-   * @param applicationId The id of the application that they logged into.
+   * @param userId          The id of the user that was logged in.
+   * @param applicationId   The id of the application that they logged into.
+   * @param callerIPAddress The IP address of the end-user that is logging in.
    * @return When successful, the response will not contain a response object but only contains the status. If there was
    * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
-  public ClientResponse<Void, Errors> loginPing(UUID userId, UUID applicationId) {
+  public ClientResponse<Void, Errors> loginPing(UUID userId, UUID applicationId, String callerIPAddress) {
     return start(Void.TYPE).uri("/api/login/" + userId + "/" + applicationId)
+                           .header("X-Forwarded-For", callerIPAddress)
                            .put()
                            .go();
   }
