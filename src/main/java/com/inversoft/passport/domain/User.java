@@ -47,6 +47,8 @@ public class User implements Buildable<User> {
 
   public UUID cleanSpeakId;
 
+  public COPPAVerificationLevel coppaVerificationLevel;
+
   public UserData data;
 
   public String email;
@@ -68,6 +70,8 @@ public class User implements Buildable<User> {
   public String lastName;
 
   public String middleName;
+
+  public UUID parentId;
 
   public String password;
 
@@ -136,6 +140,7 @@ public class User implements Buildable<User> {
     return Objects.equals(active, user.active) &&
         Objects.equals(birthDate, user.birthDate) &&
         Objects.equals(cleanSpeakId, user.cleanSpeakId) &&
+        Objects.equals(coppaVerificationLevel, user.coppaVerificationLevel) &&
         Objects.equals(data, user.data) &&
         Objects.equals(encryptionScheme, user.encryptionScheme) &&
         Objects.equals(email, user.email) &&
@@ -146,6 +151,7 @@ public class User implements Buildable<User> {
         Objects.equals(lastLoginInstant, user.lastLoginInstant) &&
         Objects.equals(lastName, user.lastName) &&
         Objects.equals(middleName, user.middleName) &&
+        Objects.equals(parentId, user.parentId) &&
         Objects.equals(password, user.password) &&
         Objects.equals(passwordChangeRequired, user.passwordChangeRequired) &&
         Objects.equals(registrations, user.registrations) &&
@@ -223,9 +229,10 @@ public class User implements Buildable<User> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(active, birthDate, cleanSpeakId, data, email, encryptionScheme, expiry, firstName, fullName, imageUrl, lastLoginInstant, lastName,
-        middleName, password, passwordChangeRequired, registrations, salt, timezone, twoFactorSecret, username,
-        usernameStatus, verificationId, verificationIdCreateInstant, verified);
+    return Objects.hash(active, birthDate, cleanSpeakId, coppaVerificationLevel, data, email, encryptionScheme, expiry,
+        firstName, fullName, imageUrl, lastLoginInstant, lastName, middleName, parentId, password, passwordChangeRequired,
+        registrations, salt, timezone, twoFactorSecret, username, usernameStatus, verificationId,
+        verificationIdCreateInstant, verified);
   }
 
   /**
