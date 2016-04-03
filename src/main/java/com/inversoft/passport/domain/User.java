@@ -39,6 +39,8 @@ import static com.inversoft.passport.domain.util.Normalizer.trim;
  * @author Seth Musselman
  */
 public class User implements Buildable<User> {
+  private final List<UUID> childIds = new ArrayList<>();
+
   private final List<UserRegistration> registrations = new ArrayList<>();
 
   public boolean active;
@@ -46,6 +48,8 @@ public class User implements Buildable<User> {
   public LocalDate birthDate;
 
   public UUID cleanSpeakId;
+
+  public COPPAVerificationLevel coppaVerificationLevel;
 
   public UserData data;
 
@@ -68,6 +72,10 @@ public class User implements Buildable<User> {
   public String lastName;
 
   public String middleName;
+
+  public String mobilePhone;
+
+  public UUID parentId;
 
   public String password;
 
@@ -135,7 +143,9 @@ public class User implements Buildable<User> {
     User user = (User) o;
     return Objects.equals(active, user.active) &&
         Objects.equals(birthDate, user.birthDate) &&
+        Objects.equals(childIds, user.childIds) &&
         Objects.equals(cleanSpeakId, user.cleanSpeakId) &&
+        Objects.equals(coppaVerificationLevel, user.coppaVerificationLevel) &&
         Objects.equals(data, user.data) &&
         Objects.equals(encryptionScheme, user.encryptionScheme) &&
         Objects.equals(email, user.email) &&
@@ -146,6 +156,8 @@ public class User implements Buildable<User> {
         Objects.equals(lastLoginInstant, user.lastLoginInstant) &&
         Objects.equals(lastName, user.lastName) &&
         Objects.equals(middleName, user.middleName) &&
+        Objects.equals(mobilePhone, user.mobilePhone) &&
+        Objects.equals(parentId, user.parentId) &&
         Objects.equals(password, user.password) &&
         Objects.equals(passwordChangeRequired, user.passwordChangeRequired) &&
         Objects.equals(registrations, user.registrations) &&
@@ -157,6 +169,10 @@ public class User implements Buildable<User> {
         Objects.equals(verificationId, user.verificationId) &&
         Objects.equals(verificationIdCreateInstant, user.verificationIdCreateInstant) &&
         Objects.equals(verified, user.verified);
+  }
+
+  public List<UUID> getChildIds() {
+    return childIds;
   }
 
   public UserData getDataForApplication(UUID id) {
@@ -223,9 +239,10 @@ public class User implements Buildable<User> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(active, birthDate, cleanSpeakId, data, email, encryptionScheme, expiry, firstName, fullName, imageUrl, lastLoginInstant, lastName,
-        middleName, password, passwordChangeRequired, registrations, salt, timezone, twoFactorSecret, username,
-        usernameStatus, verificationId, verificationIdCreateInstant, verified);
+    return Objects.hash(active, birthDate, childIds, cleanSpeakId, coppaVerificationLevel, data, email, encryptionScheme, expiry,
+        firstName, fullName, imageUrl, lastLoginInstant, lastName, middleName, mobilePhone, parentId, password, passwordChangeRequired,
+        registrations, salt, timezone, twoFactorSecret, username, usernameStatus, verificationId,
+        verificationIdCreateInstant, verified);
   }
 
   /**
@@ -241,6 +258,7 @@ public class User implements Buildable<User> {
     fullName = trim(fullName);
     lastName = trim(lastName);
     middleName = trim(middleName);
+    mobilePhone = trim(mobilePhone);
     timezone = trim(timezone);
     username = trim(username);
     getRegistrations().forEach(UserRegistration::normalize);
