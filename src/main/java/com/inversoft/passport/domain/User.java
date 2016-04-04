@@ -49,7 +49,7 @@ public class User implements Buildable<User> {
 
   public UUID cleanSpeakId;
 
-  public COPPAVerificationLevel coppaVerificationLevel;
+  public ParentalConsentType parentalConsentType;
 
   public UserData data;
 
@@ -145,7 +145,7 @@ public class User implements Buildable<User> {
         Objects.equals(birthDate, user.birthDate) &&
         Objects.equals(childIds, user.childIds) &&
         Objects.equals(cleanSpeakId, user.cleanSpeakId) &&
-        Objects.equals(coppaVerificationLevel, user.coppaVerificationLevel) &&
+        Objects.equals(parentalConsentType, user.parentalConsentType) &&
         Objects.equals(data, user.data) &&
         Objects.equals(encryptionScheme, user.encryptionScheme) &&
         Objects.equals(email, user.email) &&
@@ -239,7 +239,7 @@ public class User implements Buildable<User> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(active, birthDate, childIds, cleanSpeakId, coppaVerificationLevel, data, email, encryptionScheme, expiry,
+    return Objects.hash(active, birthDate, childIds, cleanSpeakId, parentalConsentType, data, email, encryptionScheme, expiry,
         firstName, fullName, imageUrl, lastLoginInstant, lastName, middleName, mobilePhone, parentId, password, passwordChangeRequired,
         registrations, salt, timezone, twoFactorSecret, username, usernameStatus, verificationId,
         verificationIdCreateInstant, verified);
