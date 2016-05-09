@@ -669,7 +669,9 @@ public class PassportClient {
    * Exception, which could be an IOException.
    */
   public ClientResponse<Void, Errors> loginPing(UUID userId, UUID applicationId, String callerIPAddress) {
-    return start(Void.TYPE).uri("/api/login/" + userId + "/" + applicationId)
+    return start(Void.TYPE).uri("/api/login")
+                           .urlSegment(userId)
+                           .urlSegment(applicationId)
                            .header("X-Forwarded-For", callerIPAddress)
                            .put()
                            .go();
@@ -824,7 +826,8 @@ public class PassportClient {
    * contain an Exception, which could be an IOException.
    */
   public ClientResponse<ActionResponse, Errors> retrieveActions(UUID userId) {
-    return start(ActionResponse.class).uri("/api/user/action?userId=" + userId)
+    return start(ActionResponse.class).uri("/api/user/action")
+                                      .urlParameter("userId", userId)
                                       .get()
                                       .go();
   }
