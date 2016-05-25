@@ -30,7 +30,6 @@ import com.inversoft.passport.domain.UserActionLog;
 import com.inversoft.passport.domain.UserActionReason;
 import static com.inversoft.passport.domain.util.Normalizer.trim;
 
-
 /**
  * The user action request object.
  *
