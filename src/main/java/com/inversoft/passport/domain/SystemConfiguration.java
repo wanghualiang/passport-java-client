@@ -28,6 +28,8 @@ import com.inversoft.json.ToString;
 public class SystemConfiguration implements Buildable<SystemConfiguration> {
   public CleanSpeakConfiguration cleanSpeakConfiguration;
 
+  public EmailConfiguration emailConfiguration = new EmailConfiguration();
+
   public UUID forgotEmailTemplateId;
 
   /**
@@ -73,6 +75,7 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
     }
     SystemConfiguration that = (SystemConfiguration) o;
     return Objects.equals(cleanSpeakConfiguration, that.cleanSpeakConfiguration) &&
+        Objects.equals(emailConfiguration, that.emailConfiguration) &&
         Objects.equals(forgotEmailTemplateId, that.forgotEmailTemplateId) &&
         Objects.equals(httpSessionMaxInactiveInterval, that.httpSessionMaxInactiveInterval) &&
         Objects.equals(logoutURL, that.logoutURL) &&
@@ -88,7 +91,7 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(cleanSpeakConfiguration, forgotEmailTemplateId, httpSessionMaxInactiveInterval, logoutURL, reportTimezone,
+    return Objects.hash(cleanSpeakConfiguration, emailConfiguration, forgotEmailTemplateId, httpSessionMaxInactiveInterval, logoutURL, reportTimezone,
         passportFrontendURL, passwordValidationRules, setPasswordEmailTemplateId, useOauthForBackend, verificationEmailTemplateId,
         verifyEmail, verifyEmailWhenChanged);
   }
@@ -102,5 +105,47 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
   @Override
   public String toString() {
     return ToString.toString(this);
+  }
+
+  public static class EmailConfiguration implements Buildable<EmailConfiguration> {
+    public String host = "localhost";
+
+    public String password;
+
+    public Integer port = 25;
+
+    public EmailSecurityType security;
+
+    public String username;
+
+    public EmailConfiguration() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (!(o instanceof EmailConfiguration)) {
+        return false;
+      }
+      EmailConfiguration that = (EmailConfiguration) o;
+      return Objects.equals(port, that.port) &&
+          Objects.equals(host, that.host) &&
+          Objects.equals(password, that.password) &&
+          security == that.security &&
+          Objects.equals(username, that.username);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(host, password, port, security, username);
+    }
+
+    public enum EmailSecurityType {
+      NONE,
+      SSL,
+      TLS
+    }
   }
 }
