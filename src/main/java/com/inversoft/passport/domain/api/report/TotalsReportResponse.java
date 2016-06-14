@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,20 +30,45 @@ import com.inversoft.json.JacksonConstructor;
 public class TotalsReportResponse {
   public Map<UUID, Totals> applicationTotals = new HashMap<>();
 
+  /**
+   * Current global registrations. This value is the result of taking the total registrations for all time and
+   * subtracting the users who have been deleted.
+   */
   public long globalRegistrations;
 
+  /**
+   * This is the total users who have registered for all time. When a user is removed from Passport the total
+   * registration count is not decremented.
+   */
+  public long totalGlobalRegistrations;
+
   public static class Totals {
+    /**
+     * The total number of logins for all time for this application. When a user is un-registered from this application
+     * or removed from Passport this value is not decremented.
+     */
     public long logins;
 
+    /**
+     * The current number of registrations for this application. When a user is un-registered from this application or
+     * removed from Passport this value is decremented.
+     */
     public long registrations;
+
+    /**
+     * This is the total users who have registered for this application for all time. When a user is un-registered from
+     * this application or deleted from Passport the total count is not decremented.
+     */
+    public long totalRegistrations;
 
     @JacksonConstructor
     public Totals() {
     }
 
-    public Totals(long logins, long registrations) {
+    public Totals(long logins, long registrations, long totalRegistrations) {
       this.logins = logins;
       this.registrations = registrations;
+      this.totalRegistrations = totalRegistrations;
     }
   }
 }
