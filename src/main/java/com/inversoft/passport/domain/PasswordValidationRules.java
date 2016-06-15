@@ -21,10 +21,9 @@ import java.util.Objects;
  * Created by Derek Klatt
  */
 public class PasswordValidationRules implements Buildable<PasswordValidationRules> {
+  public int maxLength = 256;
 
-  public int maxLength;
-
-  public int minLength;
+  public int minLength = 8;
 
   public boolean requireMixedCase;
 
