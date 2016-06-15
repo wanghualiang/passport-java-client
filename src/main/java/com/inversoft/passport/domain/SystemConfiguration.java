@@ -112,7 +112,7 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
 
     public String password;
 
-    public Integer port = 25;
+    public int port = 25;
 
     public EmailSecurityType security;
 
