@@ -49,8 +49,6 @@ public class User implements Buildable<User> {
 
   public UUID cleanSpeakId;
 
-  public ParentalConsentType parentalConsentType;
-
   public UserData data;
 
   public String email;
@@ -58,6 +56,8 @@ public class User implements Buildable<User> {
   public String encryptionScheme;
 
   public ZonedDateTime expiry;
+
+  public Integer factor;
 
   public String firstName;
 
@@ -76,6 +76,8 @@ public class User implements Buildable<User> {
   public String mobilePhone;
 
   public UUID parentId;
+
+  public ParentalConsentType parentalConsentType;
 
   public String password;
 
@@ -150,6 +152,7 @@ public class User implements Buildable<User> {
         Objects.equals(encryptionScheme, user.encryptionScheme) &&
         Objects.equals(email, user.email) &&
         Objects.equals(expiry, user.expiry) &&
+        Objects.equals(factor, user.factor) &&
         Objects.equals(firstName, user.firstName) &&
         Objects.equals(fullName, user.fullName) &&
         Objects.equals(imageUrl, user.imageUrl) &&
@@ -240,7 +243,7 @@ public class User implements Buildable<User> {
   @Override
   public int hashCode() {
     return Objects.hash(active, birthDate, childIds, cleanSpeakId, parentalConsentType, data, email, encryptionScheme, expiry,
-        firstName, fullName, imageUrl, lastLoginInstant, lastName, middleName, mobilePhone, parentId, password, passwordChangeRequired,
+        factor, firstName, fullName, imageUrl, lastLoginInstant, lastName, middleName, mobilePhone, parentId, password, passwordChangeRequired,
         registrations, salt, timezone, twoFactorSecret, username, usernameStatus, verificationId,
         verificationIdCreateInstant, verified);
   }
