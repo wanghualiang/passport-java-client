@@ -21,7 +21,7 @@ import java.util.UUID;
 import com.inversoft.json.ToString;
 
 /**
- * Counts for an interval.
+ * Counts for an period.
  *
  * @author Brian Pontarelli
  */
@@ -32,16 +32,16 @@ public class IntervalCount {
 
   public int decrementedCount;
 
-  public int interval;
+  public int period;
 
   public IntervalCount() {
   }
 
-  public IntervalCount(UUID applicationId, int count, int decrementedCount, int interval) {
+  public IntervalCount(UUID applicationId, int count, int decrementedCount, int period) {
     this.applicationId = applicationId;
     this.count = count;
     this.decrementedCount = decrementedCount;
-    this.interval = interval;
+    this.period = period;
   }
 
   @Override
@@ -56,12 +56,12 @@ public class IntervalCount {
     return Objects.equals(applicationId, rawLogin.applicationId) &&
         Objects.equals(count, rawLogin.count) &&
         Objects.equals(decrementedCount, rawLogin.decrementedCount) &&
-        Objects.equals(interval, rawLogin.interval);
+        Objects.equals(period, rawLogin.period);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(applicationId, count, decrementedCount, interval);
+    return Objects.hash(applicationId, count, decrementedCount, period);
   }
 
   @Override

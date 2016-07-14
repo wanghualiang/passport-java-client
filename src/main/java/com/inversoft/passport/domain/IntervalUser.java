@@ -9,23 +9,23 @@ import java.util.UUID;
 import com.inversoft.json.ToString;
 
 /**
- * A user over an interval (for daily and monthly active user calculations).
+ * A user over an period (for daily and monthly active user calculations).
  *
  * @author Brian Pontarelli
  */
 public class IntervalUser {
   public UUID applicationId;
 
-  public int interval;
+  public int period;
 
   public UUID userId;
 
   public IntervalUser() {
   }
 
-  public IntervalUser(UUID applicationId, int interval, UUID userId) {
+  public IntervalUser(UUID applicationId, int period, UUID userId) {
     this.applicationId = applicationId;
-    this.interval = interval;
+    this.period = period;
     this.userId = userId;
   }
 
@@ -39,13 +39,13 @@ public class IntervalUser {
     }
     IntervalUser other = (IntervalUser) o;
     return Objects.equals(applicationId, other.applicationId) &&
-        Objects.equals(interval, other.interval) &&
+        Objects.equals(period, other.period) &&
         Objects.equals(userId, other.userId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(applicationId, interval, userId);
+    return Objects.hash(applicationId, period, userId);
   }
 
   @Override
