@@ -17,6 +17,7 @@ package com.inversoft.passport.domain;
 
 import java.net.URI;
 import java.time.ZoneId;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -27,6 +28,8 @@ import com.inversoft.json.ToString;
  */
 public class SystemConfiguration implements Buildable<SystemConfiguration> {
   public CleanSpeakConfiguration cleanSpeakConfiguration;
+
+  public DataDefinition dataDefinition;
 
   public EmailConfiguration emailConfiguration = new EmailConfiguration();
 
@@ -75,6 +78,7 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
     }
     SystemConfiguration that = (SystemConfiguration) o;
     return Objects.equals(cleanSpeakConfiguration, that.cleanSpeakConfiguration) &&
+        Objects.equals(dataDefinition, that.dataDefinition) &&
         Objects.equals(emailConfiguration, that.emailConfiguration) &&
         Objects.equals(forgotEmailTemplateId, that.forgotEmailTemplateId) &&
         Objects.equals(httpSessionMaxInactiveInterval, that.httpSessionMaxInactiveInterval) &&
@@ -91,7 +95,7 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(cleanSpeakConfiguration, emailConfiguration, forgotEmailTemplateId, httpSessionMaxInactiveInterval, logoutURL, reportTimezone,
+    return Objects.hash(cleanSpeakConfiguration, dataDefinition, forgotEmailTemplateId, httpSessionMaxInactiveInterval, logoutURL, reportTimezone,
         passportFrontendURL, passwordValidationRules, setPasswordEmailTemplateId, useOauthForBackend, verificationEmailTemplateId,
         verifyEmail, verifyEmailWhenChanged);
   }

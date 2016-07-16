@@ -35,6 +35,8 @@ public class Application implements Buildable<Application> {
 
   public CleanSpeakConfiguration cleanSpeakConfiguration;
 
+  public DataDefinition dataDefinition;
+
   public UUID id;
 
   public String name;
@@ -81,6 +83,7 @@ public class Application implements Buildable<Application> {
     Application that = (Application) o;
     return Objects.equals(active, that.active) &&
         Objects.equals(cleanSpeakConfiguration, that.cleanSpeakConfiguration) &&
+        Objects.equals(dataDefinition, that.dataDefinition) &&
         Objects.equals(oauthConfiguration, that.oauthConfiguration) &&
         Objects.equals(name, that.name) &&
         Objects.equals(roles, that.roles);
@@ -98,7 +101,7 @@ public class Application implements Buildable<Application> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(active, name, cleanSpeakConfiguration, oauthConfiguration, roles);
+    return Objects.hash(active, name, cleanSpeakConfiguration, dataDefinition, oauthConfiguration, roles);
   }
 
   public void normalize() {

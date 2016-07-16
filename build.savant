@@ -3,7 +3,7 @@
  */
 savantVersion = "1.0.0"
 
-jackson5Version = "2.3.0"
+jackson5Version = "2.3.1-{integration}"
 javaErrorVersion = "2.2.0"
 restifyVersion = "3.0.1"
 
