@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -268,11 +268,13 @@ public class User implements Buildable<User> {
   }
 
   /**
-   * Clear out the password and salt fields
+   * Clear out sensitive data. Password, salt, etc.
    */
   public User secure() {
     salt = null;
     password = null;
+    factor = null;
+    encryptionScheme = null;
     twoFactorEnabled = twoFactorSecret != null;
     twoFactorSecret = null;
     return this;
