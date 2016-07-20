@@ -3,7 +3,7 @@
  */
 savantVersion = "1.0.0"
 
-jackson5Version = "2.3.0"
+jackson5Version = "2.3.1-{integration}"
 javaErrorVersion = "2.2.0"
 restifyVersion = "3.0.1"
 
@@ -21,7 +21,7 @@ project(group: "com.inversoft.passport", name: "passport-java-client", version: 
       dependency(id: "com.inversoft:restify:${restifyVersion}")
       dependency(id: "com.inversoft:java-error:${javaErrorVersion}")
       dependency(id: "com.inversoft:jackson5:${jackson5Version}")
-      dependency(id: "com.fasterxml.jackson.core:jackson-annotations:2.4.2")
+      dependency(id: "com.fasterxml.jackson.core:jackson-annotations:2.8.1")
     }
   }
 

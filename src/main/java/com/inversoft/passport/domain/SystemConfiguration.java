@@ -34,9 +34,9 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
 
   /**
    * Time in seconds until an inactive session will be invalidated. Used when creating a new session in the
-   * Passport-FrontEnd. <p>Default is 60 minutes.</p>
-   *
-   * @see <code>javax.servlet.http.HttpSession#setMaxInactiveInterval</code>
+   * Passport-FrontEnd.
+   * <p>
+   * Default is 60 minutes.
    */
   public int httpSessionMaxInactiveInterval = 3600;
 
@@ -91,7 +91,7 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(cleanSpeakConfiguration, emailConfiguration, forgotEmailTemplateId, httpSessionMaxInactiveInterval, logoutURL, reportTimezone,
+    return Objects.hash(cleanSpeakConfiguration, forgotEmailTemplateId, httpSessionMaxInactiveInterval, logoutURL, reportTimezone,
         passportFrontendURL, passwordValidationRules, setPasswordEmailTemplateId, useOauthForBackend, verificationEmailTemplateId,
         verifyEmail, verifyEmailWhenChanged);
   }
