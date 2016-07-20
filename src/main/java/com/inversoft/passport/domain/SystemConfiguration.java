@@ -17,7 +17,6 @@ package com.inversoft.passport.domain;
 
 import java.net.URI;
 import java.time.ZoneId;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -29,17 +28,15 @@ import com.inversoft.json.ToString;
 public class SystemConfiguration implements Buildable<SystemConfiguration> {
   public CleanSpeakConfiguration cleanSpeakConfiguration;
 
-  public DataDefinition dataDefinition;
-
   public EmailConfiguration emailConfiguration = new EmailConfiguration();
 
   public UUID forgotEmailTemplateId;
 
   /**
    * Time in seconds until an inactive session will be invalidated. Used when creating a new session in the
-   * Passport-FrontEnd. <p>Default is 60 minutes.</p>
-   *
-   * @see <code>javax.servlet.http.HttpSession#setMaxInactiveInterval</code>
+   * Passport-FrontEnd.
+   * <p>
+   * Default is 60 minutes.
    */
   public int httpSessionMaxInactiveInterval = 3600;
 
@@ -78,7 +75,6 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
     }
     SystemConfiguration that = (SystemConfiguration) o;
     return Objects.equals(cleanSpeakConfiguration, that.cleanSpeakConfiguration) &&
-        Objects.equals(dataDefinition, that.dataDefinition) &&
         Objects.equals(emailConfiguration, that.emailConfiguration) &&
         Objects.equals(forgotEmailTemplateId, that.forgotEmailTemplateId) &&
         Objects.equals(httpSessionMaxInactiveInterval, that.httpSessionMaxInactiveInterval) &&
@@ -95,7 +91,7 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(cleanSpeakConfiguration, dataDefinition, forgotEmailTemplateId, httpSessionMaxInactiveInterval, logoutURL, reportTimezone,
+    return Objects.hash(cleanSpeakConfiguration, forgotEmailTemplateId, httpSessionMaxInactiveInterval, logoutURL, reportTimezone,
         passportFrontendURL, passwordValidationRules, setPasswordEmailTemplateId, useOauthForBackend, verificationEmailTemplateId,
         verifyEmail, verifyEmailWhenChanged);
   }
