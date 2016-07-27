@@ -240,12 +240,45 @@ public class User implements Buildable<User> {
     return null;
   }
 
+  /**
+   * Return true if user data is provided for this user or any registrations.
+   *
+   * @return true if user data exists.
+   */
+  public boolean hasUserData() {
+    if (data != null && !data.attributes.isEmpty()) {
+      return true;
+    }
+
+    for (UserRegistration userRegistration : registrations) {
+      if (userRegistration.data != null && !userRegistration.data.attributes.isEmpty()) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   @Override
   public int hashCode() {
     return Objects.hash(active, birthDate, childIds, cleanSpeakId, parentalConsentType, data, email, encryptionScheme, expiry,
         factor, firstName, fullName, imageUrl, lastLoginInstant, lastName, middleName, mobilePhone, parentId, password, passwordChangeRequired,
         registrations, salt, timezone, twoFactorSecret, username, usernameStatus, verificationId,
         verificationIdCreateInstant, verified);
+  }
+
+  /**
+   * Attempt to retrieve the users email address first by checking the top level and then in user data.
+   *
+   * @return an email address or null if no email address is found.
+   */
+  public String lookupEmail() {
+    if (email != null) {
+      return email;
+    } else if (data != null && data.attributes.containsKey("email")) {
+      return data.attributes.get("email").toString();
+    }
+    return null;
   }
 
   /**
