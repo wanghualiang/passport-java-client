@@ -27,20 +27,33 @@ import com.inversoft.json.JacksonConstructor;
 public class LoginRequest {
   public UUID applicationId;
 
-  public String email;
+  public String id;
 
   public String password;
-
-  public String username;
 
   @JacksonConstructor
   public LoginRequest() {
   }
 
-  public LoginRequest(UUID applicationId, String email, String username, String password) {
+  public LoginRequest(UUID applicationId, String id, String password) {
     this.applicationId = applicationId;
-    this.email = email;
-    this.username = username;
+    this.id = id;
     this.password = password;
+  }
+
+  public String getEmail() {
+    return id;
+  }
+
+  public void setEmail(String email) {
+    this.id = email;
+  }
+
+  public String getUsername() {
+    return id;
+  }
+
+  public void setUsername(String username) {
+    this.id = username;
   }
 }
