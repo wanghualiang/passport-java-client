@@ -48,6 +48,8 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
 
   public URI passportFrontendURL;
 
+  public Integer passwordExpirationDays;
+
   public PasswordValidationRules passwordValidationRules = new PasswordValidationRules();
 
   public ZoneId reportTimezone;
@@ -81,6 +83,7 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
         Objects.equals(logoutURL, that.logoutURL) &&
         Objects.equals(reportTimezone, that.reportTimezone) &&
         Objects.equals(passportFrontendURL, that.passportFrontendURL) &&
+        Objects.equals(passwordExpirationDays, that.passwordExpirationDays) &&
         Objects.equals(passwordValidationRules, that.passwordValidationRules) &&
         Objects.equals(setPasswordEmailTemplateId, that.setPasswordEmailTemplateId) &&
         Objects.equals(useOauthForBackend, that.useOauthForBackend) &&
@@ -92,8 +95,8 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
   @Override
   public int hashCode() {
     return Objects.hash(cleanSpeakConfiguration, forgotEmailTemplateId, httpSessionMaxInactiveInterval, logoutURL, reportTimezone,
-        passportFrontendURL, passwordValidationRules, setPasswordEmailTemplateId, useOauthForBackend, verificationEmailTemplateId,
-        verifyEmail, verifyEmailWhenChanged);
+        passportFrontendURL, passwordExpirationDays, passwordValidationRules, setPasswordEmailTemplateId, useOauthForBackend,
+        verificationEmailTemplateId, verifyEmail, verifyEmailWhenChanged);
   }
 
   public void normalize() {

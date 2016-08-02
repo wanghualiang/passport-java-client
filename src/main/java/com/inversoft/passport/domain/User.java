@@ -83,6 +83,8 @@ public class User implements Buildable<User> {
 
   public boolean passwordChangeRequired;
 
+  public ZonedDateTime passwordLastUpdateInstant;
+
   public String salt;
 
   public String timezone;
@@ -163,6 +165,7 @@ public class User implements Buildable<User> {
         Objects.equals(parentId, user.parentId) &&
         Objects.equals(password, user.password) &&
         Objects.equals(passwordChangeRequired, user.passwordChangeRequired) &&
+        Objects.equals(passwordLastUpdateInstant, user.passwordLastUpdateInstant) &&
         Objects.equals(registrations, user.registrations) &&
         Objects.equals(salt, user.salt) &&
         Objects.equals(timezone, user.timezone) &&
@@ -262,9 +265,9 @@ public class User implements Buildable<User> {
   @Override
   public int hashCode() {
     return Objects.hash(active, birthDate, childIds, cleanSpeakId, parentalConsentType, data, email, encryptionScheme, expiry,
-        factor, firstName, fullName, imageUrl, lastLoginInstant, lastName, middleName, mobilePhone, parentId, password, passwordChangeRequired,
-        registrations, salt, timezone, twoFactorSecret, username, usernameStatus, verificationId,
-        verificationIdCreateInstant, verified);
+        factor, firstName, fullName, imageUrl, lastLoginInstant, lastName, middleName, mobilePhone, parentId, password,
+        passwordChangeRequired, passwordLastUpdateInstant, registrations, salt, timezone, twoFactorSecret, username,
+        usernameStatus, verificationId, verificationIdCreateInstant, verified);
   }
 
   /**
