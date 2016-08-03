@@ -17,6 +17,7 @@ package com.inversoft.passport.domain.api;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.inversoft.json.JacksonConstructor;
 
 /**
@@ -27,20 +28,33 @@ import com.inversoft.json.JacksonConstructor;
 public class LoginRequest {
   public UUID applicationId;
 
-  public String email;
+  public String loginId;
 
   public String password;
-
-  public String username;
 
   @JacksonConstructor
   public LoginRequest() {
   }
 
-  public LoginRequest(UUID applicationId, String email, String username, String password) {
+  public LoginRequest(UUID applicationId, String loginId, String password) {
     this.applicationId = applicationId;
-    this.email = email;
-    this.username = username;
+    this.loginId = loginId;
     this.password = password;
+  }
+
+  public String getEmail() {
+    return loginId;
+  }
+
+  public void setEmail(String email) {
+    this.loginId = email;
+  }
+
+  public String getUsername() {
+    return loginId;
+  }
+
+  public void setUsername(String username) {
+    this.loginId = username;
   }
 }
