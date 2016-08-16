@@ -17,6 +17,7 @@ package com.inversoft.passport.domain.api;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.inversoft.passport.domain.NotificationServer;
 
 /**
@@ -24,6 +25,7 @@ import com.inversoft.passport.domain.NotificationServer;
  *
  * @author Brian Pontarelli
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class NotificationServerResponse {
   public NotificationServer notificationServer;
 

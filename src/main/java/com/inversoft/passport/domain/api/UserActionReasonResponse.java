@@ -17,6 +17,7 @@ package com.inversoft.passport.domain.api;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.inversoft.json.JacksonConstructor;
 import com.inversoft.passport.domain.UserActionReason;
 
@@ -25,6 +26,7 @@ import com.inversoft.passport.domain.UserActionReason;
  *
  * @author Brian Pontarelli
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserActionReasonResponse {
   public UserActionReason userActionReason;
 

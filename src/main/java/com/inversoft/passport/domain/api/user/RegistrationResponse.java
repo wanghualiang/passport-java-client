@@ -15,6 +15,7 @@
  */
 package com.inversoft.passport.domain.api.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.inversoft.json.JacksonConstructor;
 import com.inversoft.passport.domain.User;
 import com.inversoft.passport.domain.UserRegistration;
@@ -24,6 +25,7 @@ import com.inversoft.passport.domain.UserRegistration;
  *
  * @author Brian Pontarelli
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RegistrationResponse {
   public UserRegistration registration;
 

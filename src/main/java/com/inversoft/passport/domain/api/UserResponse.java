@@ -17,6 +17,7 @@ package com.inversoft.passport.domain.api;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.inversoft.json.JacksonConstructor;
 import com.inversoft.passport.domain.User;
 import com.inversoft.passport.domain.search.SearchResults;
@@ -26,6 +27,7 @@ import com.inversoft.passport.domain.search.SearchResults;
  *
  * @author Brian Pontarelli
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserResponse {
   public Long total;
 

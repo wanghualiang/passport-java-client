@@ -17,6 +17,7 @@ package com.inversoft.passport.domain.api;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.inversoft.json.JacksonConstructor;
 import com.inversoft.passport.domain.UserComment;
 
@@ -25,6 +26,7 @@ import com.inversoft.passport.domain.UserComment;
  *
  * @author Seth Musselman
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserCommentResponse {
   public UserComment userComment;
 

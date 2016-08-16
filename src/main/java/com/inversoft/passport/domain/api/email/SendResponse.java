@@ -19,11 +19,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.inversoft.json.JacksonConstructor;
 
 /**
  * @author Daniel DeGroff
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SendResponse {
   public Map<UUID, EmailTemplateErrors> results;
 
