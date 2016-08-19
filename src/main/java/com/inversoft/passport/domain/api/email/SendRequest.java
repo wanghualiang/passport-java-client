@@ -41,6 +41,14 @@ public class SendRequest {
   public SendRequest() {
   }
 
+  public SendRequest(List<UUID> userIds, List<String> ccAddresses, List<String> bccAddresses,
+                     Map<String, Object> requestData) {
+    this.userIds = userIds;
+    this.ccAddresses = ccAddresses;
+    this.bccAddresses = bccAddresses;
+    this.requestData = requestData;
+  }
+
   public SendRequest(List<UUID> userIds, Map<String, Object> requestData) {
     this.userIds = userIds;
     this.requestData = requestData;
@@ -49,6 +57,8 @@ public class SendRequest {
   public SendRequest normalize() {
     requestData = ObjectTools.defaultIfNull(requestData, HashMap<String, Object>::new);
     userIds = ObjectTools.defaultIfNull(userIds, ArrayList<UUID>::new);
+    ccAddresses = ObjectTools.defaultIfNull(ccAddresses, ArrayList<String>::new);
+    bccAddresses = ObjectTools.defaultIfNull(bccAddresses, ArrayList<String>::new);
     return this;
   }
 }
