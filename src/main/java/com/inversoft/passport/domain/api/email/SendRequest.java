@@ -22,13 +22,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.inversoft.lang.ObjectTools;
 import com.inversoft.json.JacksonConstructor;
+import com.inversoft.lang.ObjectTools;
 
 /**
  * @author Daniel DeGroff
  */
 public class SendRequest {
+  public List<String> bccAddresses;
+
+  public List<String> ccAddresses;
+
   public Map<String, Object> requestData;
 
   public List<UUID> userIds;
