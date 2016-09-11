@@ -27,5 +27,10 @@ public enum ParentalConsentType {
   /**
    * The parent has revoked their consent for the child.
    */
-  REVOKED
+  REVOKED,
+
+  /**
+   * The parent has given permission for the child's information to be used internally only.
+   */
+  INTERNAL_USE
 }
