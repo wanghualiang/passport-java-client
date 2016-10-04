@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,16 +23,37 @@ import com.inversoft.json.JacksonConstructor;
  * @author Brian Pontarelli
  */
 public class ForgotPasswordRequest {
-  public String email;
 
-  public String username;
+  public boolean sendForgotPasswordEmail = true;
+
+  public String loginId;
 
   @JacksonConstructor
   public ForgotPasswordRequest() {
   }
 
-  public ForgotPasswordRequest(String email, String username) {
-    this.email = email;
-    this.username = username;
+  public ForgotPasswordRequest(String loginId) {
+    this.loginId = loginId;
+  }
+
+  public ForgotPasswordRequest(String loginId, boolean sendForgotPasswordEmail) {
+    this.loginId = loginId;
+    this.sendForgotPasswordEmail = sendForgotPasswordEmail;
+  }
+
+  public String getEmail() {
+    return loginId;
+  }
+
+  public void setEmail(String email) {
+    this.loginId = email;
+  }
+
+  public String getUsername() {
+    return loginId;
+  }
+
+  public void setUsername(String username) {
+    this.loginId = username;
   }
 }

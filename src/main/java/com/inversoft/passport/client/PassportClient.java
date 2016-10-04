@@ -59,6 +59,7 @@ import com.inversoft.passport.domain.api.user.ActionRequest;
 import com.inversoft.passport.domain.api.user.ActionResponse;
 import com.inversoft.passport.domain.api.user.ChangePasswordRequest;
 import com.inversoft.passport.domain.api.user.ForgotPasswordRequest;
+import com.inversoft.passport.domain.api.user.ForgotPasswordResponse;
 import com.inversoft.passport.domain.api.user.ImportRequest;
 import com.inversoft.passport.domain.api.user.RegistrationRequest;
 import com.inversoft.passport.domain.api.user.RegistrationResponse;
@@ -606,16 +607,16 @@ public class PassportClient {
    * Begins the forgot password sequence, which kicks off an email to the user so that they can reset their password.
    *
    * @param request The request that contains the information about the user so that they can be emailed.
-   * @return When successful, the response will not contain a response object but only contains the status. If there was
-   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
-   * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
-   * Exception, which could be an IOException.
+   * @return When successful, the response will contain the verificationId for the user. If there was a validation error
+   * or any other type of error, this will return the Errors object in the response. Additionally, if Passport could not
+   * be contacted because it is down or experiencing a failure, the response will contain an Exception, which could be
+   * an IOException.
    */
-  public ClientResponse<Void, Errors> forgotPassword(ForgotPasswordRequest request) {
-    return start(Void.TYPE).uri("/api/user/forgot-password")
-                           .bodyHandler(new JSONBodyHandler(request))
-                           .post()
-                           .go();
+  public ClientResponse<ForgotPasswordResponse, Errors> forgotPassword(ForgotPasswordRequest request) {
+    return start(ForgotPasswordResponse.class).uri("/api/user/forgot-password")
+                                              .bodyHandler(new JSONBodyHandler(request))
+                                              .post()
+                                              .go();
   }
 
   /**
