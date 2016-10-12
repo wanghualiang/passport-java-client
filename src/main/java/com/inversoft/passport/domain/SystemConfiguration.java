@@ -40,6 +40,8 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
    */
   public int httpSessionMaxInactiveInterval = 3600;
 
+  public JWTConfiguration jwtConfiguration = new JWTConfiguration();
+
   /**
    * Logout redirect URL when calling the <code>/oauth2/logout</code> endpoint. If this the
    * <code>Application.oauthConfiguration.logoutURL</code> is defined it will be used instead.

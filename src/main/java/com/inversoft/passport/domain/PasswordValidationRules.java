@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package com.inversoft.passport.domain;
 import java.util.Objects;
 
 /**
- * Created by Derek Klatt
+ * @author Derek Klatt
  */
 public class PasswordValidationRules implements Buildable<PasswordValidationRules> {
   public int maxLength = 256;
