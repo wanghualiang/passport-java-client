@@ -30,6 +30,8 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
 
   public EmailConfiguration emailConfiguration = new EmailConfiguration();
 
+  public FailedAuthenticationConfiguration failedAuthenticationConfiguration = new FailedAuthenticationConfiguration();
+
   public UUID forgotEmailTemplateId;
 
   /**
@@ -80,8 +82,10 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
     SystemConfiguration that = (SystemConfiguration) o;
     return Objects.equals(cleanSpeakConfiguration, that.cleanSpeakConfiguration) &&
         Objects.equals(emailConfiguration, that.emailConfiguration) &&
+        Objects.equals(failedAuthenticationConfiguration, that.failedAuthenticationConfiguration) &&
         Objects.equals(forgotEmailTemplateId, that.forgotEmailTemplateId) &&
         Objects.equals(httpSessionMaxInactiveInterval, that.httpSessionMaxInactiveInterval) &&
+        Objects.equals(jwtConfiguration, that.jwtConfiguration) &&
         Objects.equals(logoutURL, that.logoutURL) &&
         Objects.equals(reportTimezone, that.reportTimezone) &&
         Objects.equals(passportFrontendURL, that.passportFrontendURL) &&
@@ -96,9 +100,9 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(cleanSpeakConfiguration, forgotEmailTemplateId, httpSessionMaxInactiveInterval, logoutURL, reportTimezone,
-        passportFrontendURL, passwordExpirationDays, passwordValidationRules, setPasswordEmailTemplateId, useOauthForBackend,
-        verificationEmailTemplateId, verifyEmail, verifyEmailWhenChanged);
+    return Objects.hash(cleanSpeakConfiguration, failedAuthenticationConfiguration, forgotEmailTemplateId, httpSessionMaxInactiveInterval,
+        jwtConfiguration, logoutURL, reportTimezone, passportFrontendURL, passwordExpirationDays, passwordValidationRules,
+        setPasswordEmailTemplateId, useOauthForBackend, verificationEmailTemplateId, verifyEmail, verifyEmailWhenChanged);
   }
 
   public void normalize() {

@@ -17,7 +17,11 @@ package com.inversoft.passport.domain;
 
 import java.util.Objects;
 
+import org.primeframework.jwt.domain.Algorithm;
+
 /**
+ * JWT Configuration.
+ *
  * @author Daniel DeGroff
  */
 public class JWTConfiguration implements Buildable<JWTConfiguration> {
@@ -51,11 +55,5 @@ public class JWTConfiguration implements Buildable<JWTConfiguration> {
   @Override
   public int hashCode() {
     return Objects.hash(algorithm, privateKey, publicKey, secret);
-  }
-
-  enum Algorithm {
-    NONE,
-    HMAC,
-    RSA
   }
 }
