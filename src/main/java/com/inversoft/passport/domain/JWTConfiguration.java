@@ -34,6 +34,11 @@ public class JWTConfiguration implements Buildable<JWTConfiguration> {
 
   public String secret;
 
+  /**
+   * The length of time in seconds this JWT is valid from the time it was issued. This should be a non-zero value.
+   */
+  public int timeToLiveInSeconds;
+
   public JWTConfiguration() {
   }
 
@@ -49,11 +54,12 @@ public class JWTConfiguration implements Buildable<JWTConfiguration> {
     return Objects.equals(algorithm, that.algorithm) &&
         Objects.equals(privateKey, that.privateKey) &&
         Objects.equals(publicKey, that.publicKey) &&
-        Objects.equals(secret, that.secret);
+        Objects.equals(secret, that.secret) &&
+        Objects.equals(timeToLiveInSeconds, that.timeToLiveInSeconds);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(algorithm, privateKey, publicKey, secret);
+    return Objects.hash(algorithm, privateKey, publicKey, secret, timeToLiveInSeconds);
   }
 }
