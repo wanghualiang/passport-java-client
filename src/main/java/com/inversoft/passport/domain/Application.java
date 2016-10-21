@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,8 @@ public class Application implements Buildable<Application> {
   public CleanSpeakConfiguration cleanSpeakConfiguration;
 
   public UUID id;
+
+  public JWTConfiguration jwtConfiguration = new JWTConfiguration();
 
   public String name;
 
@@ -81,6 +83,7 @@ public class Application implements Buildable<Application> {
     Application that = (Application) o;
     return Objects.equals(active, that.active) &&
         Objects.equals(cleanSpeakConfiguration, that.cleanSpeakConfiguration) &&
+        Objects.equals(jwtConfiguration, that.jwtConfiguration) &&
         Objects.equals(oauthConfiguration, that.oauthConfiguration) &&
         Objects.equals(name, that.name) &&
         Objects.equals(roles, that.roles);
@@ -98,7 +101,7 @@ public class Application implements Buildable<Application> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(active, name, cleanSpeakConfiguration, oauthConfiguration, roles);
+    return Objects.hash(active, name, cleanSpeakConfiguration, jwtConfiguration, oauthConfiguration, roles);
   }
 
   public void normalize() {
@@ -116,6 +119,10 @@ public class Application implements Buildable<Application> {
   }
 
   public Application secure() {
+    if (jwtConfiguration != null) {
+      jwtConfiguration.privateKey = null;
+      jwtConfiguration.secret = null;
+    }
     if (oauthConfiguration != null) {
       oauthConfiguration.clientSecret = null;
     }
