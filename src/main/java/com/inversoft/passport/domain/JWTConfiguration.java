@@ -28,6 +28,12 @@ public class JWTConfiguration implements Buildable<JWTConfiguration> {
 
   public Algorithm algorithm;
 
+  /**
+   * True if this configuration is active. A JWT Configuration for an application may not be active if it is using the
+   * global configuration provided int he System Configuration.
+   */
+  public boolean enabled;
+
   public String privateKey;
 
   public String publicKey;
@@ -52,6 +58,7 @@ public class JWTConfiguration implements Buildable<JWTConfiguration> {
     }
     JWTConfiguration that = (JWTConfiguration) o;
     return Objects.equals(algorithm, that.algorithm) &&
+        Objects.equals(enabled, that.enabled) &&
         Objects.equals(privateKey, that.privateKey) &&
         Objects.equals(publicKey, that.publicKey) &&
         Objects.equals(secret, that.secret) &&
@@ -60,6 +67,6 @@ public class JWTConfiguration implements Buildable<JWTConfiguration> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(algorithm, privateKey, publicKey, secret, timeToLiveInSeconds);
+    return Objects.hash(algorithm, enabled, privateKey, publicKey, secret, timeToLiveInSeconds);
   }
 }
