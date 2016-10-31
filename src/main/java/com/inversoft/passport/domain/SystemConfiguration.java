@@ -111,14 +111,6 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
     }
   }
 
-  public SystemConfiguration secure() {
-    if (jwtConfiguration != null) {
-      jwtConfiguration.privateKey = null;
-      jwtConfiguration.secret = null;
-    }
-    return this;
-  }
-
   @Override
   public String toString() {
     return ToString.toString(this);
