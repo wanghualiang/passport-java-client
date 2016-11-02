@@ -94,6 +94,10 @@ public class Application implements Buildable<Application> {
     return configuration.jwtConfiguration;
   }
 
+  public void setJwtConfiguration(JWTConfiguration jwtConfiguration) {
+    this.configuration.jwtConfiguration = jwtConfiguration;
+  }
+
   public ApplicationRole getRole(String name) {
     for (ApplicationRole role : roles) {
       if (role.name.equals(name)) {
