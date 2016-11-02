@@ -30,7 +30,7 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
   public CleanSpeakConfiguration cleanSpeakConfiguration;
 
   @JsonIgnore
-  public SystemConfigurationData data = new SystemConfigurationData();
+  public SystemConfigurationData configuration = new SystemConfigurationData();
 
   public EmailConfiguration emailConfiguration = new EmailConfiguration();
 
@@ -82,7 +82,7 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
     SystemConfiguration that = (SystemConfiguration) o;
     return Objects.equals(cleanSpeakConfiguration, that.cleanSpeakConfiguration) &&
         Objects.equals(emailConfiguration, that.emailConfiguration) &&
-        Objects.equals(data, that.data) &&
+        Objects.equals(configuration, that.configuration) &&
         Objects.equals(forgotEmailTemplateId, that.forgotEmailTemplateId) &&
         Objects.equals(httpSessionMaxInactiveInterval, that.httpSessionMaxInactiveInterval) &&
         Objects.equals(logoutURL, that.logoutURL) &&
@@ -97,26 +97,34 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
         Objects.equals(verificationEmailTemplateId, that.verificationEmailTemplateId);
   }
 
+  public void getCookieEncryptionIV(String cookieEncryptionIV) {
+    configuration.cookieEncryptionIV = cookieEncryptionIV;
+  }
+
+  public void getCookieEncryptionKey(String cookieEncryptionKey) {
+    configuration.cookieEncryptionKey = cookieEncryptionKey;
+  }
+
   public FailedAuthenticationConfiguration getFailedAuthenticationConfiguration() {
-    return data.failedAuthenticationConfiguration;
+    return configuration.failedAuthenticationConfiguration;
   }
 
   public void setFailedAuthenticationConfiguration(
       FailedAuthenticationConfiguration failedAuthenticationConfiguration) {
-    data.failedAuthenticationConfiguration = failedAuthenticationConfiguration;
+    configuration.failedAuthenticationConfiguration = failedAuthenticationConfiguration;
   }
 
   public JWTConfiguration getJwtConfiguration() {
-    return data.jwtConfiguration;
+    return configuration.jwtConfiguration;
   }
 
   public void setJwtConfiguration(JWTConfiguration jwtConfiguration) {
-    data.jwtConfiguration = jwtConfiguration;
+    configuration.jwtConfiguration = jwtConfiguration;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(cleanSpeakConfiguration, data, forgotEmailTemplateId, httpSessionMaxInactiveInterval,
+    return Objects.hash(cleanSpeakConfiguration, configuration, forgotEmailTemplateId, httpSessionMaxInactiveInterval,
         logoutURL, reportTimezone, passportFrontendURL, passwordExpirationDays, passwordValidationRules,
         setPasswordEmailTemplateId, useOauthForBackend, verificationEmailTemplateId, verifyEmail, verifyEmailWhenChanged);
   }
@@ -125,6 +133,14 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
     if (cleanSpeakConfiguration != null) {
       cleanSpeakConfiguration.normalize();
     }
+  }
+
+  public void setCookieEncryptionIV(String cookieEncryptionIV) {
+    configuration.cookieEncryptionIV = cookieEncryptionIV;
+  }
+
+  public void setCookieEncryptionKey(String cookieEncryptionKey) {
+    configuration.cookieEncryptionKey = cookieEncryptionKey;
   }
 
   @Override
