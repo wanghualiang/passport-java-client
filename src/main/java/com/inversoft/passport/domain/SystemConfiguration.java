@@ -20,6 +20,7 @@ import java.time.ZoneId;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.inversoft.json.ToString;
 
 /**
@@ -28,9 +29,10 @@ import com.inversoft.json.ToString;
 public class SystemConfiguration implements Buildable<SystemConfiguration> {
   public CleanSpeakConfiguration cleanSpeakConfiguration;
 
-  public EmailConfiguration emailConfiguration = new EmailConfiguration();
+  @JsonIgnore
+  public SystemConfigurationData data = new SystemConfigurationData();
 
-  public FailedAuthenticationConfiguration failedAuthenticationConfiguration = new FailedAuthenticationConfiguration();
+  public EmailConfiguration emailConfiguration = new EmailConfiguration();
 
   public UUID forgotEmailTemplateId;
 
@@ -41,8 +43,6 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
    * Default is 60 minutes.
    */
   public int httpSessionMaxInactiveInterval = 3600;
-
-  public JWTConfiguration jwtConfiguration = new JWTConfiguration();
 
   /**
    * Logout redirect URL when calling the <code>/oauth2/logout</code> endpoint. If this the
@@ -82,10 +82,9 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
     SystemConfiguration that = (SystemConfiguration) o;
     return Objects.equals(cleanSpeakConfiguration, that.cleanSpeakConfiguration) &&
         Objects.equals(emailConfiguration, that.emailConfiguration) &&
-        Objects.equals(failedAuthenticationConfiguration, that.failedAuthenticationConfiguration) &&
+        Objects.equals(data, that.data) &&
         Objects.equals(forgotEmailTemplateId, that.forgotEmailTemplateId) &&
         Objects.equals(httpSessionMaxInactiveInterval, that.httpSessionMaxInactiveInterval) &&
-        Objects.equals(jwtConfiguration, that.jwtConfiguration) &&
         Objects.equals(logoutURL, that.logoutURL) &&
         Objects.equals(reportTimezone, that.reportTimezone) &&
         Objects.equals(passportFrontendURL, that.passportFrontendURL) &&
@@ -98,10 +97,27 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
         Objects.equals(verificationEmailTemplateId, that.verificationEmailTemplateId);
   }
 
+  public FailedAuthenticationConfiguration getFailedAuthenticationConfiguration() {
+    return data.failedAuthenticationConfiguration;
+  }
+
+  public void setFailedAuthenticationConfiguration(
+      FailedAuthenticationConfiguration failedAuthenticationConfiguration) {
+    data.failedAuthenticationConfiguration = failedAuthenticationConfiguration;
+  }
+
+  public JWTConfiguration getJwtConfiguration() {
+    return data.jwtConfiguration;
+  }
+
+  public void setJwtConfiguration(JWTConfiguration jwtConfiguration) {
+    data.jwtConfiguration = jwtConfiguration;
+  }
+
   @Override
   public int hashCode() {
-    return Objects.hash(cleanSpeakConfiguration, failedAuthenticationConfiguration, forgotEmailTemplateId, httpSessionMaxInactiveInterval,
-        jwtConfiguration, logoutURL, reportTimezone, passportFrontendURL, passwordExpirationDays, passwordValidationRules,
+    return Objects.hash(cleanSpeakConfiguration, data, forgotEmailTemplateId, httpSessionMaxInactiveInterval,
+        logoutURL, reportTimezone, passportFrontendURL, passwordExpirationDays, passwordValidationRules,
         setPasswordEmailTemplateId, useOauthForBackend, verificationEmailTemplateId, verifyEmail, verifyEmailWhenChanged);
   }
 
@@ -155,6 +171,48 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
       NONE,
       SSL,
       TLS
+    }
+  }
+
+  public static class SystemConfigurationData {
+
+    /**
+     * Base64 encoded Initialization Vector for Prime
+     */
+    public String cookieEncryptionIV;
+
+    /**
+     * Base64 encoded Encryption Key for Prime
+     */
+    public String cookieEncryptionKey;
+
+    public FailedAuthenticationConfiguration failedAuthenticationConfiguration = new FailedAuthenticationConfiguration();
+
+    public JWTConfiguration jwtConfiguration = new JWTConfiguration();
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+      SystemConfigurationData that = (SystemConfigurationData) o;
+      return Objects.equals(cookieEncryptionIV, that.cookieEncryptionIV) &&
+          Objects.equals(cookieEncryptionKey, that.cookieEncryptionKey) &&
+          Objects.equals(failedAuthenticationConfiguration, that.failedAuthenticationConfiguration) &&
+          Objects.equals(jwtConfiguration, that.jwtConfiguration);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(cookieEncryptionIV, cookieEncryptionKey, failedAuthenticationConfiguration, jwtConfiguration);
+    }
+
+    @Override
+    public String toString() {
+      return ToString.toString(this);
     }
   }
 }

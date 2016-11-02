@@ -20,7 +20,7 @@ project(group: "com.inversoft.passport", name: "passport-java-client", version: 
     group(name: "compile") {
       dependency(id: "com.inversoft:restify:${restifyVersion}")
       dependency(id: "com.inversoft:java-error:${javaErrorVersion}")
-      dependency(id: "org.primeframework:prime-jwt:0.1.3")
+      dependency(id: "org.primeframework:prime-jwt:0.1.4")
       dependency(id: "com.inversoft:jackson5:${jackson5Version}")
       dependency(id: "com.fasterxml.jackson.core:jackson-annotations:2.8.1")
     }

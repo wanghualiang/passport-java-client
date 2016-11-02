@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.inversoft.json.ToString;
 import com.inversoft.passport.domain.oauth2.OAuth2Configuration;
 import static com.inversoft.passport.domain.util.Normalizer.trim;
@@ -35,9 +36,10 @@ public class Application implements Buildable<Application> {
 
   public CleanSpeakConfiguration cleanSpeakConfiguration;
 
-  public UUID id;
+  @JsonIgnore
+  public ApplicationConfiguration configuration = new ApplicationConfiguration();
 
-  public JWTConfiguration jwtConfiguration = new JWTConfiguration();
+  public UUID id;
 
   public String name;
 
@@ -71,7 +73,6 @@ public class Application implements Buildable<Application> {
     Collections.addAll(this.roles, roles);
   }
 
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -83,10 +84,14 @@ public class Application implements Buildable<Application> {
     Application that = (Application) o;
     return Objects.equals(active, that.active) &&
         Objects.equals(cleanSpeakConfiguration, that.cleanSpeakConfiguration) &&
-        Objects.equals(jwtConfiguration, that.jwtConfiguration) &&
+        Objects.equals(configuration, that.configuration) &&
         Objects.equals(oauthConfiguration, that.oauthConfiguration) &&
         Objects.equals(name, that.name) &&
         Objects.equals(roles, that.roles);
+  }
+
+  public JWTConfiguration getJwtConfiguration() {
+    return configuration.jwtConfiguration;
   }
 
   public ApplicationRole getRole(String name) {
@@ -101,7 +106,7 @@ public class Application implements Buildable<Application> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(active, name, cleanSpeakConfiguration, jwtConfiguration, oauthConfiguration, roles);
+    return Objects.hash(active, name, cleanSpeakConfiguration, configuration, oauthConfiguration, roles);
   }
 
   public void normalize() {
@@ -119,10 +124,6 @@ public class Application implements Buildable<Application> {
   }
 
   public Application secure() {
-    if (jwtConfiguration != null) {
-      jwtConfiguration.privateKey = null;
-      jwtConfiguration.secret = null;
-    }
     if (oauthConfiguration != null) {
       oauthConfiguration.clientSecret = null;
     }
@@ -137,5 +138,31 @@ public class Application implements Buildable<Application> {
   @Override
   public String toString() {
     return ToString.toString(this);
+  }
+
+  public static class ApplicationConfiguration {
+    public JWTConfiguration jwtConfiguration;
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+      ApplicationConfiguration that = (ApplicationConfiguration) o;
+      return Objects.equals(jwtConfiguration, that.jwtConfiguration);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(jwtConfiguration);
+    }
+
+    @Override
+    public String toString() {
+      return ToString.toString(this);
+    }
   }
 }
