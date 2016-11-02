@@ -97,11 +97,19 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
         Objects.equals(verificationEmailTemplateId, that.verificationEmailTemplateId);
   }
 
-  public void getCookieEncryptionIV(String cookieEncryptionIV) {
+  public String getCookieEncryptionIV() {
+    return configuration.cookieEncryptionIV;
+  }
+
+  public void setCookieEncryptionIV(String cookieEncryptionIV) {
     configuration.cookieEncryptionIV = cookieEncryptionIV;
   }
 
-  public void getCookieEncryptionKey(String cookieEncryptionKey) {
+  public String getCookieEncryptionKey() {
+    return configuration.cookieEncryptionKey;
+  }
+
+  public void setCookieEncryptionKey(String cookieEncryptionKey) {
     configuration.cookieEncryptionKey = cookieEncryptionKey;
   }
 
@@ -133,14 +141,6 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
     if (cleanSpeakConfiguration != null) {
       cleanSpeakConfiguration.normalize();
     }
-  }
-
-  public void setCookieEncryptionIV(String cookieEncryptionIV) {
-    configuration.cookieEncryptionIV = cookieEncryptionIV;
-  }
-
-  public void setCookieEncryptionKey(String cookieEncryptionKey) {
-    configuration.cookieEncryptionKey = cookieEncryptionKey;
   }
 
   @Override
