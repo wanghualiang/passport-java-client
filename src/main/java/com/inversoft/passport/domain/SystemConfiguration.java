@@ -17,6 +17,8 @@ package com.inversoft.passport.domain;
 
 import java.net.URI;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -95,6 +97,14 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
         Objects.equals(verifyEmail, that.verifyEmail) &&
         Objects.equals(verifyEmailWhenChanged, that.verifyEmailWhenChanged) &&
         Objects.equals(verificationEmailTemplateId, that.verificationEmailTemplateId);
+  }
+
+  public List<URI> getBackendServers() {
+    return configuration.backendServers;
+  }
+
+  public void setBackendServers(List<URI> backendServers) {
+    configuration.backendServers = backendServers;
   }
 
   public String getCookieEncryptionIV() {
@@ -193,6 +203,11 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
   public static class SystemConfigurationData {
 
     /**
+     * List of one or more Passport Backend Servers.
+     */
+    public List<URI> backendServers = new ArrayList<>(1);
+
+    /**
      * Base64 encoded Initialization Vector for Prime
      */
     public String cookieEncryptionIV;
@@ -215,7 +230,8 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
         return false;
       }
       SystemConfigurationData that = (SystemConfigurationData) o;
-      return Objects.equals(cookieEncryptionIV, that.cookieEncryptionIV) &&
+      return Objects.equals(backendServers, that.backendServers) &&
+          Objects.equals(cookieEncryptionIV, that.cookieEncryptionIV) &&
           Objects.equals(cookieEncryptionKey, that.cookieEncryptionKey) &&
           Objects.equals(failedAuthenticationConfiguration, that.failedAuthenticationConfiguration) &&
           Objects.equals(jwtConfiguration, that.jwtConfiguration);
@@ -223,7 +239,7 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
 
     @Override
     public int hashCode() {
-      return Objects.hash(cookieEncryptionIV, cookieEncryptionKey, failedAuthenticationConfiguration, jwtConfiguration);
+      return Objects.hash(backendServers, cookieEncryptionIV, cookieEncryptionKey, failedAuthenticationConfiguration, jwtConfiguration);
     }
 
     @Override
