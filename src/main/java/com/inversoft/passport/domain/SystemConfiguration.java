@@ -203,22 +203,31 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
   public static class SystemConfigurationData {
 
     /**
-     * List of one or more Passport Backend Servers.
+     * List of one or more Passport Backend Servers. This list of systems is used to distribute cache reload
+     * notifications.
      */
     public List<URI> backendServers = new ArrayList<>(1);
 
     /**
-     * Base64 encoded Initialization Vector for Prime
+     * Base64 encoded Initialization Vector for prime-mvc. This is currently only used to encrypt and de-crypt saved
+     * request cookies.
      */
     public String cookieEncryptionIV;
 
     /**
-     * Base64 encoded Encryption Key for Prime
+     * Base64 encoded Encryption Key for prime-mvc. This is currently only used to encrypt and de-crypt saved request
+     * cookies.
      */
     public String cookieEncryptionKey;
 
+    /**
+     * Failed Authentication Cache.
+     */
     public FailedAuthenticationConfiguration failedAuthenticationConfiguration = new FailedAuthenticationConfiguration();
 
+    /**
+     * Global System JWT Configuration used to sign and drop a JWT cookie on a successful login.
+     */
     public JWTConfiguration jwtConfiguration = new JWTConfiguration();
 
     @Override
