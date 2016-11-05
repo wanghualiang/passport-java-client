@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@ package com.inversoft.passport.domain.api;
 
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.inversoft.json.JacksonConstructor;
+import com.inversoft.passport.domain.jwt.RefreshToken.MetaData;
 
 /**
  * Login API request object.
@@ -28,7 +28,18 @@ import com.inversoft.json.JacksonConstructor;
 public class LoginRequest {
   public UUID applicationId;
 
+  /**
+   * Optional parameter on the Login Request. When logging in with an application Id and a device the response will
+   * contain a refresh token.
+   */
+  public String device;
+
   public String loginId;
+
+  /**
+   * Optional parameter allowing the caller to specify meta data about the login. Device information, etc.
+   */
+  public MetaData metaData;
 
   public String password;
 

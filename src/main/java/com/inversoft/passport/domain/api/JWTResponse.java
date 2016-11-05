@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.inversoft.json.JacksonConstructor;
 
 /**
- * JWT Response Object
+ * JWT Public Key Response Object
  *
  * @author Daniel DeGroff
  */
