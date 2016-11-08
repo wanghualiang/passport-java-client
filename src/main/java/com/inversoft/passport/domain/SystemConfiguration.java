@@ -151,6 +151,11 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
     if (cleanSpeakConfiguration != null) {
       cleanSpeakConfiguration.normalize();
     }
+
+    // Normalize Line returns in the public / private keys
+    if (configuration.jwtConfiguration != null) {
+      configuration.jwtConfiguration.normalize();
+    }
   }
 
   @Override

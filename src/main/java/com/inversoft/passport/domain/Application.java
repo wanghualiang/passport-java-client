@@ -124,6 +124,10 @@ public class Application implements Buildable<Application> {
       oauthConfiguration.normalize();
     }
 
+    if (configuration.jwtConfiguration != null) {
+      configuration.jwtConfiguration.normalize();
+    }
+
     roles.forEach(ApplicationRole::normalize);
   }
 

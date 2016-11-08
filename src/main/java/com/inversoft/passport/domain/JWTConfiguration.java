@@ -69,4 +69,14 @@ public class JWTConfiguration implements Buildable<JWTConfiguration> {
   public int hashCode() {
     return Objects.hash(algorithm, enabled, privateKey, publicKey, secret, timeToLiveInSeconds);
   }
+
+  public void normalize() {
+    // Normalize Line returns in the public / private keys
+    if (publicKey != null) {
+      publicKey = publicKey.replace("\r\n", "\n").replace("\r", "\n");
+    }
+    if (privateKey != null) {
+      privateKey = privateKey.replace("\r\n", "\n").replace("\r", "\n");
+    }
+  }
 }
