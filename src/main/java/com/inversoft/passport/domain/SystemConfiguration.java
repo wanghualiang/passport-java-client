@@ -36,6 +36,11 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
 
   public EmailConfiguration emailConfiguration = new EmailConfiguration();
 
+  /**
+   * Id of the User Action used when a user reaches the threshold defined by <code>tooManyAttempts</code>.
+   */
+  public UUID failedAuthenticationUserActionId;
+
   public UUID forgotEmailTemplateId;
 
   /**
@@ -85,6 +90,7 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
     return Objects.equals(cleanSpeakConfiguration, that.cleanSpeakConfiguration) &&
         Objects.equals(emailConfiguration, that.emailConfiguration) &&
         Objects.equals(configuration, that.configuration) &&
+        Objects.equals(failedAuthenticationUserActionId, that.failedAuthenticationUserActionId) &&
         Objects.equals(forgotEmailTemplateId, that.forgotEmailTemplateId) &&
         Objects.equals(httpSessionMaxInactiveInterval, that.httpSessionMaxInactiveInterval) &&
         Objects.equals(logoutURL, that.logoutURL) &&
@@ -142,7 +148,7 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(cleanSpeakConfiguration, configuration, forgotEmailTemplateId, httpSessionMaxInactiveInterval,
+    return Objects.hash(cleanSpeakConfiguration, configuration, failedAuthenticationUserActionId, forgotEmailTemplateId, httpSessionMaxInactiveInterval,
         logoutURL, reportTimezone, passportFrontendURL, passwordExpirationDays, passwordValidationRules,
         setPasswordEmailTemplateId, useOauthForBackend, verificationEmailTemplateId, verifyEmail, verifyEmailWhenChanged);
   }

@@ -27,6 +27,16 @@ import com.inversoft.json.ToString;
 public class FailedAuthenticationConfiguration implements Buildable<FailedAuthenticationConfiguration> {
 
   /**
+   * The duration of the action.
+   */
+  public long actionDuration = 3;
+
+  /**
+   * The Unit of time of the Action Duration.
+   */
+  public ExpiryUnit actionDurationUnit = ExpiryUnit.Minutes;
+
+  /**
    * The length of time in seconds the failed login attempt is kept in the cache. This essentially causes the failed
    * login count to fail after this period of time.
    */
@@ -46,13 +56,15 @@ public class FailedAuthenticationConfiguration implements Buildable<FailedAuthen
       return false;
     }
     FailedAuthenticationConfiguration that = (FailedAuthenticationConfiguration) o;
-    return tooManyAttempts == that.tooManyAttempts &&
+    return actionDuration == that.actionDuration &&
+        actionDurationUnit == that.actionDurationUnit &&
+        tooManyAttempts == that.tooManyAttempts &&
         resetCountInSeconds == that.resetCountInSeconds;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(tooManyAttempts, resetCountInSeconds);
+    return Objects.hash(actionDuration, actionDurationUnit, tooManyAttempts, resetCountInSeconds);
   }
 
   @Override
