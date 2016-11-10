@@ -13,36 +13,28 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package com.inversoft.passport.domain;
+package com.inversoft.passport.domain.api;
+
+import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.inversoft.json.JacksonConstructor;
 
 /**
- * Models the current parental consent type that a parent has given for a child.
+ * JWT Public Key Response Object
  *
- * @author Brian Pontarelli
+ * @author Daniel DeGroff
  */
-public enum ParentalConsentType {
-  /**
-   * Older email only consent type.
-   */
-  EMAIL,
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class PublicKeyResponse {
 
-  /**
-   * Email plus consent type from COPPA.
-   */
-  EMAIL_PLUS,
+  public Map<String, String> publicKeys;
 
-  /**
-   * Full verifiable consent.
-   */
-  FULL,
+  @JacksonConstructor
+  public PublicKeyResponse() {
+  }
 
-  /**
-   * The parent has revoked their consent for the child.
-   */
-  REVOKED,
-
-  /**
-   * The parent has given permission for the child's information to be used internally only.
-   */
-  INTERNAL_USE
+  public PublicKeyResponse(Map<String, String> publicKeys) {
+    this.publicKeys = publicKeys;
+  }
 }
