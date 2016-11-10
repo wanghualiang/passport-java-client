@@ -34,7 +34,7 @@ public class FailedAuthenticationConfiguration implements Buildable<FailedAuthen
   /**
    * The Unit of time of the Action Duration.
    */
-  public ExpiryUnit actionDurationUnit = ExpiryUnit.Minutes;
+  public ExpiryUnit actionDurationUnit = ExpiryUnit.MINUTES;
 
   /**
    * The length of time in seconds the failed login attempt is kept in the cache. This essentially causes the failed

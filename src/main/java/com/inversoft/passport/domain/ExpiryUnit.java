@@ -7,10 +7,10 @@ package com.inversoft.passport.domain;
  * @author Brian Pontarelli
  */
 public enum ExpiryUnit {
-  Minutes,
-  Hours,
-  Days,
-  Weeks,
-  Months,
-  Years
+  MINUTES,
+  HOURS,
+  DAYS,
+  WEEKS,
+  MONTHS,
+  YEARS
 }
