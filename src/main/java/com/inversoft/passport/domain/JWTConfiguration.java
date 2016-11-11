@@ -43,7 +43,7 @@ public class JWTConfiguration implements Buildable<JWTConfiguration> {
   /**
    * The length of time in seconds this JWT is valid from the time it was issued. This should be a non-zero value.
    */
-  public int timeToLiveInSeconds = 3600;
+  public int timeToLiveInSeconds;
 
   public JWTConfiguration() {
   }
