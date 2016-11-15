@@ -22,7 +22,13 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.inversoft.error.Errors;
+import com.inversoft.json.JacksonModule;
 import com.inversoft.passport.domain.AuditLog;
 import com.inversoft.passport.domain.api.ApplicationRequest;
 import com.inversoft.passport.domain.api.ApplicationResponse;
@@ -77,6 +83,16 @@ import com.inversoft.rest.RESTClient;
  * @author Brian Pontarelli
  */
 public class PassportClient {
+  public static final ObjectMapper objectMapper = new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL)
+                                                                    .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
+                                                                    .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+                                                                    .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true)
+                                                                    .configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false)
+                                                                    .configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false)
+                                                                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                                                                    .registerModule(new JacksonModule());
+
+
   private final String apiKey;
 
   private final String baseURL;
@@ -106,7 +122,7 @@ public class PassportClient {
   public ClientResponse<ActionResponse, Errors> actionUser(UUID actioneeUserId, ActionRequest request) {
     return start(ActionResponse.class).uri("/api/user/action")
                                       .urlSegment(actioneeUserId)
-                                      .bodyHandler(new JSONBodyHandler(request))
+                                      .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                       .post()
                                       .go();
   }
@@ -199,7 +215,7 @@ public class PassportClient {
   public ClientResponse<ActionResponse, Errors> cancelAction(UUID actionId, ActionRequest request) {
     return start(ActionResponse.class).uri("/api/user/action")
                                       .urlSegment(actionId)
-                                      .bodyHandler(new JSONBodyHandler(request))
+                                      .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                       .delete()
                                       .go();
   }
@@ -219,7 +235,7 @@ public class PassportClient {
   public ClientResponse<Void, Errors> changePassword(String verificationId, ChangePasswordRequest request) {
     return start(Void.TYPE).uri("/api/user/change-password")
                            .urlSegment(verificationId)
-                           .bodyHandler(new JSONBodyHandler(request))
+                           .bodyHandler(new JSONBodyHandler(request, objectMapper))
                            .post()
                            .go();
   }
@@ -235,7 +251,7 @@ public class PassportClient {
    */
   public ClientResponse<Void, Errors> commentOnUser(UserCommentRequest request) {
     return start(Void.TYPE).uri("/api/user/comment")
-                           .bodyHandler(new JSONBodyHandler(request))
+                           .bodyHandler(new JSONBodyHandler(request, objectMapper))
                            .post()
                            .go();
   }
@@ -253,7 +269,7 @@ public class PassportClient {
   public ClientResponse<ApplicationResponse, Errors> createApplication(UUID applicationId, ApplicationRequest request) {
     return start(ApplicationResponse.class).uri("/api/application")
                                            .urlSegment(applicationId)
-                                           .bodyHandler(new JSONBodyHandler(request))
+                                           .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                            .post()
                                            .go();
   }
@@ -275,7 +291,7 @@ public class PassportClient {
     return start(ApplicationResponse.class).uri("/api/application")
                                            .urlSegment(applicationId)
                                            .urlSegment("role")
-                                           .bodyHandler(new JSONBodyHandler(request))
+                                           .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                            .post()
                                            .go();
   }
@@ -315,7 +331,7 @@ public class PassportClient {
                                                                            EmailTemplateRequest request) {
     return start(EmailTemplateResponse.class).uri("/api/email/template")
                                              .urlSegment(emailTemplateId)
-                                             .bodyHandler(new JSONBodyHandler(request))
+                                             .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                              .post()
                                              .go();
   }
@@ -336,7 +352,7 @@ public class PassportClient {
                                                                                      NotificationServerRequest request) {
     return start(NotificationServerResponse.class).uri("/api/notification-server")
                                                   .urlSegment(notificationServerId)
-                                                  .bodyHandler(new JSONBodyHandler(request))
+                                                  .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                                   .post()
                                                   .go();
   }
@@ -367,7 +383,7 @@ public class PassportClient {
   public ClientResponse<UserResponse, Errors> createUser(UUID userId, UserRequest request) {
     return start(UserResponse.class).uri("/api/user")
                                     .urlSegment(userId)
-                                    .bodyHandler(new JSONBodyHandler(request))
+                                    .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                     .post()
                                     .go();
   }
@@ -386,7 +402,7 @@ public class PassportClient {
   public ClientResponse<UserActionResponse, Errors> createUserAction(UUID userActionId, UserActionRequest request) {
     return start(UserActionResponse.class).uri("/api/user-action")
                                           .urlSegment(userActionId)
-                                          .bodyHandler(new JSONBodyHandler(request))
+                                          .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                           .post()
                                           .go();
   }
@@ -406,7 +422,7 @@ public class PassportClient {
                                                                                  UserActionReasonRequest request) {
     return start(UserActionReasonResponse.class).uri("/api/user-action-reason")
                                                 .urlSegment(userActionReasonId)
-                                                .bodyHandler(new JSONBodyHandler(request))
+                                                .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                                 .post()
                                                 .go();
   }
@@ -614,7 +630,7 @@ public class PassportClient {
    */
   public ClientResponse<ForgotPasswordResponse, Errors> forgotPassword(ForgotPasswordRequest request) {
     return start(ForgotPasswordResponse.class).uri("/api/user/forgot-password")
-                                              .bodyHandler(new JSONBodyHandler(request))
+                                              .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                               .post()
                                               .go();
   }
@@ -632,7 +648,7 @@ public class PassportClient {
    */
   public ClientResponse<Void, Errors> importUsers(ImportRequest request) {
     return start(Void.TYPE).uri("/api/user/import")
-                           .bodyHandler(new JSONBodyHandler(request))
+                           .bodyHandler(new JSONBodyHandler(request, objectMapper))
                            .post()
                            .go();
   }
@@ -640,7 +656,7 @@ public class PassportClient {
   /**
    * Logs a user in.
    *
-   * @param loginRequest    The login request that contains the user credentials used to log them in.
+   * @param request    The login request that contains the user credentials used to log them in.
    * @param callerIPAddress (Optional) The IP address of the end-user that is logging in. If a null value is provided
    *                        the IP address will be that of the client or last proxy that sent the request.
    * @return When successful, the response will contain the user that was logged in. This user object is complete and
@@ -648,10 +664,10 @@ public class PassportClient {
    * error, this will return the Errors object in the response. Additionally, if Passport could not be contacted because
    * it is down or experiencing a failure, the response will contain an Exception, which could be an IOException.
    */
-  public ClientResponse<LoginResponse, Errors> login(LoginRequest loginRequest, String callerIPAddress) {
+  public ClientResponse<LoginResponse, Errors> login(LoginRequest request, String callerIPAddress) {
     return start(LoginResponse.class).uri("/api/login")
                                      .header("X-Forwarded-For", callerIPAddress)
-                                     .bodyHandler(new JSONBodyHandler(loginRequest))
+                                     .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                      .post()
                                      .go();
   }
@@ -694,7 +710,7 @@ public class PassportClient {
   public ClientResponse<ActionResponse, Errors> modifyAction(UUID actionId, ActionRequest request) {
     return start(ActionResponse.class).uri("/api/user/action")
                                       .urlSegment(actionId)
-                                      .bodyHandler(new JSONBodyHandler(request))
+                                      .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                       .put()
                                       .go();
   }
@@ -783,7 +799,7 @@ public class PassportClient {
   public ClientResponse<RegistrationResponse, Errors> register(UUID userId, RegistrationRequest request) {
     return start(RegistrationResponse.class).uri("/api/user/registration")
                                             .urlSegment(userId)
-                                            .bodyHandler(new JSONBodyHandler(request))
+                                            .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                             .post()
                                             .go();
   }
@@ -912,7 +928,7 @@ public class PassportClient {
    */
   public ClientResponse<PreviewResponse, Errors> retrieveEmailTemplatePreview(PreviewRequest request) {
     return start(PreviewResponse.class).uri("/api/email/template/preview")
-                                       .bodyHandler(new JSONBodyHandler(request))
+                                       .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                        .post()
                                        .go();
   }
@@ -1307,7 +1323,7 @@ public class PassportClient {
   public ClientResponse<SendResponse, Errors> sendEmail(UUID emailTemplateId, SendRequest request) {
     return start(SendResponse.class).uri("/api/email/send")
                                     .urlSegment(emailTemplateId)
-                                    .bodyHandler(new JSONBodyHandler(request))
+                                    .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                     .post()
                                     .go();
   }
@@ -1325,7 +1341,7 @@ public class PassportClient {
   public ClientResponse<ApplicationResponse, Errors> updateApplication(UUID applicationId, ApplicationRequest request) {
     return start(ApplicationResponse.class).uri("/api/application")
                                            .urlSegment(applicationId)
-                                           .bodyHandler(new JSONBodyHandler(request))
+                                           .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                            .put()
                                            .go();
   }
@@ -1347,7 +1363,7 @@ public class PassportClient {
                                            .urlSegment(applicationId)
                                            .urlSegment("role")
                                            .urlSegment(roleId)
-                                           .bodyHandler(new JSONBodyHandler(request))
+                                           .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                            .put()
                                            .go();
   }
@@ -1366,7 +1382,7 @@ public class PassportClient {
                                                                            EmailTemplateRequest request) {
     return start(EmailTemplateResponse.class).uri("/api/email/template")
                                              .urlSegment(emailTemplateId)
-                                             .bodyHandler(new JSONBodyHandler(request))
+                                             .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                              .put()
                                              .go();
   }
@@ -1385,7 +1401,7 @@ public class PassportClient {
                                                                                      NotificationServerRequest request) {
     return start(NotificationServerResponse.class).uri("/api/notification-server")
                                                   .urlSegment(notificationServerId)
-                                                  .bodyHandler(new JSONBodyHandler(request))
+                                                  .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                                   .put()
                                                   .go();
   }
@@ -1404,7 +1420,7 @@ public class PassportClient {
     Objects.requireNonNull(userId);
     return start(RegistrationResponse.class).uri("/api/user/registration")
                                             .urlSegment(userId)
-                                            .bodyHandler(new JSONBodyHandler(request))
+                                            .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                             .put()
                                             .go();
   }
@@ -1421,7 +1437,7 @@ public class PassportClient {
   public ClientResponse<SystemConfigurationResponse, Errors> updateSystemConfiguration(
       SystemConfigurationRequest request) {
     return start(SystemConfigurationResponse.class).uri("/api/system-configuration")
-                                                   .bodyHandler(new JSONBodyHandler(request))
+                                                   .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                                    .put()
                                                    .go();
   }
@@ -1438,7 +1454,7 @@ public class PassportClient {
   public ClientResponse<UserResponse, Errors> updateUser(UUID userId, UserRequest request) {
     return start(UserResponse.class).uri("/api/user")
                                     .urlSegment(userId)
-                                    .bodyHandler(new JSONBodyHandler(request))
+                                    .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                     .put()
                                     .go();
   }
@@ -1455,7 +1471,7 @@ public class PassportClient {
    */
   public ClientResponse<UserActionResponse, Errors> updateUserAction(UUID userActionId, UserActionRequest request) {
     return start(UserActionResponse.class).uri("/api/user-action/" + userActionId)
-                                          .bodyHandler(new JSONBodyHandler(request))
+                                          .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                           .put()
                                           .go();
   }
@@ -1474,7 +1490,7 @@ public class PassportClient {
                                                                                  UserActionReasonRequest request) {
     return start(UserActionReasonResponse.class).uri("/api/user-action-reason")
                                                 .urlSegment(userActionReasonId)
-                                                .bodyHandler(new JSONBodyHandler(request))
+                                                .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                                 .put()
                                                 .go();
   }
@@ -1505,15 +1521,15 @@ public class PassportClient {
    */
   public ClientResponse<Void, Errors> verifyTwoFactor(TwoFactorRequest request) {
     return start(Void.TYPE).uri("/api/two-factor")
-                           .bodyHandler(new JSONBodyHandler(request))
+                           .bodyHandler(new JSONBodyHandler(request, objectMapper))
                            .post()
                            .go();
   }
 
   private <T> RESTClient<T, Errors> start(Class<T> type) {
     return new RESTClient<>(type, Errors.class).authorization(apiKey)
-                                               .successResponseHandler(type != Void.TYPE ? new JSONResponseHandler<>(type) : null)
-                                               .errorResponseHandler(new JSONResponseHandler<>(Errors.class))
+                                               .successResponseHandler(type != Void.TYPE ? new JSONResponseHandler<>(type, objectMapper) : null)
+                                               .errorResponseHandler(new JSONResponseHandler<>(Errors.class, objectMapper))
                                                .url(baseURL)
                                                .connectTimeout(connectTimeout)
                                                .readTimeout(readTimeout);
@@ -1521,7 +1537,7 @@ public class PassportClient {
 
   private <T> RESTClient<T, Void> startVoid(Class<T> type) {
     return new RESTClient<>(type, Void.TYPE).authorization(apiKey)
-                                            .successResponseHandler(type != Void.TYPE ? new JSONResponseHandler<>(type) : null)
+                                            .successResponseHandler(type != Void.TYPE ? new JSONResponseHandler<>(type, objectMapper) : null)
                                             .url(baseURL)
                                             .connectTimeout(connectTimeout)
                                             .readTimeout(readTimeout);

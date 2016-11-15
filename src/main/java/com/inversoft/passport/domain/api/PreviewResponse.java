@@ -15,15 +15,13 @@
  */
 package com.inversoft.passport.domain.api;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.inversoft.error.Errors;
 import com.inversoft.json.JacksonConstructor;
 import com.inversoft.passport.domain.email.Email;
-import com.inversoft.error.Errors;
 
 /**
  * @author Seth Musselman
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class PreviewResponse {
   public Email email;
 

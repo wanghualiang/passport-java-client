@@ -17,7 +17,6 @@ package com.inversoft.passport.domain.api;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.inversoft.json.JacksonConstructor;
 import com.inversoft.passport.domain.Application;
 import com.inversoft.passport.domain.ApplicationRole;
@@ -27,7 +26,6 @@ import com.inversoft.passport.domain.ApplicationRole;
  *
  * @author Brian Pontarelli
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ApplicationResponse {
   public Application application;
 

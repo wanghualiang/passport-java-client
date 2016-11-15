@@ -18,7 +18,6 @@ package com.inversoft.passport.domain.api.report;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.inversoft.passport.domain.RawLogin;
 
 /**
@@ -26,7 +25,6 @@ import com.inversoft.passport.domain.RawLogin;
  *
  * @author Seth Musselman
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserLoginReportResponse {
   public List<RawLogin> logins = new ArrayList<>();
 }

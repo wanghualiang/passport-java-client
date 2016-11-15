@@ -17,7 +17,6 @@ package com.inversoft.passport.domain.api;
 
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.inversoft.json.JacksonConstructor;
 
 /**
@@ -25,7 +24,6 @@ import com.inversoft.json.JacksonConstructor;
  *
  * @author Daniel DeGroff
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class PublicKeyResponse {
 
   public Map<String, String> publicKeys;

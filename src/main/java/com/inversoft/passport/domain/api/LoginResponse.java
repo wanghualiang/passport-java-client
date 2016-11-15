@@ -15,14 +15,12 @@
  */
 package com.inversoft.passport.domain.api;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.inversoft.json.JacksonConstructor;
 import com.inversoft.passport.domain.User;
 
 /**
  * @author Brian Pontarelli
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class LoginResponse {
   public User user;
 

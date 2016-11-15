@@ -18,14 +18,11 @@ package com.inversoft.passport.domain.api.report;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 /**
  * Response for the registration report.
  *
  * @author Brian Pontarelli
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class RegistrationReportResponse {
   public List<Count> hourlyCounts = new ArrayList<>();
 

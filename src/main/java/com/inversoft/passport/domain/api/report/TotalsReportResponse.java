@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.inversoft.json.JacksonConstructor;
 
 /**
@@ -28,7 +27,6 @@ import com.inversoft.json.JacksonConstructor;
  *
  * @author Brian Pontarelli
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class TotalsReportResponse {
   public Map<UUID, Totals> applicationTotals = new HashMap<>();
 

@@ -15,7 +15,6 @@
  */
 package com.inversoft.passport.domain.api;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.inversoft.json.JacksonConstructor;
 import com.inversoft.passport.domain.SystemConfiguration;
 
@@ -24,7 +23,6 @@ import com.inversoft.passport.domain.SystemConfiguration;
  *
  * @author Brian Pontarelli
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class SystemConfigurationResponse {
   public SystemConfiguration systemConfiguration;
 
