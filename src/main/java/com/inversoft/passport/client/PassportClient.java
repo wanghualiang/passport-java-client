@@ -20,7 +20,6 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -92,6 +91,9 @@ public class PassportClient {
                                                                     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                                                                     .registerModule(new JacksonModule());
 
+  public final Consumer<ClientResponse<?, ?>> errorConsumer;
+
+  public final Function<ClientResponse<?, ?>, ?> successFunction;
 
   private final String apiKey;
 
@@ -104,6 +106,16 @@ public class PassportClient {
   public PassportClient(String apiKey, String baseURL) {
     this.apiKey = apiKey;
     this.baseURL = baseURL;
+    this.errorConsumer = null;
+    this.successFunction = null;
+  }
+
+  public PassportClient(String apiKey, String baseURL, Function<ClientResponse<?, ?>, ?> successFunction,
+                        Consumer<ClientResponse<?, ?>> errorConsumer) {
+    this.apiKey = apiKey;
+    this.baseURL = baseURL;
+    this.successFunction = successFunction;
+    this.errorConsumer = errorConsumer;
   }
 
   /**
@@ -128,78 +140,16 @@ public class PassportClient {
   }
 
   /**
-   * Calls the PassportClient and handles all of the exception and error cases.
-   * <p>
-   * You should call this awesome method like this:
-   * <pre>
-   *   User user = client.callAPI(() -> client.retrieveUser(userId), (r) -> r.user, this::handleErrors);
-   * </pre>
+   * Money-version of the {@link #actionUser(UUID, ActionRequest)} method. This uses the Function and Consumer passed
+   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
    *
-   * @param supplier      The supplier that calls the PassportClient and returns the ClientResponse.
-   * @param function      The function that takes the successResponse from the ClientResponse.
-   * @param errorConsumer The function that handles the error. You should probably use a method reference to your
-   *                      favorite error handling function.
-   * @param <T>           The Response type.
-   * @param <U>           The successResponse type.
-   * @return The result of passing the successResponse to the function.
+   * @param actioneeUserId See other method.
+   * @param request        See other method.
+   * @return See other method.
    */
-  public <T, U> U callAPI(Supplier<ClientResponse<T, Errors>> supplier, Function<T, U> function,
-                          Consumer<ClientResponse<T, Errors>> errorConsumer) {
-    ClientResponse<T, Errors> clientResponse = supplier.get();
-    if (!clientResponse.wasSuccessful()) {
-      errorConsumer.accept(clientResponse);
-      return null;
-    }
-
-    return function.apply(clientResponse.successResponse);
-  }
-
-  /**
-   * Calls the PassportClient for methods that don't have a response or you want to ignore the response. This handles
-   * all of the exception and error cases.
-   * <p>
-   * You should call this awesome method like this:
-   * <pre>
-   *   User user = client.callNoErrorsAPI(() -> client.retrieveUser(userId), (r) -> r.user);
-   * </pre>
-   *
-   * @param supplier The supplier that calls the PassportClient and returns the ClientResponse.
-   * @param function The function that takes the successResponse from the ClientResponse.
-   * @param <T>      The Response type.
-   * @param <U>      The successResponse type.
-   * @return The result of passing the successResponse to the function.
-   */
-  public <T, U> U callNoErrorAPI(Supplier<ClientResponse<T, Void>> supplier, Function<T, U> function,
-                                 Consumer<ClientResponse<T, Void>> errorConsumer) {
-    ClientResponse<T, Void> clientResponse = supplier.get();
-    if (!clientResponse.wasSuccessful()) {
-      errorConsumer.accept(clientResponse);
-      return null;
-    }
-
-    return function.apply(clientResponse.successResponse);
-  }
-
-  /**
-   * Calls the PassportClient for methods that don't have a response or you want to ignore the response. This handles
-   * all of the exception and error cases.
-   * <p>
-   * You should call this awesome method like this:
-   * <pre>
-   *   client.callNoResponseAPI(() -> client.retrieveUser(userId), this::handleErrors);
-   * </pre>
-   *
-   * @param supplier      The supplier that calls the PassportClient and returns the ClientResponse.
-   * @param errorConsumer The function that handles the error. You should probably use a method reference to your
-   *                      favorite error handling function.
-   * @param <T>           The Response type.
-   */
-  public <T> void callNoResponseAPI(Supplier<ClientResponse<T, Errors>> supplier,
-                                    Consumer<ClientResponse<T, Errors>> errorConsumer) {
-    ClientResponse<T, Errors> clientResponse = supplier.get();
-    if (!clientResponse.wasSuccessful()) {
-      errorConsumer.accept(clientResponse);
-    }
+  public ActionResponse actionUser$(UUID actioneeUserId, ActionRequest request) {
+    return handle(actionUser(actioneeUserId, request));
   }
 
   /**
@@ -218,6 +168,19 @@ public class PassportClient {
                                       .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                       .delete()
                                       .go();
+  }
+
+  /**
+   * Money-version of the {@link #cancelAction(UUID, ActionRequest)} method. This uses the Function and Consumer passed
+   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param actionId See other method.
+   * @param request  See other method.
+   * @return See other method.
+   */
+  public ActionResponse cancelAction$(UUID actionId, ActionRequest request) {
+    return handle(cancelAction(actionId, request));
   }
 
   /**
@@ -241,6 +204,18 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #changePassword(String, ChangePasswordRequest)} method. This uses the Function and
+   * Consumer passed into the constructor to handle the ClientResponse and return either the success response or throw
+   * an exception (generally speaking).
+   *
+   * @param verificationId See other method.
+   * @param request        See other method.
+   */
+  public void changePassword$(String verificationId, ChangePasswordRequest request) {
+    handle(changePassword(verificationId, request));
+  }
+
+  /**
    * Adds a comment to the user's account.
    *
    * @param request The comment request that contains all of the information used to add the comment to the user.
@@ -254,6 +229,17 @@ public class PassportClient {
                            .bodyHandler(new JSONBodyHandler(request, objectMapper))
                            .post()
                            .go();
+  }
+
+  /**
+   * Money-version of the {@link #commentOnUser(UserCommentRequest)} method. This uses the Function and Consumer passed
+   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param request See other method.
+   */
+  public void commentOnUser$(UserCommentRequest request) {
+    handle(commentOnUser(request));
   }
 
   /**
@@ -272,6 +258,19 @@ public class PassportClient {
                                            .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                            .post()
                                            .go();
+  }
+
+  /**
+   * Money-version of the {@link #createApplication(UUID, ApplicationRequest)} method. This uses the Function and
+   * Consumer passed into the constructor to handle the ClientResponse and return either the success response or throw
+   * an exception (generally speaking).
+   *
+   * @param applicationId See other method.
+   * @param request       See other method.
+   * @return See other method.
+   */
+  public ApplicationResponse createApplication$(UUID applicationId, ApplicationRequest request) {
+    return handle(createApplication(applicationId, request));
   }
 
   /**
@@ -297,6 +296,19 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #createApplicationRole$(UUID, ApplicationRequest)} method. This uses the Function and
+   * Consumer passed into the constructor to handle the ClientResponse and return either the success response or throw
+   * an exception (generally speaking).
+   *
+   * @param applicationId See other method.
+   * @param request       See other method.
+   * @return See other method.
+   */
+  public ApplicationResponse createApplicationRole$(UUID applicationId, ApplicationRequest request) {
+    return handle(createApplicationRole(applicationId, request));
+  }
+
+  /**
    * Creates an audit log with the message and user name (usually an email). Audit logs should be written anytime you
    * make changes to the Passport database. When using the Passport Backend web interface, any changes are automatically
    * written to the audit log. However, if you are accessing the API, you must write the audit logs yourself.
@@ -313,6 +325,18 @@ public class PassportClient {
                            .bodyHandler(new JSONBodyHandler(new AuditLogRequest(new AuditLog(null, insertUser, message))))
                            .post()
                            .go();
+  }
+
+  /**
+   * Money-version of the {@link #createAuditLog(String, String)} method. This uses the Function and Consumer passed
+   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param message    See other method.
+   * @param insertUser See other method.
+   */
+  public void createAuditLog$(String message, String insertUser) {
+    handle(createAuditLog(message, insertUser));
   }
 
   /**
@@ -337,6 +361,19 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #createEmailTemplate(UUID, EmailTemplateRequest)} method. This uses the Function and
+   * Consumer passed into the constructor to handle the ClientResponse and return either the success response or throw
+   * an exception (generally speaking).
+   *
+   * @param emailTemplateId See other method.
+   * @param request         See other method.
+   * @return See other method.
+   */
+  public EmailTemplateResponse createEmailTemplate$(UUID emailTemplateId, EmailTemplateRequest request) {
+    return handle(createEmailTemplate(emailTemplateId, request));
+  }
+
+  /**
    * Creates a notification server. You can optionally specify an id for the notification server when calling this
    * method, but it is not required.
    *
@@ -355,6 +392,20 @@ public class PassportClient {
                                                   .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                                   .post()
                                                   .go();
+  }
+
+  /**
+   * Money-version of the {@link #createNotificationServer(UUID, NotificationServerRequest)} method. This uses the
+   * Function and Consumer passed into the constructor to handle the ClientResponse and return either the success
+   * response or throw an exception (generally speaking).
+   *
+   * @param notificationServerId See other method.
+   * @param request              See other method.
+   * @return See other method.
+   */
+  public NotificationServerResponse createNotificationServer$(UUID notificationServerId,
+                                                              NotificationServerRequest request) {
+    return handle(createNotificationServer(notificationServerId, request));
   }
 
   /**
@@ -389,6 +440,31 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #createUser(UserRequest)} method. This uses the Function and Consumer passed into the
+   * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
+   * speaking).
+   *
+   * @param request See other method.
+   * @return See other method.
+   */
+  public UserResponse createUser$(UserRequest request) {
+    return handle(createUser(null, request));
+  }
+
+  /**
+   * Money-version of the {@link #createUser(UUID, UserRequest)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param userId  See other method.
+   * @param request See other method.
+   * @return See other method.
+   */
+  public UserResponse createUser$(UUID userId, UserRequest request) {
+    return handle(createUser(userId, request));
+  }
+
+  /**
    * Creates a user action. This action cannot be taken on a user until this call successfully returns. Anytime after
    * that the user action can be applied to any user.
    *
@@ -405,6 +481,19 @@ public class PassportClient {
                                           .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                           .post()
                                           .go();
+  }
+
+  /**
+   * Money-version of the {@link #createUserAction(UUID, UserActionRequest)} method. This uses the Function and Consumer
+   * passed into the constructor to handle the ClientResponse and return either the success response or throw an
+   * exception (generally speaking).
+   *
+   * @param userActionId See other method.
+   * @param request      See other method.
+   * @return See other method.
+   */
+  public UserActionResponse createUserAction$(UUID userActionId, UserActionRequest request) {
+    return handle(createUserAction(userActionId, request));
   }
 
   /**
@@ -428,6 +517,19 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #createUserActionReason(UUID, UserActionReasonRequest)} method. This uses the Function
+   * and Consumer passed into the constructor to handle the ClientResponse and return either the success response or
+   * throw an exception (generally speaking).
+   *
+   * @param userActionReasonId See other method.
+   * @param request            See other method.
+   * @return See other method.
+   */
+  public UserActionReasonResponse createUserActionReason$(UUID userActionReasonId, UserActionReasonRequest request) {
+    return handle(createUserActionReason(userActionReasonId, request));
+  }
+
+  /**
    * Deactivates the application with the given id.
    *
    * @param applicationId The id of the application to deactivate.
@@ -441,6 +543,17 @@ public class PassportClient {
                            .urlSegment(applicationId)
                            .delete()
                            .go();
+  }
+
+  /**
+   * Money-version of the {@link #deactivateApplication(UUID)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param applicationId See other method.
+   */
+  public void deactivateApplication$(UUID applicationId) {
+    handle(deactivateApplication(applicationId));
   }
 
   /**
@@ -460,6 +573,17 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #deactivateUser(UUID)} method. This uses the Function and Consumer passed into the
+   * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
+   * speaking).
+   *
+   * @param userId See other method.
+   */
+  public void deactivateUser$(UUID userId) {
+    handle(deactivateUser(userId));
+  }
+
+  /**
    * Deactivates the user action with the given id.
    *
    * @param userActionId The id of the user action to deactivate.
@@ -473,6 +597,17 @@ public class PassportClient {
                            .urlSegment(userActionId)
                            .delete()
                            .go();
+  }
+
+  /**
+   * Money-version of the {@link #deactivateUserAction(UUID)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param userActionId See other method.
+   */
+  public void deactivateUserAction$(UUID userActionId) {
+    handle(deactivateUserAction(userActionId));
   }
 
   /**
@@ -493,6 +628,17 @@ public class PassportClient {
                            .urlParameter("hardDelete", true)
                            .delete()
                            .go();
+  }
+
+  /**
+   * Money-version of the {@link #deleteApplication(UUID)} method. This uses the Function and Consumer passed into the
+   * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
+   * speaking).
+   *
+   * @param applicationId See other method.
+   */
+  public void deleteApplication$(UUID applicationId) {
+    handle(deleteApplication(applicationId));
   }
 
   /**
@@ -517,6 +663,18 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #deleteApplicationRole(UUID, UUID)} method. This uses the Function and Consumer passed
+   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param applicationId See other method.
+   * @param roleId        See other method.
+   */
+  public void deleteApplicationRole$(UUID applicationId, UUID roleId) {
+    handle(deleteApplicationRole(applicationId, roleId));
+  }
+
+  /**
    * Deletes the email template for the given id.
    *
    * @param emailTemplateId The id of the email template to delete.
@@ -533,6 +691,17 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #deleteEmailTemplate(UUID)} method. This uses the Function and Consumer passed into the
+   * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
+   * speaking).
+   *
+   * @param emailTemplateId See other method.
+   */
+  public void deleteEmailTemplate$(UUID emailTemplateId) {
+    handle(deleteEmailTemplate(emailTemplateId));
+  }
+
+  /**
    * Deletes the notification server for the given id.
    *
    * @param notificationServerId The id of the notification server to delete.
@@ -546,6 +715,17 @@ public class PassportClient {
                            .urlSegment(notificationServerId)
                            .delete()
                            .go();
+  }
+
+  /**
+   * Money-version of the {@link #deleteNotificationServer(UUID)} method. This uses the Function and Consumer passed
+   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param notificationServerId See other method.
+   */
+  public void deleteNotificationServer$(UUID notificationServerId) {
+    handle(deleteNotificationServer(notificationServerId));
   }
 
   /**
@@ -568,6 +748,19 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #deleteRegistration(UUID, UUID)} method. This uses the Function and Consumer passed
+   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param userId        See other method.
+   * @param applicationId See other method.
+   * @return See other method.
+   */
+  public void deleteRegistration$(UUID userId, UUID applicationId) {
+    handle(deleteRegistration(userId, applicationId));
+  }
+
+  /**
    * Deletes the user for the given id. This permanently deletes all information, metrics, reports and data associated
    * with the user.
    *
@@ -583,6 +776,17 @@ public class PassportClient {
                            .urlParameter("hardDelete", true)
                            .delete()
                            .go();
+  }
+
+  /**
+   * Money-version of the {@link #deleteUser(UUID)} method. This uses the Function and Consumer passed into the
+   * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
+   * speaking).
+   *
+   * @param userId See other method.
+   */
+  public void deleteUser$(UUID userId) {
+    handle(deleteUser(userId));
   }
 
   /**
@@ -604,6 +808,17 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #deleteUserAction(UUID)} method. This uses the Function and Consumer passed into the
+   * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
+   * speaking).
+   *
+   * @param userActionId See other method.
+   */
+  public void deleteUserAction$(UUID userActionId) {
+    handle(deleteUserAction(userActionId));
+  }
+
+  /**
    * Deletes the user action reason for the given id.
    *
    * @param userActionReasonId The id of the user action reason to delete.
@@ -620,6 +835,17 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #deleteUserActionReason(UUID)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param userActionReasonId See other method.
+   */
+  public void deleteUserActionReason$(UUID userActionReasonId) {
+    handle(deleteUserActionReason(userActionReasonId));
+  }
+
+  /**
    * Begins the forgot password sequence, which kicks off an email to the user so that they can reset their password.
    *
    * @param request The request that contains the information about the user so that they can be emailed.
@@ -633,6 +859,23 @@ public class PassportClient {
                                               .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                               .post()
                                               .go();
+  }
+
+  /**
+   * Money-version of the {@link #forgotPassword(ForgotPasswordRequest)} method. This uses the Function and Consumer
+   * passed into the constructor to handle the ClientResponse and return either the success response or throw an
+   * exception (generally speaking).
+   *
+   * @param request See other method.
+   * @return See other method.
+   */
+  public ForgotPasswordResponse forgotPassword$(ForgotPasswordRequest request) {
+    return handle(forgotPassword(request));
+  }
+
+  public PassportClient handleClientResponseWith(Function<ClientResponse<?, ?>, ?> successFunction,
+                                                 Consumer<ClientResponse<?, ?>> errorConsumer) {
+    return new PassportClient(apiKey, baseURL, successFunction, errorConsumer);
   }
 
   /**
@@ -654,9 +897,20 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #importUsers(ImportRequest)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param request See other method.
+   */
+  public void importUsers$(ImportRequest request) {
+    handle(importUsers(request));
+  }
+
+  /**
    * Logs a user in.
    *
-   * @param request    The login request that contains the user credentials used to log them in.
+   * @param request         The login request that contains the user credentials used to log them in.
    * @param callerIPAddress (Optional) The IP address of the end-user that is logging in. If a null value is provided
    *                        the IP address will be that of the client or last proxy that sent the request.
    * @return When successful, the response will contain the user that was logged in. This user object is complete and
@@ -670,6 +924,19 @@ public class PassportClient {
                                      .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                      .post()
                                      .go();
+  }
+
+  /**
+   * Money-version of the {@link #login(LoginRequest, String)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param request         See other method.
+   * @param callerIPAddress See other method.
+   * @return See other method.
+   */
+  public LoginResponse login$(LoginRequest request, String callerIPAddress) {
+    return handle(login(request, callerIPAddress));
   }
 
   /**
@@ -697,6 +964,19 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #loginPing(UUID, UUID, String)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param userId          See other method.
+   * @param applicationId   See other method.
+   * @param callerIPAddress See other method.
+   */
+  public void loginPing$(UUID userId, UUID applicationId, String callerIPAddress) {
+    handle(loginPing(userId, applicationId, callerIPAddress));
+  }
+
+  /**
    * Modifies a temporal user action by changing the expiration of the action and optionally adding a comment to the
    * action.
    *
@@ -713,6 +993,19 @@ public class PassportClient {
                                       .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                       .put()
                                       .go();
+  }
+
+  /**
+   * Money-version of the {@link #modifyAction(UUID, ActionRequest)} method. This uses the Function and Consumer passed
+   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param actionId See other method.
+   * @param request  See other method.
+   * @return See other method.
+   */
+  public ActionResponse modifyAction$(UUID actionId, ActionRequest request) {
+    return handle(modifyAction(actionId, request));
   }
 
   /**
@@ -733,6 +1026,18 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #reactivateApplication(UUID)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param applicationId See other method.
+   * @return See other method.
+   */
+  public ApplicationResponse reactivateApplication$(UUID applicationId) {
+    return handle(reactivateApplication(applicationId));
+  }
+
+  /**
    * Reactivates the user action for the given id.
    *
    * @param userId The id of the user action to reactivate.
@@ -750,6 +1055,18 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #reactivateUser(UUID)} method. This uses the Function and Consumer passed into the
+   * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
+   * speaking).
+   *
+   * @param userId See other method.
+   * @return See other method.
+   */
+  public UserResponse reactivateUser$(UUID userId) {
+    return handle(reactivateUser(userId));
+  }
+
+  /**
    * Reactivates the user action for the given id.
    *
    * @param userActionId The id of the user action to reactivate.
@@ -764,6 +1081,18 @@ public class PassportClient {
                                           .urlParameter("reactivate", true)
                                           .put()
                                           .go();
+  }
+
+  /**
+   * Money-version of the {@link #reactivateUserAction(UUID)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param userActionId See other method.
+   * @return See other method.
+   */
+  public UserActionResponse reactivateUserAction$(UUID userActionId) {
+    return handle(reactivateUserAction(userActionId));
   }
 
   /**
@@ -805,6 +1134,31 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #register(UUID, RegistrationRequest)} method. This uses the Function and Consumer
+   * passed into the constructor to handle the ClientResponse and return either the success response or throw an
+   * exception (generally speaking).
+   *
+   * @param userId  See other method.
+   * @param request See other method.
+   * @return See other method.
+   */
+  public RegistrationResponse register$(UUID userId, RegistrationRequest request) {
+    return handle(register(userId, request));
+  }
+
+  /**
+   * Money-version of the {@link #register(RegistrationRequest)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param request See other method.
+   * @return See other method.
+   */
+  public RegistrationResponse register$(RegistrationRequest request) {
+    return handle(register(request));
+  }
+
+  /**
    * Re-sends the verification email to the user.
    *
    * @param email The email address of the user that needs a new verification email.
@@ -817,6 +1171,17 @@ public class PassportClient {
                                .urlParameter("email", email)
                                .put()
                                .go();
+  }
+
+  /**
+   * Money-version of the {@link #resendEmailVerification(String)} method. This uses the Function and Consumer passed
+   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param email See other method.
+   */
+  public void resendEmailVerification$(String email) {
+    handle(resendEmailVerification(email));
   }
 
   /**
@@ -836,6 +1201,18 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #retrieveAction(UUID)} method. This uses the Function and Consumer passed into the
+   * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
+   * speaking).
+   *
+   * @param actionId See other method.
+   * @return See other method.
+   */
+  public ActionResponse retrieveAction$(UUID actionId) {
+    return handle(retrieveAction(actionId));
+  }
+
+  /**
    * Retrieves all of the actions for the user with the given id.
    *
    * @param userId The id of the user to fetch the actions for.
@@ -849,6 +1226,18 @@ public class PassportClient {
                                       .urlParameter("userId", userId)
                                       .get()
                                       .go();
+  }
+
+  /**
+   * Money-version of the {@link #retrieveActions(UUID)} method. This uses the Function and Consumer passed into the
+   * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
+   * speaking).
+   *
+   * @param userId See other method.
+   * @return See other method.
+   */
+  public ActionResponse retrieveActions$(UUID userId) {
+    return handle(retrieveActions(userId));
   }
 
   /**
@@ -867,6 +1256,18 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #retrieveApplication(UUID)} method. This uses the Function and Consumer passed into the
+   * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
+   * speaking).
+   *
+   * @param applicationId See other method.
+   * @return See other method.
+   */
+  public ApplicationResponse retrieveApplication$(UUID applicationId) {
+    return handle(retrieveApplication(applicationId));
+  }
+
+  /**
    * Retrieves all of the applications.
    *
    * @return When successful, the response will contain all of the applications. There are no errors associated with
@@ -875,6 +1276,17 @@ public class PassportClient {
    */
   public ClientResponse<ApplicationResponse, Void> retrieveApplications() {
     return retrieveApplication(null);
+  }
+
+  /**
+   * Money-version of the {@link #retrieveApplications()} method. This uses the Function and Consumer passed into the
+   * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
+   * speaking).
+   *
+   * @return See other method.
+   */
+  public ApplicationResponse retrieveApplications$() {
+    return handle(retrieveApplications());
   }
 
   /**
@@ -900,6 +1312,20 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #retrieveDailyActiveReport(UUID, long, long)} method. This uses the Function and
+   * Consumer passed into the constructor to handle the ClientResponse and return either the success response or throw
+   * an exception (generally speaking).
+   *
+   * @param applicationId See other method.
+   * @param start         See other method.
+   * @param end           See other method.
+   * @return See other method.
+   */
+  public DailyActiveUserReportResponse retrieveDailyActiveReport$(UUID applicationId, long start, long end) {
+    return handle(retrieveDailyActiveReport(applicationId, start, end));
+  }
+
+  /**
    * Retrieves the email template for the given id. If you don't specify the id, this will return all of the email
    * templates.
    *
@@ -913,6 +1339,18 @@ public class PassportClient {
                                                  .urlSegment(emailTemplateId)
                                                  .get()
                                                  .go();
+  }
+
+  /**
+   * Money-version of the {@link #retrieveEmailTemplate(UUID)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param emailTemplateId See other method.
+   * @return See other method.
+   */
+  public EmailTemplateResponse retrieveEmailTemplate$(UUID emailTemplateId) {
+    return handle(retrieveEmailTemplate(emailTemplateId));
   }
 
   /**
@@ -934,6 +1372,18 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #retrieveEmailTemplatePreview(PreviewRequest)} method. This uses the Function and
+   * Consumer passed into the constructor to handle the ClientResponse and return either the success response or throw
+   * an exception (generally speaking).
+   *
+   * @param request See other method.
+   * @return See other method.
+   */
+  public PreviewResponse retrieveEmailTemplatePreview$(PreviewRequest request) {
+    return handle(retrieveEmailTemplatePreview(request));
+  }
+
+  /**
    * Retrieves all of the email templates.
    *
    * @return When successful, the response will contain all of the email templates. There are no errors associated with
@@ -942,6 +1392,17 @@ public class PassportClient {
    */
   public ClientResponse<EmailTemplateResponse, Void> retrieveEmailTemplates() {
     return retrieveEmailTemplate(null);
+  }
+
+  /**
+   * Money-version of the {@link #retrieveEmailTemplates()} method. This uses the Function and Consumer passed into the
+   * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
+   * speaking).
+   *
+   * @return See other method.
+   */
+  public EmailTemplateResponse retrieveEmailTemplates$() {
+    return handle(retrieveEmailTemplates());
   }
 
   /**
@@ -959,6 +1420,17 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #retrieveInactiveApplications()} method. This uses the Function and Consumer passed
+   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @return See other method.
+   */
+  public ApplicationResponse retrieveInactiveApplications$() {
+    return handle(retrieveInactiveApplications());
+  }
+
+  /**
    * Retrieves all of the user actions that are currently inactive.
    *
    * @return When successful, the response will contain all of the inactive user actions. There are no errors associated
@@ -970,6 +1442,17 @@ public class PassportClient {
                                               .urlParameter("inactive", true)
                                               .get()
                                               .go();
+  }
+
+  /**
+   * Money-version of the {@link #retrieveInactiveUserActions()} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @return See other method.
+   */
+  public UserActionResponse retrieveInactiveUserActions$() {
+    return handle(retrieveInactiveUserActions());
   }
 
   /**
@@ -991,6 +1474,20 @@ public class PassportClient {
                                            .urlParameter("applicationId", applicationId)
                                            .get()
                                            .go();
+  }
+
+  /**
+   * Money-version of the {@link #retrieveLoginReport(UUID, long, long)} method. This uses the Function and Consumer
+   * passed into the constructor to handle the ClientResponse and return either the success response or throw an
+   * exception (generally speaking).
+   *
+   * @param applicationId See other method.
+   * @param start         See other method.
+   * @param end           See other method.
+   * @return See other method.
+   */
+  public LoginReportResponse retrieveLoginReport$(UUID applicationId, long start, long end) {
+    return handle(retrieveLoginReport(applicationId, start, end));
   }
 
   /**
@@ -1017,6 +1514,20 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #retrieveMonthlyActiveReport(UUID, long, long)} method. This uses the Function and
+   * Consumer passed into the constructor to handle the ClientResponse and return either the success response or throw
+   * an exception (generally speaking).
+   *
+   * @param applicationId See other method.
+   * @param start         See other method.
+   * @param end           See other method.
+   * @return See other method.
+   */
+  public MonthlyActiveUserReportResponse retrieveMonthlyActiveReport$(UUID applicationId, long start, long end) {
+    return handle(retrieveMonthlyActiveReport(applicationId, start, end));
+  }
+
+  /**
    * Retrieves the notification server for the given id. If you pass in null for the id, this will return all the
    * notification servers.
    *
@@ -1033,6 +1544,18 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #retrieveNotificationServer(UUID)} method. This uses the Function and Consumer passed
+   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param notificationServerId See other method.
+   * @return See other method.
+   */
+  public NotificationServerResponse retrieveNotificationServer$(UUID notificationServerId) {
+    return handle(retrieveNotificationServer(notificationServerId));
+  }
+
+  /**
    * Retrieves all the notification servers.
    *
    * @return When successful, the response will contain all of the notification servers. There are no errors associated
@@ -1041,6 +1564,17 @@ public class PassportClient {
    */
   public ClientResponse<NotificationServerResponse, Void> retrieveNotificationServers() {
     return retrieveNotificationServer(null);
+  }
+
+  /**
+   * Money-version of the {@link #retrieveNotificationServers()} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @return See other method.
+   */
+  public NotificationServerResponse retrieveNotificationServers$() {
+    return handle(retrieveNotificationServers());
   }
 
   /**
@@ -1059,6 +1593,19 @@ public class PassportClient {
                                             .urlSegment(applicationId)
                                             .get()
                                             .go();
+  }
+
+  /**
+   * Money-version of the {@link #retrieveRegistration(UUID, UUID)} method. This uses the Function and Consumer passed
+   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param userId        See other method.
+   * @param applicationId See other method.
+   * @return See other method.
+   */
+  public RegistrationResponse retrieveRegistration$(UUID userId, UUID applicationId) {
+    return handle(retrieveRegistration(userId, applicationId));
   }
 
   /**
@@ -1084,6 +1631,20 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #retrieveRegistrationReport(UUID, long, long)} method. This uses the Function and
+   * Consumer passed into the constructor to handle the ClientResponse and return either the success response or throw
+   * an exception (generally speaking).
+   *
+   * @param applicationId See other method.
+   * @param start         See other method.
+   * @param end           See other method.
+   * @return See other method.
+   */
+  public RegistrationReportResponse retrieveRegistrationReport$(UUID applicationId, long start, long end) {
+    return handle(retrieveRegistrationReport(applicationId, start, end));
+  }
+
+  /**
    * Retrieves the system configuration.
    *
    * @return When successful, the response will contain the system configuration. There are no errors associated with
@@ -1094,6 +1655,17 @@ public class PassportClient {
     return startVoid(SystemConfigurationResponse.class).uri("/api/system-configuration")
                                                        .get()
                                                        .go();
+  }
+
+  /**
+   * Money-version of the {@link #retrieveSystemConfiguration()} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @return See other method.
+   */
+  public SystemConfigurationResponse retrieveSystemConfiguration$() {
+    return handle(retrieveSystemConfiguration());
   }
 
   /**
@@ -1109,6 +1681,17 @@ public class PassportClient {
     return startVoid(TotalsReportResponse.class).uri("/api/report/totals")
                                                 .get()
                                                 .go();
+  }
+
+  /**
+   * Money-version of the {@link #retrieveTotalReport()} method. This uses the Function and Consumer passed into the
+   * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
+   * speaking).
+   *
+   * @return See other method.
+   */
+  public TotalsReportResponse retrieveTotalReport$() {
+    return handle(retrieveTotalReport());
   }
 
   /**
@@ -1128,6 +1711,18 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #retrieveUser(UUID)} method. This uses the Function and Consumer passed into the
+   * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
+   * speaking).
+   *
+   * @param userId See other method.
+   * @return See other method.
+   */
+  public UserResponse retrieveUser$(UUID userId) {
+    return handle(retrieveUser(userId));
+  }
+
+  /**
    * Retrieves the user action for the given id. If you pass in null for the id, this will return all of the user
    * actions.
    *
@@ -1141,6 +1736,18 @@ public class PassportClient {
                                               .urlSegment(userActionId)
                                               .get()
                                               .go();
+  }
+
+  /**
+   * Money-version of the {@link #retrieveUserAction(UUID)} method. This uses the Function and Consumer passed into the
+   * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
+   * speaking).
+   *
+   * @param userActionId See other method.
+   * @return See other method.
+   */
+  public UserActionResponse retrieveUserAction$(UUID userActionId) {
+    return handle(retrieveUserAction(userActionId));
   }
 
   /**
@@ -1161,6 +1768,18 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #retrieveUserActionReason(UUID)} method. This uses the Function and Consumer passed
+   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param userActionReasonId See other method.
+   * @return See other method.
+   */
+  public UserActionReasonResponse retrieveUserActionReason$(UUID userActionReasonId) {
+    return handle(retrieveUserActionReason(userActionReasonId));
+  }
+
+  /**
    * Retrieves all the user action reasons.
    *
    * @return When successful, the response will contain all of the user action reasons. There are no errors associated
@@ -1172,6 +1791,17 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #retrieveUserActionReasons()} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @return See other method.
+   */
+  public UserActionReasonResponse retrieveUserActionReasons$() {
+    return handle(retrieveUserActionReasons());
+  }
+
+  /**
    * Retrieves all of the user actions.
    *
    * @return When successful, the response will contain all of the user actions. There are no errors associated with
@@ -1180,6 +1810,17 @@ public class PassportClient {
    */
   public ClientResponse<UserActionResponse, Void> retrieveUserActions() {
     return retrieveUserAction(null);
+  }
+
+  /**
+   * Money-version of the {@link #retrieveUserActions()} method. This uses the Function and Consumer passed into the
+   * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
+   * speaking).
+   *
+   * @return See other method.
+   */
+  public UserActionResponse retrieveUserActions$() {
+    return handle(retrieveUserActions());
   }
 
   /**
@@ -1199,6 +1840,18 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #retrieveUserByEmail(String)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param email See other method.
+   * @return See other method.
+   */
+  public UserResponse retrieveUserByEmail$(String email) {
+    return handle(retrieveUserByEmail(email));
+  }
+
+  /**
    * Retrieves the user for the given username.
    *
    * @param username The username of the user.
@@ -1215,6 +1868,18 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #retrieveUserByUsername(String)} method. This uses the Function and Consumer passed
+   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param username See other method.
+   * @return See other method.
+   */
+  public UserResponse retrieveUserByUsername$(String username) {
+    return handle(retrieveUserByUsername(username));
+  }
+
+  /**
    * Retrieves all of the comments for the user with the given id.
    *
    * @param userId The id of the user.
@@ -1228,6 +1893,18 @@ public class PassportClient {
                                            .urlSegment(userId)
                                            .get()
                                            .go();
+  }
+
+  /**
+   * Money-version of the {@link #retrieveUserComments(UUID)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param userId See other method.
+   * @return See other method.
+   */
+  public UserCommentResponse retrieveUserComments$(UUID userId) {
+    return handle(retrieveUserComments(userId));
   }
 
   /**
@@ -1253,6 +1930,20 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #retrieveUserLoginReport(UUID, int, Integer)} method. This uses the Function and
+   * Consumer passed into the constructor to handle the ClientResponse and return either the success response or throw
+   * an exception (generally speaking).
+   *
+   * @param userId See other method.
+   * @param offset See other method.
+   * @param limit  See other method.
+   * @return See other method.
+   */
+  public UserLoginReportResponse retrieveUserLoginReport$(UUID userId, int offset, Integer limit) {
+    return handle(retrieveUserLoginReport(userId, offset, limit));
+  }
+
+  /**
    * Searches the audit logs with the specified criteria and pagination.
    *
    * @param search The search criteria and pagination information.
@@ -1275,6 +1966,18 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #searchAuditLogs(AuditLogSearchCriteria)} method. This uses the Function and Consumer
+   * passed into the constructor to handle the ClientResponse and return either the success response or throw an
+   * exception (generally speaking).
+   *
+   * @param search See other method.
+   * @return See other method.
+   */
+  public AuditLogResponse searchAuditLogs$(AuditLogSearchCriteria search) {
+    return handle(searchAuditLogs(search));
+  }
+
+  /**
    * Retrieves the users for the given ids. If any id is invalid, it is ignored.
    *
    * @param ids The user ids to search for.
@@ -1288,6 +1991,18 @@ public class PassportClient {
                                       .urlParameter("ids", ids)
                                       .get()
                                       .go();
+  }
+
+  /**
+   * Money-version of the {@link #searchUsers(Collection)} method. This uses the Function and Consumer passed into the
+   * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
+   * speaking).
+   *
+   * @param ids See other method.
+   * @return See other method.
+   */
+  public SearchResponse searchUsers$(Collection<UUID> ids) {
+    return handle(searchUsers(ids));
   }
 
   /**
@@ -1310,6 +2025,18 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #searchUsersByQueryString(UserSearchCriteria)} method. This uses the Function and
+   * Consumer passed into the constructor to handle the ClientResponse and return either the success response or throw
+   * an exception (generally speaking).
+   *
+   * @param search See other method.
+   * @return See other method.
+   */
+  public UserResponse searchUsersByQueryString$(UserSearchCriteria search) {
+    return handle(searchUsersByQueryString(search));
+  }
+
+  /**
    * Send an email using an email template id. You can optionally provide <code>requestData</code> to access key value
    * pairs in the email template.
    *
@@ -1329,6 +2056,19 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #sendEmail(UUID, SendRequest)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param emailTemplateId See other method.
+   * @param request         See other method.
+   * @return See other method.
+   */
+  public SendResponse sendEmail$(UUID emailTemplateId, SendRequest request) {
+    return handle(sendEmail(emailTemplateId, request));
+  }
+
+  /**
    * Updates the application with the given id.
    *
    * @param applicationId The id of the application to update.
@@ -1344,6 +2084,19 @@ public class PassportClient {
                                            .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                            .put()
                                            .go();
+  }
+
+  /**
+   * Money-version of the {@link #updateApplication(UUID, ApplicationRequest)} method. This uses the Function and
+   * Consumer passed into the constructor to handle the ClientResponse and return either the success response or throw
+   * an exception (generally speaking).
+   *
+   * @param applicationId See other method.
+   * @param request       See other method.
+   * @return See other method.
+   */
+  public ApplicationResponse updateApplication$(UUID applicationId, ApplicationRequest request) {
+    return handle(updateApplication(applicationId, request));
   }
 
   /**
@@ -1369,6 +2122,20 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #updateApplicationRole(UUID, UUID, ApplicationRequest)} method. This uses the Function
+   * and Consumer passed into the constructor to handle the ClientResponse and return either the success response or
+   * throw an exception (generally speaking).
+   *
+   * @param applicationId See other method.
+   * @param roleId        See other method.
+   * @param request       See other method.
+   * @return See other method.
+   */
+  public ApplicationResponse updateApplicationRole$(UUID applicationId, UUID roleId, ApplicationRequest request) {
+    return handle(updateApplicationRole(applicationId, roleId, request));
+  }
+
+  /**
    * Updates the email template with the given id.
    *
    * @param emailTemplateId The id of the email template to update.
@@ -1385,6 +2152,19 @@ public class PassportClient {
                                              .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                              .put()
                                              .go();
+  }
+
+  /**
+   * Money-version of the {@link #updateEmailTemplate(UUID, EmailTemplateRequest)} method. This uses the Function and
+   * Consumer passed into the constructor to handle the ClientResponse and return either the success response or throw
+   * an exception (generally speaking).
+   *
+   * @param emailTemplateId See other method.
+   * @param request         See other method.
+   * @return See other method.
+   */
+  public EmailTemplateResponse updateEmailTemplate$(UUID emailTemplateId, EmailTemplateRequest request) {
+    return handle(updateEmailTemplate(emailTemplateId, request));
   }
 
   /**
@@ -1407,6 +2187,20 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #updateNotificationServer(UUID, NotificationServerRequest)} method. This uses the
+   * Function and Consumer passed into the constructor to handle the ClientResponse and return either the success
+   * response or throw an exception (generally speaking).
+   *
+   * @param notificationServerId See other method.
+   * @param request              See other method.
+   * @return See other method.
+   */
+  public NotificationServerResponse updateNotificationServer$(UUID notificationServerId,
+                                                              NotificationServerRequest request) {
+    return handle(updateNotificationServer(notificationServerId, request));
+  }
+
+  /**
    * Updates the registration for the user with the given id and the application defined in the request.
    *
    * @param userId  The id of the user whose registration is going to be updated.
@@ -1423,6 +2217,19 @@ public class PassportClient {
                                             .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                             .put()
                                             .go();
+  }
+
+  /**
+   * Money-version of the {@link #updateRegistration(UUID, RegistrationRequest)} method. This uses the Function and
+   * Consumer passed into the constructor to handle the ClientResponse and return either the success response or throw
+   * an exception (generally speaking).
+   *
+   * @param userId  See other method.
+   * @param request See other method.
+   * @return See other method.
+   */
+  public RegistrationResponse updateRegistration$(UUID userId, RegistrationRequest request) {
+    return handle(updateRegistration(userId, request));
   }
 
   /**
@@ -1443,6 +2250,18 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #updateSystemConfiguration(SystemConfigurationRequest)} method. This uses the Function
+   * and Consumer passed into the constructor to handle the ClientResponse and return either the success response or
+   * throw an exception (generally speaking).
+   *
+   * @param request See other method.
+   * @return See other method.
+   */
+  public SystemConfigurationResponse updateSystemConfiguration$(SystemConfigurationRequest request) {
+    return handle(updateSystemConfiguration(request));
+  }
+
+  /**
    * Updates the user with the given id.
    *
    * @param userId  The id of the user to update.
@@ -1460,6 +2279,19 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #updateUser(UUID, UserRequest)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param userId  See other method.
+   * @param request See other method.
+   * @return See other method.
+   */
+  public UserResponse updateUser$(UUID userId, UserRequest request) {
+    return handle(updateUser(userId, request));
+  }
+
+  /**
    * Updates the user action with the given id.
    *
    * @param userActionId The id of the user action to update.
@@ -1474,6 +2306,19 @@ public class PassportClient {
                                           .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                           .put()
                                           .go();
+  }
+
+  /**
+   * Money-version of the {@link #updateUserAction(UUID, UserActionRequest)} method. This uses the Function and Consumer
+   * passed into the constructor to handle the ClientResponse and return either the success response or throw an
+   * exception (generally speaking).
+   *
+   * @param userActionId See other method.
+   * @param request      See other method.
+   * @return See other method.
+   */
+  public UserActionResponse updateUserAction$(UUID userActionId, UserActionRequest request) {
+    return handle(updateUserAction(userActionId, request));
   }
 
   /**
@@ -1496,6 +2341,19 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #updateUserActionReason(UUID, UserActionReasonRequest)} method. This uses the Function
+   * and Consumer passed into the constructor to handle the ClientResponse and return either the success response or
+   * throw an exception (generally speaking).
+   *
+   * @param userActionReasonId See other method.
+   * @param request            See other method.
+   * @return See other method.
+   */
+  public UserActionReasonResponse updateUserActionReason$(UUID userActionReasonId, UserActionReasonRequest request) {
+    return handle(updateUserActionReason(userActionReasonId, request));
+  }
+
+  /**
    * Confirms a email verification. The id given is usually from an email sent to the user.
    *
    * @param verificationId The verification id sent to the user.
@@ -1508,6 +2366,17 @@ public class PassportClient {
                                .urlSegment(verificationId)
                                .post()
                                .go();
+  }
+
+  /**
+   * Money-version of the {@link #verifyEmail(String)} method. This uses the Function and Consumer passed into the
+   * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
+   * speaking).
+   *
+   * @param verificationId See other method.
+   */
+  public void verifyEmail$(String verificationId) {
+    handle(verifyEmail(verificationId));
   }
 
   /**
@@ -1524,6 +2393,30 @@ public class PassportClient {
                            .bodyHandler(new JSONBodyHandler(request, objectMapper))
                            .post()
                            .go();
+  }
+
+  /**
+   * Money-version of the {@link #verifyTwoFactor(TwoFactorRequest)} method. This uses the Function and Consumer passed
+   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param request See other method.
+   */
+  public void verifyTwoFactor$(TwoFactorRequest request) {
+    handle(verifyTwoFactor(request));
+  }
+
+  private <T, U> T handle(ClientResponse<T, U> response) {
+    Objects.requireNonNull(successFunction, "You can't use the money-methods unless you supply a success Function and error Consumer");
+    Objects.requireNonNull(errorConsumer, "You can't use the money-methods unless you supply a success Function and error Consumer");
+
+    if (response.wasSuccessful()) {
+      return (T) successFunction.apply(response);
+    } else {
+      errorConsumer.accept(response);
+    }
+
+    return null;
   }
 
   private <T> RESTClient<T, Errors> start(Class<T> type) {
