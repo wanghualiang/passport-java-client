@@ -873,6 +873,11 @@ public class PassportClient {
     return handle(forgotPassword(request));
   }
 
+  public PassportClient handleClientResponseWith(Function<ClientResponse<?, ?>, ?> successFunction,
+                                                 Consumer<ClientResponse<?, ?>> errorConsumer) {
+    return new PassportClient(apiKey, baseURL, successFunction, errorConsumer);
+  }
+
   /**
    * Bulk imports multiple users. This does some validation, but then tries to run batch inserts of users. This reduces
    * latency when inserting lots of users. Therefore, the error response might contain some information about failures,
