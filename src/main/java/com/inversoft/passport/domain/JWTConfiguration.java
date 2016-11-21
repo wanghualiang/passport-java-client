@@ -34,6 +34,8 @@ public class JWTConfiguration implements Buildable<JWTConfiguration> {
    */
   public boolean enabled;
 
+  public String issuer;
+
   public String privateKey;
 
   public String publicKey;
@@ -59,6 +61,7 @@ public class JWTConfiguration implements Buildable<JWTConfiguration> {
     JWTConfiguration that = (JWTConfiguration) o;
     return Objects.equals(algorithm, that.algorithm) &&
         Objects.equals(enabled, that.enabled) &&
+        Objects.equals(issuer, that.issuer) &&
         Objects.equals(privateKey, that.privateKey) &&
         Objects.equals(publicKey, that.publicKey) &&
         Objects.equals(secret, that.secret) &&
@@ -67,7 +70,7 @@ public class JWTConfiguration implements Buildable<JWTConfiguration> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(algorithm, enabled, privateKey, publicKey, secret, timeToLiveInSeconds);
+    return Objects.hash(algorithm, enabled, issuer, privateKey, publicKey, secret, timeToLiveInSeconds);
   }
 
   public void normalize() {
