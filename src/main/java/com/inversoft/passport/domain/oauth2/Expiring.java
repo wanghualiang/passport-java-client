@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public interface Expiring {
 
   /**
-   * Return true if the token is expired.
-   *
-   * @return
+   * @return true if the token is expired.
    */
   @JsonIgnore
   boolean isExpired();

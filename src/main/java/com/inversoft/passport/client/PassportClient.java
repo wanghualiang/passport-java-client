@@ -2008,8 +2008,8 @@ public class PassportClient {
   /**
    * Retrieves the users for the given search criteria and pagination.
    *
-   * @param search The search criteria and pagination constraints. Fields used: queryString, numberOfResults, and
-   *               startRow
+   * @param search The search criteria and pagination constraints. Fields used: queryString, numberOfResults, startRow,
+   *               sort fields and sort order
    * @return When successful, the response will contain the users that match the search criteria and pagination
    * constraints. If there was a validation error or any other type of error, this will return the Errors object in the
    * response. Additionally, if Passport could not be contacted because it is down or experiencing a failure, the
@@ -2020,6 +2020,8 @@ public class PassportClient {
                                     .urlParameter("queryString", search.queryString)
                                     .urlParameter("numberOfResults", search.numberOfResults)
                                     .urlParameter("startRow", search.startRow)
+                                    .urlParameter("sortFields.fields", search.sortFields)
+                                    .urlParameter("sortFields.order", search.sort)
                                     .get()
                                     .go();
   }

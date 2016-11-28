@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,13 @@
 package com.inversoft.passport.domain.oauth2;
 
 /**
- * <ul> <li>Bearer Token type as defined by <a href="https://tools.ietf.org/html/rfc6750">RFC 6750</a>.</li> <li>MAC
- * Token type as referenced by <a href="https://tools.ietf.org/html/rfc6749">RFC 6749</a> and <a
- * href="https://tools.ietf.org/html/draft-ietf-oauth-v2-http-mac-05">Draft RFC on OAuth 2.0 Message Authentication Code
- * (MAC) Tokens</a></li> </ul>
+ * <ul>
+ * <li>Bearer Token type as defined by <a href="https://tools.ietf.org/html/rfc6750">RFC 6750</a>.</li>
+ * <li>MAC Token type as referenced by <a href="https://tools.ietf.org/html/rfc6749">RFC 6749</a> and
+ * <a href="https://tools.ietf.org/html/draft-ietf-oauth-v2-http-mac-05">
+ * Draft RFC on OAuth 2.0 Message Authentication Code (MAC) Tokens</a>
+ * </li>
+ * </ul>
  *
  * @author Daniel DeGroff
  */

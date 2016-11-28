@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,10 @@
 package com.inversoft.passport.domain.search;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -39,6 +43,8 @@ public class UserSearchCriteria extends BaseSearchCriteria {
   public String queryString;
 
   public Sort sort = Sort.asc;
+
+  public List<String> sortFields = new ArrayList<>(Collections.singletonList("user.email"));
 
   public ZonedDateTime toLastLoginInstant;
 
@@ -110,6 +116,17 @@ public class UserSearchCriteria extends BaseSearchCriteria {
   }
 
   /**
+   * The fields used to sort the results.
+   *
+   * @param sortFields The name of the fields to sort on.
+   * @return this
+   */
+  public UserSearchCriteria withSortFields(String... sortFields) {
+    this.sortFields = new ArrayList<>(Arrays.asList(sortFields));
+    return this;
+  }
+
+  /**
    * Last login to
    *
    * @param toLastLoginInstant last login from...
@@ -129,13 +146,5 @@ public class UserSearchCriteria extends BaseSearchCriteria {
   public UserSearchCriteria withUsername(String username) {
     this.username = username;
     return this;
-  }
-
-  /**
-   * Enum for sorting results
-   */
-  public enum Sort {
-    asc,
-    desc
   }
 }
