@@ -34,12 +34,24 @@ public class JWTConfiguration implements Buildable<JWTConfiguration> {
    */
   public boolean enabled;
 
+  /**
+   * The Issuer of the JWT.
+   */
   public String issuer;
 
+  /**
+   * RSA Private Key used for RSA algorithms.
+   */
   public String privateKey;
 
+  /**
+   * RSA Public Key used for RSA algorithms.
+   */
   public String publicKey;
 
+  /**
+   * HMAC Secret used for HMAC algorithms.
+   */
   public String secret;
 
   /**
