@@ -126,6 +126,8 @@ public class Application implements Buildable<Application> {
 
     if (configuration.jwtConfiguration != null) {
       configuration.jwtConfiguration.normalize();
+      // issuer only applies to the global JWT configuration.
+      configuration.jwtConfiguration.issuer = null;
     }
 
     roles.forEach(ApplicationRole::normalize);
