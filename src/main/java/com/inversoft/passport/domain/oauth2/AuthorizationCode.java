@@ -16,6 +16,7 @@
 package com.inversoft.passport.domain.oauth2;
 
 import java.net.URI;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -32,6 +33,8 @@ public class AuthorizationCode implements Expiring {
 
   public ZonedDateTime createInstant;
 
+  public String encodedJWT;
+
   public ZonedDateTime expiresInstant;
 
   public URI redirectURI;
@@ -39,10 +42,11 @@ public class AuthorizationCode implements Expiring {
   public User user;
 
   public AuthorizationCode(String clientId, String code, ZonedDateTime createInstant, ZonedDateTime expiresInstant,
-                           URI redirectURI, User user) {
+                           URI redirectURI, User user, String encodedJWT) {
     this.clientId = clientId;
     this.code = code;
     this.createInstant = createInstant;
+    this.encodedJWT = encodedJWT;
     this.expiresInstant = expiresInstant;
     this.redirectURI = redirectURI;
     this.user = user;
@@ -60,6 +64,7 @@ public class AuthorizationCode implements Expiring {
     return Objects.equals(clientId, that.clientId) &&
         Objects.equals(code, that.code) &&
         Objects.equals(createInstant, that.createInstant) &&
+        Objects.equals(encodedJWT, that.encodedJWT) &&
         Objects.equals(expiresInstant, that.expiresInstant) &&
         Objects.equals(redirectURI, that.redirectURI) &&
         Objects.equals(user, that.user);
@@ -67,12 +72,12 @@ public class AuthorizationCode implements Expiring {
 
   @Override
   public int hashCode() {
-    return Objects.hash(clientId, code, createInstant, expiresInstant, redirectURI, user);
+    return Objects.hash(clientId, code, createInstant, encodedJWT, expiresInstant, redirectURI, user);
   }
 
   @Override
   public boolean isExpired() {
-    return ZonedDateTime.now().isAfter(expiresInstant);
+    return ZonedDateTime.now(ZoneOffset.UTC).isAfter(expiresInstant);
   }
 
   @Override
