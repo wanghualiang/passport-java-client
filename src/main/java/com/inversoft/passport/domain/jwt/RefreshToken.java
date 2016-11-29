@@ -3,6 +3,7 @@
  */
 package com.inversoft.passport.domain.jwt;
 
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -19,6 +20,8 @@ public class RefreshToken implements Buildable<RefreshToken> {
   public UUID applicationId;
 
   public String device;
+
+  public ZonedDateTime insertInstant;
 
   public MetaData metaData = new MetaData();
 
@@ -37,6 +40,7 @@ public class RefreshToken implements Buildable<RefreshToken> {
     RefreshToken that = (RefreshToken) o;
     return Objects.equals(applicationId, that.applicationId) &&
         Objects.equals(device, that.device) &&
+        Objects.equals(insertInstant, that.insertInstant) &&
         Objects.equals(metaData, that.metaData) &&
         Objects.equals(token, that.token) &&
         Objects.equals(userId, that.userId);
@@ -44,7 +48,7 @@ public class RefreshToken implements Buildable<RefreshToken> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(applicationId, device, metaData, token, userId);
+    return Objects.hash(applicationId, device, insertInstant, metaData, token, userId);
   }
 
   @Override

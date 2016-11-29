@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package com.inversoft.passport.domain.oauth2;
 
 
 import java.net.URI;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -70,7 +71,7 @@ public class AccessToken implements Expiring, OAuthResponse {
 
   public AccessToken(String token, String clientId, int expiresIn, URI redirectURI, TokenType tokenType, UUID userId) {
     this.clientId = clientId;
-    this.createInstant = ZonedDateTime.now();
+    this.createInstant = ZonedDateTime.now(ZoneOffset.UTC);
     this.expiresIn = expiresIn;
     this.expiresInstant = this.createInstant.plusSeconds(expiresIn);
     this.redirectURI = redirectURI;
@@ -105,7 +106,7 @@ public class AccessToken implements Expiring, OAuthResponse {
 
   @Override
   public boolean isExpired() {
-    return ZonedDateTime.now().isAfter(expiresInstant);
+    return ZonedDateTime.now(ZoneOffset.UTC).isAfter(expiresInstant);
   }
 
   @Override

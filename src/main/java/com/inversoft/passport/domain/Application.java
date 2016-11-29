@@ -126,8 +126,9 @@ public class Application implements Buildable<Application> {
 
     if (configuration.jwtConfiguration != null) {
       configuration.jwtConfiguration.normalize();
-      // issuer only applies to the global JWT configuration.
+      // issuer and refresh token TTL only applies to the global JWT configuration.
       configuration.jwtConfiguration.issuer = null;
+      configuration.jwtConfiguration.refreshTokenTimeToLiveInMinutes = 0;
     }
 
     roles.forEach(ApplicationRole::normalize);

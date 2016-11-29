@@ -50,6 +50,12 @@ public class JWTConfiguration implements Buildable<JWTConfiguration> {
   public String publicKey;
 
   /**
+   * The length of time in minutes a Refresh Token is valid from the time it was issued. This should be a non-zero
+   * value.
+   */
+  public int refreshTokenTimeToLiveInMinutes;
+
+  /**
    * HMAC Secret used for HMAC algorithms.
    */
   public String secret;
@@ -76,13 +82,14 @@ public class JWTConfiguration implements Buildable<JWTConfiguration> {
         Objects.equals(issuer, that.issuer) &&
         Objects.equals(privateKey, that.privateKey) &&
         Objects.equals(publicKey, that.publicKey) &&
+        Objects.equals(refreshTokenTimeToLiveInMinutes, that.refreshTokenTimeToLiveInMinutes) &&
         Objects.equals(secret, that.secret) &&
         Objects.equals(timeToLiveInSeconds, that.timeToLiveInSeconds);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(algorithm, enabled, issuer, privateKey, publicKey, secret, timeToLiveInSeconds);
+    return Objects.hash(algorithm, enabled, issuer, privateKey, publicKey, refreshTokenTimeToLiveInMinutes, secret, timeToLiveInSeconds);
   }
 
   public void normalize() {
