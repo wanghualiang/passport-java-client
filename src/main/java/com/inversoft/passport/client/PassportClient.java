@@ -1578,6 +1578,15 @@ public class PassportClient {
     return handle(retrieveNotificationServers());
   }
 
+  /**
+   * Retrieves the refresh tokens that belong to the user with the given id.
+   *
+   * @param userId The id of the user.
+   * @return When successful, the response will contain the refresh token objects. If there was a validation error or
+   * any other type of error, this will return the Errors object in the response. Additionally, if Passport could not be
+   * contacted because it is down or experiencing a failure, the response will contain an Exception, which could be an
+   * IOException.
+   */
   public ClientResponse<RefreshResponse, Errors> retrieveRefreshTokens(UUID userId) {
     return start(RefreshResponse.class).uri("/api/jwt/refresh")
                                        .urlParameter("userId", userId)
@@ -1585,6 +1594,13 @@ public class PassportClient {
                                        .go();
   }
 
+  /**
+   * Money-version of the {@link #retrieveRefreshTokens(UUID)}  method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @return See other method.
+   */
   public RefreshResponse retrieveRefreshTokens$(UUID userId) {
     return handle(retrieveRefreshTokens(userId));
   }
