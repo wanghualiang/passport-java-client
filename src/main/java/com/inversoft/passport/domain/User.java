@@ -18,6 +18,7 @@ package com.inversoft.passport.domain;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -177,6 +178,15 @@ public class User implements Buildable<User> {
         Objects.equals(verified, user.verified);
   }
 
+  @JsonIgnore
+  public int getAge() {
+    if (birthDate == null) {
+      return -1;
+    }
+
+    return (int) birthDate.until(LocalDate.now(), ChronoUnit.YEARS);
+  }
+
   public List<UUID> getChildIds() {
     return childIds;
   }
@@ -193,7 +203,7 @@ public class User implements Buildable<User> {
   }
 
   /**
-   * Used in UI for mobile
+   * @return return a single identity value preferring email over username.
    */
   @JsonIgnore
   public String getLogin() {

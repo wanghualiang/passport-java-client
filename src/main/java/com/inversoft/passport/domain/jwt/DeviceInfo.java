@@ -52,6 +52,7 @@ public class DeviceInfo implements Buildable<DeviceInfo> {
   }
 
   public enum Type {
+    BROWSER,
     DESKTOP,
     LAPTOP,
     MOBILE,

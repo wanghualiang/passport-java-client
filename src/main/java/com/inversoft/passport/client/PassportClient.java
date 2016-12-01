@@ -54,6 +54,7 @@ import com.inversoft.passport.domain.api.UserRequest;
 import com.inversoft.passport.domain.api.UserResponse;
 import com.inversoft.passport.domain.api.email.SendRequest;
 import com.inversoft.passport.domain.api.email.SendResponse;
+import com.inversoft.passport.domain.api.jwt.RefreshResponse;
 import com.inversoft.passport.domain.api.report.DailyActiveUserReportResponse;
 import com.inversoft.passport.domain.api.report.LoginReportResponse;
 import com.inversoft.passport.domain.api.report.MonthlyActiveUserReportResponse;
@@ -1575,6 +1576,17 @@ public class PassportClient {
    */
   public NotificationServerResponse retrieveNotificationServers$() {
     return handle(retrieveNotificationServers());
+  }
+
+  public ClientResponse<RefreshResponse, Errors> retrieveRefreshTokens(UUID userId) {
+    return start(RefreshResponse.class).uri("/api/jwt/refresh")
+                                       .urlParameter("userId", userId)
+                                       .get()
+                                       .go();
+  }
+
+  public RefreshResponse retrieveRefreshTokens$(UUID userId) {
+    return handle(retrieveRefreshTokens(userId));
   }
 
   /**

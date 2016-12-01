@@ -7,7 +7,9 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.inversoft.json.ToString;
+import com.inversoft.passport.domain.Application;
 import com.inversoft.passport.domain.Buildable;
 
 /**
@@ -16,6 +18,9 @@ import com.inversoft.passport.domain.Buildable;
  * @author Daniel DeGroff
  */
 public class RefreshToken implements Buildable<RefreshToken> {
+
+  @JsonIgnore
+  public Application application;
 
   public UUID applicationId;
 
