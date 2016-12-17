@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.inversoft.json.ToString;
 import static com.inversoft.passport.domain.util.Normalizer.removeEmpty;
 import static com.inversoft.passport.domain.util.Normalizer.trim;
@@ -27,6 +28,8 @@ import static com.inversoft.passport.domain.util.Normalizer.trim;
 /**
  * @author Daniel DeGroff
  */
+// Ignore grantType, it is deprecated it may still exist in the database.
+@JsonIgnoreProperties({"grantType"})
 public class OAuth2Configuration {
   public List<URI> authorizedOriginURLs = new ArrayList<>();
 
@@ -41,8 +44,6 @@ public class OAuth2Configuration {
    * exchange for an access token. <p>Must be less than or equal to 600 seconds - or 10 minutes.</p>
    */
   public int codeExpiresInSeconds = 30;
-
-  public GrantType grantType = GrantType.Authorization;
 
   /**
    * Logout redirect URL when calling the <code>/oauth2/logout</code> endpoint. If this is left null,
@@ -78,14 +79,13 @@ public class OAuth2Configuration {
         Objects.equals(clientId, that.clientId) &&
         Objects.equals(clientSecret, that.clientSecret) &&
         Objects.equals(codeExpiresInSeconds, that.codeExpiresInSeconds) &&
-        Objects.equals(grantType, that.grantType) &&
         Objects.equals(logoutURL, that.logoutURL) &&
         Objects.equals(tokenExpiresInSeconds, that.tokenExpiresInSeconds);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(authorizedOriginURLs, authorizedRedirectURLs, clientId, clientSecret, codeExpiresInSeconds, grantType,
+    return Objects.hash(authorizedOriginURLs, authorizedRedirectURLs, clientId, clientSecret, codeExpiresInSeconds,
         logoutURL, tokenExpiresInSeconds);
   }
 

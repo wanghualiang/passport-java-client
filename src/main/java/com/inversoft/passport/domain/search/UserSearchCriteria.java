@@ -18,7 +18,6 @@ package com.inversoft.passport.domain.search;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,7 +43,7 @@ public class UserSearchCriteria extends BaseSearchCriteria {
 
   public Sort sort = Sort.asc;
 
-  public List<String> sortFields = new ArrayList<>(Collections.singletonList("user.email"));
+  public List<String> sortFields = new ArrayList<>(Arrays.asList("user.email", "user.username"));
 
   public ZonedDateTime toLastLoginInstant;
 

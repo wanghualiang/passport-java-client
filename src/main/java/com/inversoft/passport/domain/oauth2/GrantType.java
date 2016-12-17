@@ -25,6 +25,6 @@ public enum GrantType {
   Authorization,
   Implicit,
   Resource_Owner_Credentials,
-  Client_Credentials,
-  Password
+  Client_Credentials
 }
+
