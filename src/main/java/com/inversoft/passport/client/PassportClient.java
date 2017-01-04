@@ -323,7 +323,7 @@ public class PassportClient {
    */
   public ClientResponse<Void, Errors> createAuditLog(String message, String insertUser) {
     return start(Void.TYPE).uri("/api/system/audit-log")
-                           .bodyHandler(new JSONBodyHandler(new AuditLogRequest(new AuditLog(null, insertUser, message))))
+                           .bodyHandler(new JSONBodyHandler(new AuditLogRequest(new AuditLog(insertUser, message))))
                            .post()
                            .go();
   }
