@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -67,6 +66,8 @@ public class User implements Buildable<User> {
   public UUID id;
 
   public URI imageUrl;
+
+  public ZonedDateTime insertInstant;
 
   public ZonedDateTime lastLoginInstant;
 
@@ -159,6 +160,7 @@ public class User implements Buildable<User> {
         Objects.equals(firstName, user.firstName) &&
         Objects.equals(fullName, user.fullName) &&
         Objects.equals(imageUrl, user.imageUrl) &&
+        Objects.equals(insertInstant, user.insertInstant) &&
         Objects.equals(lastLoginInstant, user.lastLoginInstant) &&
         Objects.equals(lastName, user.lastName) &&
         Objects.equals(middleName, user.middleName) &&
@@ -192,14 +194,11 @@ public class User implements Buildable<User> {
   }
 
   public UserData getDataForApplication(UUID id) {
-    Optional<UserRegistration> registration = getRegistrations().stream()
-                                                                .filter((reg) -> reg.applicationId.equals(id))
-                                                                .findFirst();
-    if (registration.isPresent()) {
-      return registration.get().data;
-    }
-
-    return null;
+    return getRegistrations().stream()
+                             .filter((reg) -> reg.applicationId.equals(id))
+                             .findFirst()
+                             .map(userRegistration -> userRegistration.data)
+                             .orElse(null);
   }
 
   /**
@@ -228,14 +227,10 @@ public class User implements Buildable<User> {
   }
 
   public UserRegistration getRegistrationForApplication(UUID id) {
-    Optional<UserRegistration> registration = getRegistrations().stream()
-                                                                .filter((reg) -> reg.applicationId.equals(id))
-                                                                .findFirst();
-    if (registration.isPresent()) {
-      return registration.get();
-    }
-
-    return null;
+    return getRegistrations().stream()
+                             .filter((reg) -> reg.applicationId.equals(id))
+                             .findFirst()
+                             .orElse(null);
   }
 
   public List<UserRegistration> getRegistrations() {
@@ -243,14 +238,11 @@ public class User implements Buildable<User> {
   }
 
   public Set<String> getRoleNamesForApplication(UUID id) {
-    Optional<UserRegistration> registration = getRegistrations().stream()
-                                                                .filter((reg) -> reg.applicationId.equals(id))
-                                                                .findFirst();
-    if (registration.isPresent()) {
-      return registration.get().roles;
-    }
-
-    return null;
+    return getRegistrations().stream()
+                             .filter((reg) -> reg.applicationId.equals(id))
+                             .findFirst()
+                             .map(registration -> registration.roles)
+                             .orElse(null);
   }
 
   /**
@@ -275,7 +267,7 @@ public class User implements Buildable<User> {
   @Override
   public int hashCode() {
     return Objects.hash(active, birthDate, childIds, cleanSpeakId, parentalConsentType, data, email, encryptionScheme, expiry,
-        factor, firstName, fullName, imageUrl, lastLoginInstant, lastName, middleName, mobilePhone, parentId, password,
+        factor, firstName, fullName, imageUrl, insertInstant, lastLoginInstant, lastName, middleName, mobilePhone, parentId, password,
         passwordChangeRequired, passwordLastUpdateInstant, registrations, salt, timezone, twoFactorSecret, username,
         usernameStatus, verificationId, verificationIdCreateInstant, verified);
   }
