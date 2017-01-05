@@ -29,7 +29,7 @@ import com.inversoft.json.ToString;
  * @author Brian Pontarelli
  */
 public class SystemConfiguration implements Buildable<SystemConfiguration> {
-  public CleanSpeakConfiguration cleanSpeakConfiguration;
+  public CleanSpeakConfiguration cleanSpeakConfiguration = new CleanSpeakConfiguration();
 
   @JsonIgnore
   public SystemConfigurationData configuration = new SystemConfigurationData();
