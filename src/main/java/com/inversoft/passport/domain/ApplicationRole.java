@@ -37,20 +37,24 @@ public class ApplicationRole implements Comparable<ApplicationRole>, Buildable<A
 
   public boolean isDefault;
 
+  public boolean isSuperRole;
+
   public String name;
 
   public ApplicationRole() {
   }
 
   public ApplicationRole(String roleName) {
-    this(null, null, roleName, false, null);
+    this(null, null, roleName, false, false, null);
   }
 
-  public ApplicationRole(UUID id, UUID applicationId, String roleName, boolean isDefault, String description) {
+  public ApplicationRole(UUID id, UUID applicationId, String roleName, boolean isDefault, boolean isSuperRole,
+                         String description) {
     this.id = id;
     this.applicationId = applicationId;
     this.name = roleName;
     this.isDefault = isDefault;
+    this.isSuperRole = isSuperRole;
     this.description = description;
   }
 
@@ -69,14 +73,20 @@ public class ApplicationRole implements Comparable<ApplicationRole>, Buildable<A
     }
     ApplicationRole that = (ApplicationRole) o;
     return Objects.equals(isDefault, that.isDefault) &&
+        Objects.equals(isSuperRole, that.isSuperRole) &&
         Objects.equals(applicationId, that.applicationId) &&
         Objects.equals(description, that.description) &&
         Objects.equals(name, that.name);
   }
 
+  @JsonIgnore
+  public String getDisplay() {
+    return description != null ? description + " (" + name + ")" : name;
+  }
+
   @Override
   public int hashCode() {
-    return Objects.hash(applicationId, description, isDefault, name);
+    return Objects.hash(applicationId, description, isDefault, isSuperRole, name);
   }
 
   public void normalize() {

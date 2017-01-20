@@ -238,11 +238,8 @@ public class User implements Buildable<User> {
   }
 
   public Set<String> getRoleNamesForApplication(UUID id) {
-    return getRegistrations().stream()
-                             .filter((reg) -> reg.applicationId.equals(id))
-                             .findFirst()
-                             .map(registration -> registration.roles)
-                             .orElse(null);
+    UserRegistration registration = getRegistrationForApplication(id);
+    return registration != null ? registration.roles : null;
   }
 
   /**
