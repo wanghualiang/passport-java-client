@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2016-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ public class JWTConfiguration implements Buildable<JWTConfiguration> {
    * The length of time in minutes a Refresh Token is valid from the time it was issued. This should be a non-zero
    * value.
    */
-  public int refreshTokenTimeToLiveInMinutes;
+  public Integer refreshTokenTimeToLiveInMinutes;
 
   /**
    * HMAC Secret used for HMAC algorithms.
