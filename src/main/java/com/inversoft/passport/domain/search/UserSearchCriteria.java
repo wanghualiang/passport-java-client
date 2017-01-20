@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,9 +41,7 @@ public class UserSearchCriteria extends BaseSearchCriteria {
 
   public String queryString;
 
-  public Sort sort = Sort.asc;
-
-  public List<String> sortFields = new ArrayList<>(Arrays.asList("user.email", "user.username"));
+  public List<SortField> sortFields = new ArrayList<>(Arrays.asList(new SortField("user.email"), new SortField("user.username")));
 
   public ZonedDateTime toLastLoginInstant;
 
@@ -51,99 +49,5 @@ public class UserSearchCriteria extends BaseSearchCriteria {
 
   @Override
   public void prepare() {
-    // No-op
-  }
-
-  /**
-   * Specifies the sort
-   *
-   * @param sort the sort. Default is ASC
-   * @return this
-   */
-  public UserSearchCriteria sort(Sort sort) {
-    this.sort = sort;
-    return this;
-  }
-
-  /**
-   * The email to query. This is a lower case full match.
-   *
-   * @param email The email.
-   * @return This query.
-   */
-  public UserSearchCriteria withEmail(String email) {
-    this.email = email;
-    return this;
-  }
-
-  /**
-   * Last login from..
-   *
-   * @param fromLastLoginInstant last login from...
-   * @return this
-   */
-  public UserSearchCriteria withFromLastLoginInstant(ZonedDateTime fromLastLoginInstant) {
-    this.fromLastLoginInstant = fromLastLoginInstant;
-    return this;
-  }
-
-  /**
-   * The id to query.
-   *
-   * @param uuid The id of the user.
-   * @return This query.
-   */
-  public UserSearchCriteria withId(UUID uuid) {
-    this.id = uuid;
-    return this;
-  }
-
-  public UserSearchCriteria withName(String name) {
-    this.fullName = name;
-    return this;
-  }
-
-  /**
-   * The number of results to display
-   *
-   * @param numberOfResults the number of results
-   * @return this
-   */
-  public UserSearchCriteria withNumberOfResults(int numberOfResults) {
-    this.numberOfResults = numberOfResults;
-    return this;
-  }
-
-  /**
-   * The fields used to sort the results.
-   *
-   * @param sortFields The name of the fields to sort on.
-   * @return this
-   */
-  public UserSearchCriteria withSortFields(String... sortFields) {
-    this.sortFields = new ArrayList<>(Arrays.asList(sortFields));
-    return this;
-  }
-
-  /**
-   * Last login to
-   *
-   * @param toLastLoginInstant last login from...
-   * @return this
-   */
-  public UserSearchCriteria withToLastLoginInstant(ZonedDateTime toLastLoginInstant) {
-    this.toLastLoginInstant = toLastLoginInstant;
-    return this;
-  }
-
-  /**
-   * The username to query. This is a lower case full match.
-   *
-   * @param username The username.
-   * @return This query.
-   */
-  public UserSearchCriteria withUsername(String username) {
-    this.username = username;
-    return this;
   }
 }

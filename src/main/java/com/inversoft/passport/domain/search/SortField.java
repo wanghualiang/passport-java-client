@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2016-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,12 @@
 package com.inversoft.passport.domain.search;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.inversoft.json.ToString;
 
 /**
  * @author Daniel DeGroff
  */
-public class SortFields {
-
-  public List<String> fields = new ArrayList<>(1);
+public class SortField {
 
   /**
    * Sets the value when a field is missing. Can also be set to <code>_last</code> or
@@ -35,9 +30,27 @@ public class SortFields {
   public String missing = "_last";
 
   /**
+   * Field name.
+   */
+  public String name;
+
+  /**
    * Sort ascending or descending;
    */
   public Sort order = Sort.asc;
+
+  public SortField() {
+  }
+
+  public SortField(String name) {
+    this.name = name;
+  }
+
+  public SortField(String name, Sort order, String missing) {
+    this.name = name;
+    this.order = order;
+    this.missing = missing;
+  }
 
   @Override
   public String toString() {

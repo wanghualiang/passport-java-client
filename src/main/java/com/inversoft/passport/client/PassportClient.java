@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,6 +71,7 @@ import com.inversoft.passport.domain.api.user.RegistrationRequest;
 import com.inversoft.passport.domain.api.user.RegistrationResponse;
 import com.inversoft.passport.domain.api.user.SearchResponse;
 import com.inversoft.passport.domain.search.AuditLogSearchCriteria;
+import com.inversoft.passport.domain.search.SortField;
 import com.inversoft.passport.domain.search.UserSearchCriteria;
 import com.inversoft.rest.ClientResponse;
 import com.inversoft.rest.JSONBodyHandler;
@@ -2037,21 +2038,29 @@ public class PassportClient {
    * Retrieves the users for the given search criteria and pagination.
    *
    * @param search The search criteria and pagination constraints. Fields used: queryString, numberOfResults, startRow,
-   *               sort fields and sort order
+   *               and sort fields.
    * @return When successful, the response will contain the users that match the search criteria and pagination
    * constraints. If there was a validation error or any other type of error, this will return the Errors object in the
    * response. Additionally, if Passport could not be contacted because it is down or experiencing a failure, the
    * response will contain an Exception, which could be an IOException.
    */
   public ClientResponse<UserResponse, Errors> searchUsersByQueryString(UserSearchCriteria search) {
-    return start(UserResponse.class).uri("/api/user/search")
-                                    .urlParameter("queryString", search.queryString)
-                                    .urlParameter("numberOfResults", search.numberOfResults)
-                                    .urlParameter("startRow", search.startRow)
-                                    .urlParameter("sortFields.fields", search.sortFields)
-                                    .urlParameter("sortFields.order", search.sort)
-                                    .get()
-                                    .go();
+    RESTClient<UserResponse, Errors> client = start(UserResponse.class).uri("/api/user/search")
+                                                                       .urlParameter("queryString", search.queryString)
+                                                                       .urlParameter("numberOfResults", search.numberOfResults)
+                                                                       .urlParameter("startRow", search.startRow)
+                                                                       .get();
+
+    if (search.sortFields != null) {
+      for (int i = 0; i < search.sortFields.size(); i++) {
+        SortField field = search.sortFields.get(i);
+        client.urlParameter("sortFields[" + i + "].name", field.name)
+              .urlParameter("sortFields[" + i + "].missing", field.missing)
+              .urlParameter("sortFields[" + i + "].order", field.order);
+      }
+    }
+
+    return client.go();
   }
 
   /**
