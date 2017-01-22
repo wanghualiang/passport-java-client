@@ -55,7 +55,7 @@ public class UserActionEvent implements Buildable<UserActionEvent> {
   public ZonedDateTime createInstant;
 
   /**
-   * The email that the notification server should email to the user. This should only be included if notifyUser is true
+   * The email that the webhook should email to the user. This should only be included if notifyUser is true
    * (i think)
    */
   public Email email;
@@ -101,7 +101,7 @@ public class UserActionEvent implements Buildable<UserActionEvent> {
    * @param localizedDuration   The localized duration text.
    * @param phase               The phase for time-based user actions.
    * @param comment             A comment from the moderator.
-   * @param notifyUser          A flag to tell the notifications server to notify user of the action.
+   * @param notifyUser          A flag to tell the webhook to notify user of the action.
    * @param passportEmailedUser A flag indicating that passport should email the user.
    * @param email               The email that should be sent to the end user.
    */

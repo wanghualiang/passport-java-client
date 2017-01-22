@@ -16,8 +16,7 @@
 package com.inversoft.passport.domain.event;
 
 /**
- * Container for the user action notification information. This is the JSON that is sent from Passport to notification
- * servers.
+ * Container for the user action event information. This is the JSON that is sent from Passport to webhooks.
  *
  * @author Brian Pontarelli
  */

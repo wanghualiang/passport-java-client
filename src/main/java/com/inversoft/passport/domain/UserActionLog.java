@@ -63,7 +63,7 @@ public class UserActionLog implements Buildable<UserActionLog> {
   public UserActionEvent event;
 
   /**
-   * Notification servers will use this to determine if they should notify the user
+   * Webhooks will use this to determine if they should notify the user
    */
   public boolean notifyUserOnEnd;
 

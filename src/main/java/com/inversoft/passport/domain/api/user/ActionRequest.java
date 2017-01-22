@@ -81,7 +81,7 @@ public class ActionRequest {
     public UserActionLog log;
 
     /**
-     * Flag instructing notification servers to notify the user
+     * Flag instructing webhooks to notify the user
      */
     public boolean notifyUser;
 

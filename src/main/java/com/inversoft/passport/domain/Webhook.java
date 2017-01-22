@@ -27,8 +27,7 @@ import com.inversoft.json.ToString;
 import com.inversoft.passport.domain.util.Normalizer;
 
 /**
- * A server where notifications are sent. This includes user action notifications and any other notifications sent by
- * Passport.
+ * A server where events are sent. This includes user action events and any other events sent by Passport.
  *
  * @author Brian Pontarelli
  */

@@ -15,22 +15,30 @@
  */
 package com.inversoft.passport.domain.api;
 
+import java.util.List;
+
 import com.inversoft.json.JacksonConstructor;
 import com.inversoft.passport.domain.Webhook;
 
 /**
- * Notification Server API request object.
+ * Webhook API response object.
  *
  * @author Brian Pontarelli
  */
-public class NotificationServerRequest {
+public class WebhookResponse {
   public Webhook webhook;
 
+  public List<Webhook> webhooks;
+
   @JacksonConstructor
-  public NotificationServerRequest() {
+  public WebhookResponse() {
   }
 
-  public NotificationServerRequest(Webhook ns) {
-    this.webhook = ns;
+  public WebhookResponse(Webhook webhook) {
+    this.webhook = webhook;
+  }
+
+  public WebhookResponse(List<Webhook> webhooks) {
+    this.webhooks = webhooks;
   }
 }

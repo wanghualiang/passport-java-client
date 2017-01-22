@@ -20,7 +20,7 @@ import java.util.HashMap;
 import com.inversoft.passport.domain.util.Normalizer;
 
 /**
- * Type for notification server headers.
+ * Type for webhook headers.
  *
  * @author Brian Pontarelli
  */

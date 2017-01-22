@@ -61,7 +61,7 @@ public class UserAction implements Comparable<UserAction> {
   public boolean preventLogin;
 
   /**
-   * Only time-based actions. This indicates passport will send a notification when the action expires
+   * Only time-based actions. This indicates passport will send an event when the action expires
    */
   public boolean sendEndEvent;
 
