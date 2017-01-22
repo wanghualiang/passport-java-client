@@ -13,19 +13,21 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package com.inversoft.passport.domain;
-
-import java.util.HashMap;
-
-import com.inversoft.passport.domain.util.Normalizer;
+package com.inversoft.passport.domain.event;
 
 /**
- * Type for notification server headers.
+ * Container for the user action notification information. This is the JSON that is sent from Passport to notification
+ * servers.
  *
  * @author Brian Pontarelli
  */
-public class NotificationHeaders extends HashMap<String, String> {
-  public void normalize() {
-    Normalizer.trimMap(this);
+public class UserActionEventRequest {
+  public UserActionEvent event;
+
+  public UserActionEventRequest() {
+  }
+
+  public UserActionEventRequest(UserActionEvent event) {
+    this.event = event;
   }
 }

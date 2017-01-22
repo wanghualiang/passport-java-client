@@ -30,7 +30,7 @@ import com.inversoft.passport.domain.ApplicationRole;
 public class ApplicationRequest {
   public Application application;
 
-  public List<UUID> notificationServerIds;
+  public List<UUID> webhookIds;
 
   public ApplicationRole role;
 
@@ -38,9 +38,9 @@ public class ApplicationRequest {
   public ApplicationRequest() {
   }
 
-  public ApplicationRequest(Application application, List<UUID> notificationServerIds) {
+  public ApplicationRequest(Application application, List<UUID> webhookIds) {
     this.application = application;
-    this.notificationServerIds = notificationServerIds;
+    this.webhookIds = webhookIds;
   }
 
   public ApplicationRequest(ApplicationRole role) {

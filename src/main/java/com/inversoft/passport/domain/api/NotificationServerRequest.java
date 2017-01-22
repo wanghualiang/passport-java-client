@@ -16,7 +16,7 @@
 package com.inversoft.passport.domain.api;
 
 import com.inversoft.json.JacksonConstructor;
-import com.inversoft.passport.domain.NotificationServer;
+import com.inversoft.passport.domain.Webhook;
 
 /**
  * Notification Server API request object.
@@ -24,13 +24,13 @@ import com.inversoft.passport.domain.NotificationServer;
  * @author Brian Pontarelli
  */
 public class NotificationServerRequest {
-  public NotificationServer notificationServer;
+  public Webhook webhook;
 
   @JacksonConstructor
   public NotificationServerRequest() {
   }
 
-  public NotificationServerRequest(NotificationServer ns) {
-    this.notificationServer = ns;
+  public NotificationServerRequest(Webhook ns) {
+    this.webhook = ns;
   }
 }

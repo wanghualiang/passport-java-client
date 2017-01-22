@@ -379,7 +379,7 @@ public class PassportClient {
    * Creates a notification server. You can optionally specify an id for the notification server when calling this
    * method, but it is not required.
    *
-   * @param notificationServerId (Optional) The id for the notification server.
+   * @param webhookId (Optional) The id for the notification server.
    * @param request              The notification server request that contains all of the information used to create the
    *                             notification server.
    * @return When successful, the response will contain the notification server object. If there was a validation error
@@ -387,10 +387,10 @@ public class PassportClient {
    * be contacted because it is down or experiencing a failure, the response will contain an Exception, which could be
    * an IOException.
    */
-  public ClientResponse<NotificationServerResponse, Errors> createNotificationServer(UUID notificationServerId,
+  public ClientResponse<NotificationServerResponse, Errors> createNotificationServer(UUID webhookId,
                                                                                      NotificationServerRequest request) {
-    return start(NotificationServerResponse.class).uri("/api/notification-server")
-                                                  .urlSegment(notificationServerId)
+    return start(NotificationServerResponse.class).uri("/api/webhook")
+                                                  .urlSegment(webhookId)
                                                   .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                                   .post()
                                                   .go();
@@ -401,13 +401,13 @@ public class PassportClient {
    * Function and Consumer passed into the constructor to handle the ClientResponse and return either the success
    * response or throw an exception (generally speaking).
    *
-   * @param notificationServerId See other method.
+   * @param webhookId See other method.
    * @param request              See other method.
    * @return See other method.
    */
-  public NotificationServerResponse createNotificationServer$(UUID notificationServerId,
+  public NotificationServerResponse createNotificationServer$(UUID webhookId,
                                                               NotificationServerRequest request) {
-    return handle(createNotificationServer(notificationServerId, request));
+    return handle(createNotificationServer(webhookId, request));
   }
 
   /**
@@ -706,15 +706,15 @@ public class PassportClient {
   /**
    * Deletes the notification server for the given id.
    *
-   * @param notificationServerId The id of the notification server to delete.
+   * @param webhookId The id of the notification server to delete.
    * @return When successful, the response will not contain a response object but only contains the status. If there was
    * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
-  public ClientResponse<Void, Errors> deleteNotificationServer(UUID notificationServerId) {
-    return start(Void.TYPE).uri("/api/notification-server")
-                           .urlSegment(notificationServerId)
+  public ClientResponse<Void, Errors> deleteNotificationServer(UUID webhookId) {
+    return start(Void.TYPE).uri("/api/webhook")
+                           .urlSegment(webhookId)
                            .delete()
                            .go();
   }
@@ -724,10 +724,10 @@ public class PassportClient {
    * into the constructor to handle the ClientResponse and return either the success response or throw an exception
    * (generally speaking).
    *
-   * @param notificationServerId See other method.
+   * @param webhookId See other method.
    */
-  public void deleteNotificationServer$(UUID notificationServerId) {
-    handle(deleteNotificationServer(notificationServerId));
+  public void deleteNotificationServer$(UUID webhookId) {
+    handle(deleteNotificationServer(webhookId));
   }
 
   /**
@@ -1533,14 +1533,14 @@ public class PassportClient {
    * Retrieves the notification server for the given id. If you pass in null for the id, this will return all the
    * notification servers.
    *
-   * @param notificationServerId (Optional) The id of the notification server.
+   * @param webhookId (Optional) The id of the notification server.
    * @return When successful, the response will contain the notification server for the id or all the notification
    * servers. There are no errors associated with this request. Additionally, if Passport could not be contacted because
    * it is down or experiencing a failure, the response will contain an Exception, which could be an IOException.
    */
-  public ClientResponse<NotificationServerResponse, Void> retrieveNotificationServer(UUID notificationServerId) {
-    return startVoid(NotificationServerResponse.class).uri("/api/notification-server")
-                                                      .urlSegment(notificationServerId)
+  public ClientResponse<NotificationServerResponse, Void> retrieveNotificationServer(UUID webhookId) {
+    return startVoid(NotificationServerResponse.class).uri("/api/webhook")
+                                                      .urlSegment(webhookId)
                                                       .get()
                                                       .go();
   }
@@ -1550,11 +1550,11 @@ public class PassportClient {
    * into the constructor to handle the ClientResponse and return either the success response or throw an exception
    * (generally speaking).
    *
-   * @param notificationServerId See other method.
+   * @param webhookId See other method.
    * @return See other method.
    */
-  public NotificationServerResponse retrieveNotificationServer$(UUID notificationServerId) {
-    return handle(retrieveNotificationServer(notificationServerId));
+  public NotificationServerResponse retrieveNotificationServer$(UUID webhookId) {
+    return handle(retrieveNotificationServer(webhookId));
   }
 
   /**
@@ -2209,17 +2209,17 @@ public class PassportClient {
   /**
    * Updates the notification server with the given id.
    *
-   * @param notificationServerId The id of the notification server to update.
+   * @param webhookId The id of the notification server to update.
    * @param request              The request that contains all of the new notification server information.
    * @return When successful, the response will contain the notification server. If there was a validation error or any
    * other type of error, this will return the Errors object in the response. Additionally, if Passport could not be
    * contacted because it is down or experiencing a failure, the response will contain an Exception, which could be an
    * IOException.
    */
-  public ClientResponse<NotificationServerResponse, Errors> updateNotificationServer(UUID notificationServerId,
+  public ClientResponse<NotificationServerResponse, Errors> updateNotificationServer(UUID webhookId,
                                                                                      NotificationServerRequest request) {
-    return start(NotificationServerResponse.class).uri("/api/notification-server")
-                                                  .urlSegment(notificationServerId)
+    return start(NotificationServerResponse.class).uri("/api/webhook")
+                                                  .urlSegment(webhookId)
                                                   .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                                   .put()
                                                   .go();
@@ -2230,13 +2230,13 @@ public class PassportClient {
    * Function and Consumer passed into the constructor to handle the ClientResponse and return either the success
    * response or throw an exception (generally speaking).
    *
-   * @param notificationServerId See other method.
+   * @param webhookId See other method.
    * @param request              See other method.
    * @return See other method.
    */
-  public NotificationServerResponse updateNotificationServer$(UUID notificationServerId,
+  public NotificationServerResponse updateNotificationServer$(UUID webhookId,
                                                               NotificationServerRequest request) {
-    return handle(updateNotificationServer(notificationServerId, request));
+    return handle(updateNotificationServer(webhookId, request));
   }
 
   /**

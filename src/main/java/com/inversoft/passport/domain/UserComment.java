@@ -20,7 +20,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import com.inversoft.json.ToString;
-import com.inversoft.passport.domain.notification.UserActionNotification;
+import com.inversoft.passport.domain.event.UserActionEvent;
 import static com.inversoft.passport.domain.util.Normalizer.trim;
 
 /**
@@ -55,9 +55,9 @@ public class UserComment {
                               .with((l) -> l.actionerUserId = userComment.commenterId)
                               .with((l) -> l.comment = userComment.comment)
                               .with((l) -> l.createInstant = userComment.createInstant)
-                              .with((l) -> l.notification = new UserActionNotification().with((n) -> n.actioneeUserId = userComment.userId)
-                                                                                        .with((n) -> n.actionerUserId = userComment.commenterId)
-                                                                                        .with((n) -> n.comment = userComment.comment));
+                              .with((l) -> l.event = new UserActionEvent().with((n) -> n.actioneeUserId = userComment.userId)
+                                                                          .with((n) -> n.actionerUserId = userComment.commenterId)
+                                                                          .with((n) -> n.comment = userComment.comment));
   }
 
   @Override
