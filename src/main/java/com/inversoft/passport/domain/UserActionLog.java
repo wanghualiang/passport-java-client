@@ -24,7 +24,7 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.inversoft.json.ToString;
-import com.inversoft.passport.domain.notification.UserActionNotification;
+import com.inversoft.passport.domain.event.UserActionEvent;
 import static com.inversoft.passport.domain.util.Normalizer.trim;
 
 /**
@@ -48,7 +48,7 @@ public class UserActionLog implements Buildable<UserActionLog> {
    */
   public boolean emailUserOnEnd;
 
-  public Boolean endNotificationSent;
+  public Boolean endEventSent;
 
   public ZonedDateTime expiry;
 
@@ -60,10 +60,10 @@ public class UserActionLog implements Buildable<UserActionLog> {
 
   public String localizedReason;
 
-  public UserActionNotification notification;
+  public UserActionEvent event;
 
   /**
-   * Notification servers will use this to determine if they should notify the user
+   * Webhooks will use this to determine if they should notify the user
    */
   public boolean notifyUserOnEnd;
 
@@ -81,7 +81,7 @@ public class UserActionLog implements Buildable<UserActionLog> {
   public UserActionLog(UUID actioneeUserId, UUID actionerUserId, UUID userActionId, List<UUID> applicationIds,
                        String comment, ZonedDateTime expiry, String option, String localizedOption, String reason,
                        String localizedReason, String reasonCode, ZonedDateTime createInstant,
-                       Boolean endNotificationSent, LogHistory history, boolean notifyUserOnEnd,
+                       Boolean endEventSent, LogHistory history, boolean notifyUserOnEnd,
                        boolean emailUserOnEnd) {
     this.actioneeUserId = actioneeUserId;
     this.actionerUserId = actionerUserId;
@@ -97,7 +97,7 @@ public class UserActionLog implements Buildable<UserActionLog> {
     this.reason = reason;
     this.reasonCode = reasonCode;
     this.createInstant = createInstant;
-    this.endNotificationSent = endNotificationSent;
+    this.endEventSent = endEventSent;
     this.history = history;
     this.localizedOption = localizedOption;
     this.localizedReason = localizedReason;
@@ -122,7 +122,7 @@ public class UserActionLog implements Buildable<UserActionLog> {
         Objects.equals(applicationIds, that.applicationIds) &&
         Objects.equals(comment, that.comment) &&
         Objects.equals(createInstant, that.createInstant) &&
-        Objects.equals(endNotificationSent, that.endNotificationSent) &&
+        Objects.equals(endEventSent, that.endEventSent) &&
         Objects.equals(notifyUserOnEnd, that.notifyUserOnEnd) &&
         Objects.equals(expiry, that.expiry) &&
         Objects.equals(history, that.history) &&
@@ -136,7 +136,7 @@ public class UserActionLog implements Buildable<UserActionLog> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(actioneeUserId, actionerUserId, applicationIds, comment, createInstant, endNotificationSent, expiry,
+    return Objects.hash(actioneeUserId, actionerUserId, applicationIds, comment, createInstant, endEventSent, expiry,
         history, localizedOption, localizedReason, emailUserOnEnd, option, reason, reasonCode, userActionId, notifyUserOnEnd);
   }
 

@@ -37,8 +37,6 @@ import com.inversoft.passport.domain.api.EmailTemplateRequest;
 import com.inversoft.passport.domain.api.EmailTemplateResponse;
 import com.inversoft.passport.domain.api.LoginRequest;
 import com.inversoft.passport.domain.api.LoginResponse;
-import com.inversoft.passport.domain.api.NotificationServerRequest;
-import com.inversoft.passport.domain.api.NotificationServerResponse;
 import com.inversoft.passport.domain.api.PreviewRequest;
 import com.inversoft.passport.domain.api.PreviewResponse;
 import com.inversoft.passport.domain.api.SystemConfigurationRequest;
@@ -52,6 +50,8 @@ import com.inversoft.passport.domain.api.UserCommentRequest;
 import com.inversoft.passport.domain.api.UserCommentResponse;
 import com.inversoft.passport.domain.api.UserRequest;
 import com.inversoft.passport.domain.api.UserResponse;
+import com.inversoft.passport.domain.api.WebhookRequest;
+import com.inversoft.passport.domain.api.WebhookResponse;
 import com.inversoft.passport.domain.api.email.SendRequest;
 import com.inversoft.passport.domain.api.email.SendResponse;
 import com.inversoft.passport.domain.api.jwt.RefreshResponse;
@@ -128,10 +128,10 @@ public class PassportClient {
    * @param actioneeUserId The actionee's user id.
    * @param request        The action request that includes all of the information about the action being taken
    *                       including the id of the action, any options and the duration (if applicable).
-   * @return When successful, the response will contain the a notification of the action. If there was a validation
-   * error or any other type of error, this will return the Errors object in the response. Additionally, if Passport
-   * could not be contacted because it is down or experiencing a failure, the response will contain an Exception, which
-   * could be an IOException.
+   * @return When successful, the response will contain the log of the action. If there was a validation error or any
+   * other type of error, this will return the Errors object in the response. Additionally, if Passport could not be
+   * contacted because it is down or experiencing a failure, the response will contain an Exception, which could be an
+   * IOException.
    */
   public ClientResponse<ActionResponse, Errors> actionUser(UUID actioneeUserId, ActionRequest request) {
     return start(ActionResponse.class).uri("/api/user/action")
@@ -159,10 +159,10 @@ public class PassportClient {
    *
    * @param actionId The action id of the action to cancel.
    * @param request  The action request that contains the information about the cancellation.
-   * @return When successful, the response will contain the a notification of the action. If there was a validation
-   * error or any other type of error, this will return the Errors object in the response. Additionally, if Passport
-   * could not be contacted because it is down or experiencing a failure, the response will contain an Exception, which
-   * could be an IOException.
+   * @return When successful, the response will contain the log of the action. If there was a validation error or any
+   * other type of error, this will return the Errors object in the response. Additionally, if Passport could not be
+   * contacted because it is down or experiencing a failure, the response will contain an Exception, which could be an
+   * IOException.
    */
   public ClientResponse<ActionResponse, Errors> cancelAction(UUID actionId, ActionRequest request) {
     return start(ActionResponse.class).uri("/api/user/action")
@@ -376,41 +376,6 @@ public class PassportClient {
   }
 
   /**
-   * Creates a notification server. You can optionally specify an id for the notification server when calling this
-   * method, but it is not required.
-   *
-   * @param notificationServerId (Optional) The id for the notification server.
-   * @param request              The notification server request that contains all of the information used to create the
-   *                             notification server.
-   * @return When successful, the response will contain the notification server object. If there was a validation error
-   * or any other type of error, this will return the Errors object in the response. Additionally, if Passport could not
-   * be contacted because it is down or experiencing a failure, the response will contain an Exception, which could be
-   * an IOException.
-   */
-  public ClientResponse<NotificationServerResponse, Errors> createNotificationServer(UUID notificationServerId,
-                                                                                     NotificationServerRequest request) {
-    return start(NotificationServerResponse.class).uri("/api/notification-server")
-                                                  .urlSegment(notificationServerId)
-                                                  .bodyHandler(new JSONBodyHandler(request, objectMapper))
-                                                  .post()
-                                                  .go();
-  }
-
-  /**
-   * Money-version of the {@link #createNotificationServer(UUID, NotificationServerRequest)} method. This uses the
-   * Function and Consumer passed into the constructor to handle the ClientResponse and return either the success
-   * response or throw an exception (generally speaking).
-   *
-   * @param notificationServerId See other method.
-   * @param request              See other method.
-   * @return See other method.
-   */
-  public NotificationServerResponse createNotificationServer$(UUID notificationServerId,
-                                                              NotificationServerRequest request) {
-    return handle(createNotificationServer(notificationServerId, request));
-  }
-
-  /**
    * Creates a user without an id. This will create a random, secure id for the new user.
    *
    * @param request The user request that contains all of the information used to create the user.
@@ -529,6 +494,38 @@ public class PassportClient {
    */
   public UserActionReasonResponse createUserActionReason$(UUID userActionReasonId, UserActionReasonRequest request) {
     return handle(createUserActionReason(userActionReasonId, request));
+  }
+
+  /**
+   * Creates a webhook. You can optionally specify an id for the webhook when calling this
+   * method, but it is not required.
+   *
+   * @param webhookId (Optional) The id for the webhook.
+   * @param request   The webhook request that contains all of the information used to create the webhook.
+   * @return When successful, the response will contain the webhook object. If there was a validation error or any other
+   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
+   * because it is down or experiencing a failure, the response will contain an Exception, which could be an
+   * IOException.
+   */
+  public ClientResponse<WebhookResponse, Errors> createWebhook(UUID webhookId, WebhookRequest request) {
+    return start(WebhookResponse.class).uri("/api/webhook")
+                                       .urlSegment(webhookId)
+                                       .bodyHandler(new JSONBodyHandler(request, objectMapper))
+                                       .post()
+                                       .go();
+  }
+
+  /**
+   * Money-version of the {@link #createWebhook(UUID, WebhookRequest)} method. This uses the Function and Consumer
+   * passed into the constructor to handle the ClientResponse and return either the success response or throw an
+   * exception (generally speaking).
+   *
+   * @param webhookId See other method.
+   * @param request   See other method.
+   * @return See other method.
+   */
+  public WebhookResponse createWebhook$(UUID webhookId, WebhookRequest request) {
+    return handle(createWebhook(webhookId, request));
   }
 
   /**
@@ -704,30 +701,30 @@ public class PassportClient {
   }
 
   /**
-   * Deletes the notification server for the given id.
+   * Deletes the webhook for the given id.
    *
-   * @param notificationServerId The id of the notification server to delete.
+   * @param webhookId The id of the webhook to delete.
    * @return When successful, the response will not contain a response object but only contains the status. If there was
    * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
-  public ClientResponse<Void, Errors> deleteNotificationServer(UUID notificationServerId) {
-    return start(Void.TYPE).uri("/api/notification-server")
-                           .urlSegment(notificationServerId)
+  public ClientResponse<Void, Errors> deleteWebhook(UUID webhookId) {
+    return start(Void.TYPE).uri("/api/webhook")
+                           .urlSegment(webhookId)
                            .delete()
                            .go();
   }
 
   /**
-   * Money-version of the {@link #deleteNotificationServer(UUID)} method. This uses the Function and Consumer passed
+   * Money-version of the {@link #deleteWebhook(UUID)} method. This uses the Function and Consumer passed
    * into the constructor to handle the ClientResponse and return either the success response or throw an exception
    * (generally speaking).
    *
-   * @param notificationServerId See other method.
+   * @param webhookId See other method.
    */
-  public void deleteNotificationServer$(UUID notificationServerId) {
-    handle(deleteNotificationServer(notificationServerId));
+  public void deleteWebhook$(UUID webhookId) {
+    handle(deleteWebhook(webhookId));
   }
 
   /**
@@ -984,10 +981,10 @@ public class PassportClient {
    *
    * @param actionId The id of the action to modify. This is technically the user action log id.
    * @param request  The request that contains all of the information about the modification.
-   * @return When successful, the response will contain the a notification of the action. If there was a validation
-   * error or any other type of error, this will return the Errors object in the response. Additionally, if Passport
-   * could not be contacted because it is down or experiencing a failure, the response will contain an Exception, which
-   * could be an IOException.
+   * @return When successful, the response will contain the log of the action. If there was a validation error or any
+   * other type of error, this will return the Errors object in the response. Additionally, if Passport could not be
+   * contacted because it is down or experiencing a failure, the response will contain an Exception, which could be an
+   * IOException.
    */
   public ClientResponse<ActionResponse, Errors> modifyAction(UUID actionId, ActionRequest request) {
     return start(ActionResponse.class).uri("/api/user/action")
@@ -1218,10 +1215,10 @@ public class PassportClient {
    * Retrieves all of the actions for the user with the given id.
    *
    * @param userId The id of the user to fetch the actions for.
-   * @return When successful, the response will contain all of the user action notifications for the given use. If there
-   * was a validation error or any other type of error, this will return the Errors object in the response.
-   * Additionally, if Passport could not be contacted because it is down or experiencing a failure, the response will
-   * contain an Exception, which could be an IOException.
+   * @return When successful, the response will contain all of the user action events for the given use. If there was a
+   * validation error or any other type of error, this will return the Errors object in the response. Additionally, if
+   * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
+   * Exception, which could be an IOException.
    */
   public ClientResponse<ActionResponse, Errors> retrieveActions(UUID userId) {
     return start(ActionResponse.class).uri("/api/user/action")
@@ -1530,53 +1527,53 @@ public class PassportClient {
   }
 
   /**
-   * Retrieves the notification server for the given id. If you pass in null for the id, this will return all the
-   * notification servers.
+   * Retrieves the webhook for the given id. If you pass in null for the id, this will return all the
+   * webhooks.
    *
-   * @param notificationServerId (Optional) The id of the notification server.
-   * @return When successful, the response will contain the notification server for the id or all the notification
-   * servers. There are no errors associated with this request. Additionally, if Passport could not be contacted because
-   * it is down or experiencing a failure, the response will contain an Exception, which could be an IOException.
+   * @param webhookId (Optional) The id of the webhook.
+   * @return When successful, the response will contain the webhook for the id or all the webhooks. There are no errors
+   * associated with this request. Additionally, if Passport could not be contacted because it is down or experiencing a
+   * failure, the response will contain an Exception, which could be an IOException.
    */
-  public ClientResponse<NotificationServerResponse, Void> retrieveNotificationServer(UUID notificationServerId) {
-    return startVoid(NotificationServerResponse.class).uri("/api/notification-server")
-                                                      .urlSegment(notificationServerId)
-                                                      .get()
-                                                      .go();
+  public ClientResponse<WebhookResponse, Void> retrieveWebhook(UUID webhookId) {
+    return startVoid(WebhookResponse.class).uri("/api/webhook")
+                                           .urlSegment(webhookId)
+                                           .get()
+                                           .go();
   }
 
   /**
-   * Money-version of the {@link #retrieveNotificationServer(UUID)} method. This uses the Function and Consumer passed
+   * Money-version of the {@link #retrieveWebhook(UUID)} method. This uses the Function and Consumer passed
    * into the constructor to handle the ClientResponse and return either the success response or throw an exception
    * (generally speaking).
    *
-   * @param notificationServerId See other method.
+   * @param webhookId See other method.
    * @return See other method.
    */
-  public NotificationServerResponse retrieveNotificationServer$(UUID notificationServerId) {
-    return handle(retrieveNotificationServer(notificationServerId));
+  public WebhookResponse retrieveWebhook$(UUID webhookId) {
+    return handle(retrieveWebhook(webhookId));
   }
 
   /**
-   * Retrieves all the notification servers.
+   * Retrieves all the webhooks.
    *
-   * @return When successful, the response will contain all of the notification servers. There are no errors associated
-   * with this request. Additionally, if Passport could not be contacted because it is down or experiencing a failure,
-   * the response will contain an Exception, which could be an IOException.
+   * @return When successful, the response will contain all of the webhooks. There are no errors associated with this
+   * request. Additionally, if Passport could not be contacted because it is down or experiencing a failure, the
+   * response will contain an Exception, which could be an IOException.
    */
-  public ClientResponse<NotificationServerResponse, Void> retrieveNotificationServers() {
-    return retrieveNotificationServer(null);
+  public ClientResponse<WebhookResponse, Void> retrieveWebhook() {
+    return retrieveWebhook(null);
   }
 
   /**
-   * Money-version of the {@link #retrieveNotificationServers()} method. This uses the Function and Consumer passed into
+   * Money-version of the {@link #retrieveWebhook()} method. This uses the Function and Consumer passed into
    * the constructor to handle the ClientResponse and return either the success response or throw an exception
    * (generally speaking).
    *
    * @return See other method.
    */
-  public NotificationServerResponse retrieveNotificationServers$() {
-    return handle(retrieveNotificationServers());
+  public WebhookResponse retrieveWebhook$() {
+    return handle(retrieveWebhook());
   }
 
   /**
@@ -2207,36 +2204,34 @@ public class PassportClient {
   }
 
   /**
-   * Updates the notification server with the given id.
+   * Updates the webhook with the given id.
    *
-   * @param notificationServerId The id of the notification server to update.
-   * @param request              The request that contains all of the new notification server information.
-   * @return When successful, the response will contain the notification server. If there was a validation error or any
-   * other type of error, this will return the Errors object in the response. Additionally, if Passport could not be
-   * contacted because it is down or experiencing a failure, the response will contain an Exception, which could be an
+   * @param webhookId The id of the webhook to update.
+   * @param request   The request that contains all of the new webhook information.
+   * @return When successful, the response will contain the webhook. If there was a validation error or any other type
+   * of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
+   * because it is down or experiencing a failure, the response will contain an Exception, which could be an
    * IOException.
    */
-  public ClientResponse<NotificationServerResponse, Errors> updateNotificationServer(UUID notificationServerId,
-                                                                                     NotificationServerRequest request) {
-    return start(NotificationServerResponse.class).uri("/api/notification-server")
-                                                  .urlSegment(notificationServerId)
-                                                  .bodyHandler(new JSONBodyHandler(request, objectMapper))
-                                                  .put()
-                                                  .go();
+  public ClientResponse<WebhookResponse, Errors> updateWebhook(UUID webhookId, WebhookRequest request) {
+    return start(WebhookResponse.class).uri("/api/webhook")
+                                       .urlSegment(webhookId)
+                                       .bodyHandler(new JSONBodyHandler(request, objectMapper))
+                                       .put()
+                                       .go();
   }
 
   /**
-   * Money-version of the {@link #updateNotificationServer(UUID, NotificationServerRequest)} method. This uses the
+   * Money-version of the {@link #updateWebhook(UUID, WebhookRequest)} method. This uses the
    * Function and Consumer passed into the constructor to handle the ClientResponse and return either the success
    * response or throw an exception (generally speaking).
    *
-   * @param notificationServerId See other method.
-   * @param request              See other method.
+   * @param webhookId See other method.
+   * @param request   See other method.
    * @return See other method.
    */
-  public NotificationServerResponse updateNotificationServer$(UUID notificationServerId,
-                                                              NotificationServerRequest request) {
-    return handle(updateNotificationServer(notificationServerId, request));
+  public WebhookResponse updateWebhook$(UUID webhookId, WebhookRequest request) {
+    return handle(updateWebhook(webhookId, request));
   }
 
   /**

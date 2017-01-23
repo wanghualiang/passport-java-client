@@ -13,19 +13,32 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package com.inversoft.passport.domain;
+package com.inversoft.passport.domain.api;
 
-import java.util.HashMap;
+import java.util.List;
 
-import com.inversoft.passport.domain.util.Normalizer;
+import com.inversoft.json.JacksonConstructor;
+import com.inversoft.passport.domain.Webhook;
 
 /**
- * Type for notification server headers.
+ * Webhook API response object.
  *
  * @author Brian Pontarelli
  */
-public class NotificationHeaders extends HashMap<String, String> {
-  public void normalize() {
-    Normalizer.trimMap(this);
+public class WebhookResponse {
+  public Webhook webhook;
+
+  public List<Webhook> webhooks;
+
+  @JacksonConstructor
+  public WebhookResponse() {
+  }
+
+  public WebhookResponse(Webhook webhook) {
+    this.webhook = webhook;
+  }
+
+  public WebhookResponse(List<Webhook> webhooks) {
+    this.webhooks = webhooks;
   }
 }

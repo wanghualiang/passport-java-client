@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package com.inversoft.passport.domain.notification;
+package com.inversoft.passport.domain.event;
 
 /**
  * The phases of a time-based user action.

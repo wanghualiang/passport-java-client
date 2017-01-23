@@ -45,7 +45,7 @@ public class UserAction implements Comparable<UserAction> {
 
   public UUID id;
 
-  public boolean includeEmailInNotificationJson;
+  public boolean includeEmailInEventJSON;
 
   public LocalizedStrings localizedNames;
 
@@ -61,9 +61,9 @@ public class UserAction implements Comparable<UserAction> {
   public boolean preventLogin;
 
   /**
-   * Only time-based actions. This indicates passport will send a notification when the action expires
+   * Only time-based actions. This indicates passport will send an event when the action expires
    */
-  public boolean sendEndNotification;
+  public boolean sendEndEvent;
 
   /**
    * All actions. The template to be used when an action is first taken
@@ -78,7 +78,7 @@ public class UserAction implements Comparable<UserAction> {
   public boolean userEmailingEnabled;
 
   /**
-   * flag in notification instructing notification servers to notify user
+   * This is a flag that determines if the "Notify User" option is displayed on the manage page.
    */
   public boolean userNotificationsEnabled;
 
@@ -90,17 +90,17 @@ public class UserAction implements Comparable<UserAction> {
   }
 
   public UserAction(UUID id, String name, boolean active, LocalizedStrings localizedNames, boolean preventLogin,
-                    boolean sendEndNotification, boolean temporal, boolean userNotificationsEnabled,
-                    boolean userEmailingEnabled, boolean includeEmailInNotificationJson,
+                    boolean sendEndEvent, boolean temporal, boolean userNotificationsEnabled,
+                    boolean userEmailingEnabled, boolean includeEmailInEventJSON,
                     UUID startEmailTemplateId, UUID modifyEmailTemplateId, UUID cancelEmailTemplateId,
                     UUID endEmailTemplateId, UserActionOption... options) {
     this.id = id;
     this.active = active;
     this.name = name;
-    this.includeEmailInNotificationJson = includeEmailInNotificationJson;
+    this.includeEmailInEventJSON = includeEmailInEventJSON;
     this.localizedNames = localizedNames;
     this.preventLogin = preventLogin;
-    this.sendEndNotification = sendEndNotification;
+    this.sendEndEvent = sendEndEvent;
     this.temporal = temporal;
     this.userNotificationsEnabled = userNotificationsEnabled;
     this.startEmailTemplateId = startEmailTemplateId;
@@ -126,9 +126,9 @@ public class UserAction implements Comparable<UserAction> {
     }
     UserAction that = (UserAction) o;
     return Objects.equals(active, that.active) &&
-        Objects.equals(includeEmailInNotificationJson, that.includeEmailInNotificationJson) &&
+        Objects.equals(includeEmailInEventJSON, that.includeEmailInEventJSON) &&
         Objects.equals(preventLogin, that.preventLogin) &&
-        Objects.equals(sendEndNotification, that.sendEndNotification) &&
+        Objects.equals(sendEndEvent, that.sendEndEvent) &&
         Objects.equals(temporal, that.temporal) &&
         Objects.equals(userNotificationsEnabled, that.userNotificationsEnabled) &&
         Objects.equals(userEmailingEnabled, that.userEmailingEnabled) &&
@@ -158,7 +158,7 @@ public class UserAction implements Comparable<UserAction> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(active, includeEmailInNotificationJson, localizedNames, name, options, preventLogin, sendEndNotification,
+    return Objects.hash(active, includeEmailInEventJSON, localizedNames, name, options, preventLogin, sendEndEvent,
         temporal, userNotificationsEnabled, userEmailingEnabled, startEmailTemplateId, modifyEmailTemplateId, cancelEmailTemplateId,
         endEmailTemplateId);
   }

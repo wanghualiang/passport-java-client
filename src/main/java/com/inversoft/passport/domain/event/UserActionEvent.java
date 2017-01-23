@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package com.inversoft.passport.domain.notification;
+package com.inversoft.passport.domain.event;
 
 
 import java.time.Instant;
@@ -30,11 +30,11 @@ import com.inversoft.passport.domain.Buildable;
 import com.inversoft.passport.domain.email.Email;
 
 /**
- * Models the user action notification (and can be converted to JSON).
+ * Models the user action event (and can be converted to JSON).
  *
  * @author Brian Pontarelli
  */
-public class UserActionNotification implements Buildable<UserActionNotification> {
+public class UserActionEvent implements Buildable<UserActionEvent> {
   public static ZonedDateTime Infinite = ZonedDateTime.ofInstant(Instant.ofEpochMilli(Long.MAX_VALUE), ZoneOffset.UTC);
 
   public final List<UUID> applicationIds = new ArrayList<>();
@@ -55,7 +55,7 @@ public class UserActionNotification implements Buildable<UserActionNotification>
   public ZonedDateTime createInstant;
 
   /**
-   * The email that the notification server should email to the user. This should only be included if notifyUser is true
+   * The email that the webhook should email to the user. This should only be included if notifyUser is true
    * (i think)
    */
   public Email email;
@@ -82,7 +82,7 @@ public class UserActionNotification implements Buildable<UserActionNotification>
 
   public String reasonCode;
 
-  public UserActionNotification() {
+  public UserActionEvent() {
   }
 
   /**
@@ -101,15 +101,15 @@ public class UserActionNotification implements Buildable<UserActionNotification>
    * @param localizedDuration   The localized duration text.
    * @param phase               The phase for time-based user actions.
    * @param comment             A comment from the moderator.
-   * @param notifyUser          A flag to tell the notifications server to notify user of the action.
+   * @param notifyUser          A flag to tell the webhook to notify user of the action.
    * @param passportEmailedUser A flag indicating that passport should email the user.
    * @param email               The email that should be sent to the end user.
    */
-  public UserActionNotification(UUID actionId, UUID actioneeUserId, UUID actionerUserId, List<UUID> applicationIds,
-                                String action, String localizedAction, String option, String localizedOption,
-                                String reason, String localizedReason, String reasonCode, ZonedDateTime expiry,
-                                String localizedDuration, UserActionPhase phase, String comment, boolean notifyUser,
-                                boolean passportEmailedUser, Email email) {
+  public UserActionEvent(UUID actionId, UUID actioneeUserId, UUID actionerUserId, List<UUID> applicationIds,
+                         String action, String localizedAction, String option, String localizedOption,
+                         String reason, String localizedReason, String reasonCode, ZonedDateTime expiry,
+                         String localizedDuration, UserActionPhase phase, String comment, boolean notifyUser,
+                         boolean passportEmailedUser, Email email) {
     this.actionId = actionId;
     this.action = action;
     this.actioneeUserId = actioneeUserId;
@@ -143,10 +143,10 @@ public class UserActionNotification implements Buildable<UserActionNotification>
     if (this == o) {
       return true;
     }
-    if (!(o instanceof UserActionNotification)) {
+    if (!(o instanceof UserActionEvent)) {
       return false;
     }
-    UserActionNotification that = (UserActionNotification) o;
+    UserActionEvent that = (UserActionEvent) o;
     return
         Objects.equals(actionId, that.actionId) &&
             Objects.equals(notifyUser, that.notifyUser) &&

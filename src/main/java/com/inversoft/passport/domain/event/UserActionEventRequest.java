@@ -13,21 +13,20 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package com.inversoft.passport.domain.notification;
+package com.inversoft.passport.domain.event;
 
 /**
- * Container for the user action notification information. This is the JSON that is sent from Passport to notification
- * servers.
+ * Container for the user action event information. This is the JSON that is sent from Passport to webhooks.
  *
  * @author Brian Pontarelli
  */
-public class UserActionNotificationRequest {
-  public UserActionNotification notification;
+public class UserActionEventRequest {
+  public UserActionEvent event;
 
-  public UserActionNotificationRequest() {
+  public UserActionEventRequest() {
   }
 
-  public UserActionNotificationRequest(UserActionNotification notification) {
-    this.notification = notification;
+  public UserActionEventRequest(UserActionEvent event) {
+    this.event = event;
   }
 }

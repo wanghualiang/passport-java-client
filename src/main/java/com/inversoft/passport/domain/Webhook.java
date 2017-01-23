@@ -27,12 +27,11 @@ import com.inversoft.json.ToString;
 import com.inversoft.passport.domain.util.Normalizer;
 
 /**
- * A server where notifications are sent. This includes user action notifications and any other notifications sent by
- * Passport.
+ * A server where events are sent. This includes user action events and any other events sent by Passport.
  *
  * @author Brian Pontarelli
  */
-public class NotificationServer implements Buildable<NotificationServer> {
+public class Webhook implements Buildable<Webhook> {
   public List<UUID> applicationIds = new ArrayList<>();
 
   public Integer connectTimeout;
@@ -41,7 +40,7 @@ public class NotificationServer implements Buildable<NotificationServer> {
 
   public boolean global;
 
-  public NotificationHeaders headers = new NotificationHeaders();
+  public HTTPHeaders headers = new HTTPHeaders();
 
   public String httpAuthenticationPassword;
 
@@ -55,16 +54,16 @@ public class NotificationServer implements Buildable<NotificationServer> {
 
   public URI url;
 
-  public NotificationServer() {
+  public Webhook() {
   }
 
-  public NotificationServer(URI url) {
+  public Webhook(URI url) {
     this(null, url, false, null, null, null, null, 1000, 2000);
   }
 
-  public NotificationServer(UUID id, URI url, boolean global, String httpAuthenticationUsername,
-                            String httpAuthenticationPassword, String sslCertificate, Map<String, String> headers,
-                            int connectTimeout, int readTimeout, UUID... applicationIds) {
+  public Webhook(UUID id, URI url, boolean global, String httpAuthenticationUsername,
+                 String httpAuthenticationPassword, String sslCertificate, Map<String, String> headers,
+                 int connectTimeout, int readTimeout, UUID... applicationIds) {
     this.id = id;
     this.url = url;
     this.global = global;
@@ -86,10 +85,10 @@ public class NotificationServer implements Buildable<NotificationServer> {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof NotificationServer)) {
+    if (!(o instanceof Webhook)) {
       return false;
     }
-    NotificationServer that = (NotificationServer) o;
+    Webhook that = (Webhook) o;
     return Objects.equals(global, that.global) &&
         Objects.equals(applicationIds, that.applicationIds) &&
         Objects.equals(connectTimeout, that.connectTimeout) &&
