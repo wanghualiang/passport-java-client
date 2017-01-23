@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import com.inversoft.json.ToString;
 /**
  * @author Daniel DeGroff
  */
-public class AccessToken implements Expiring, OAuthResponse {
+public class AccessToken implements OAuthResponse {
 
   @JsonIgnore
   public String clientId;
@@ -44,6 +44,8 @@ public class AccessToken implements Expiring, OAuthResponse {
 
   @JsonIgnore
   public URI redirectURI;
+
+  public String state;
 
   /**
    * The access token issued by the authorization server.
@@ -62,19 +64,18 @@ public class AccessToken implements Expiring, OAuthResponse {
   @JsonIgnore
   private ZonedDateTime createInstant;
 
-  @JsonIgnore
-  private ZonedDateTime expiresInstant;
-
   @JacksonConstructor
   public AccessToken() {
   }
 
-  public AccessToken(String token, String clientId, int expiresIn, URI redirectURI, TokenType tokenType, UUID userId) {
+  public AccessToken(String token, String clientId, int expiresIn, URI redirectURI, String state,
+                     TokenType tokenType,
+                     UUID userId) {
     this.clientId = clientId;
     this.createInstant = ZonedDateTime.now(ZoneOffset.UTC);
     this.expiresIn = expiresIn;
-    this.expiresInstant = this.createInstant.plusSeconds(expiresIn);
     this.redirectURI = redirectURI;
+    this.state = state;
     this.token = token;
     this.tokenType = tokenType;
     this.userId = userId;
@@ -92,8 +93,8 @@ public class AccessToken implements Expiring, OAuthResponse {
     return Objects.equals(clientId, that.clientId) &&
         Objects.equals(createInstant, that.createInstant) &&
         Objects.equals(expiresIn, that.expiresIn) &&
-        Objects.equals(expiresInstant, that.expiresInstant) &&
         Objects.equals(redirectURI, that.redirectURI) &&
+        Objects.equals(state, that.state) &&
         Objects.equals(token, that.token) &&
         Objects.equals(tokenType, that.tokenType) &&
         Objects.equals(userId, that.userId);
@@ -101,12 +102,7 @@ public class AccessToken implements Expiring, OAuthResponse {
 
   @Override
   public int hashCode() {
-    return Objects.hash(clientId, createInstant, expiresIn, expiresInstant, redirectURI, token, tokenType, userId);
-  }
-
-  @Override
-  public boolean isExpired() {
-    return ZonedDateTime.now(ZoneOffset.UTC).isAfter(expiresInstant);
+    return Objects.hash(clientId, createInstant, expiresIn, redirectURI, state, token, tokenType, userId);
   }
 
   @Override

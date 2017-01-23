@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,8 @@ import static com.inversoft.passport.domain.util.Normalizer.trim;
 /**
  * @author Daniel DeGroff
  */
-// Ignore grantType, it is deprecated it may still exist in the database.
-@JsonIgnoreProperties({"grantType"})
+// Ignore grantType and tokenExpiresInSeconds, they are deprecated it may still exist in the database.
+@JsonIgnoreProperties({"grantType", "tokenExpiresInSeconds"})
 public class OAuth2Configuration {
   public List<URI> authorizedOriginURLs = new ArrayList<>();
 
@@ -50,12 +50,6 @@ public class OAuth2Configuration {
    * <code>Application.oauthConfiguration.logoutURL</code> will be used instead.
    */
   public URI logoutURL;
-
-  /**
-   * Length of time in seconds after the exchange of an authorization code for an access token that the access token is
-   * valid.
-   */
-  public int tokenExpiresInSeconds = 3600;
 
   public OAuth2Configuration() {
   }
@@ -79,14 +73,13 @@ public class OAuth2Configuration {
         Objects.equals(clientId, that.clientId) &&
         Objects.equals(clientSecret, that.clientSecret) &&
         Objects.equals(codeExpiresInSeconds, that.codeExpiresInSeconds) &&
-        Objects.equals(logoutURL, that.logoutURL) &&
-        Objects.equals(tokenExpiresInSeconds, that.tokenExpiresInSeconds);
+        Objects.equals(logoutURL, that.logoutURL);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(authorizedOriginURLs, authorizedRedirectURLs, clientId, clientSecret, codeExpiresInSeconds,
-        logoutURL, tokenExpiresInSeconds);
+        logoutURL);
   }
 
   public void normalize() {
