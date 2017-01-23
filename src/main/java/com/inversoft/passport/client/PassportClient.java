@@ -376,40 +376,6 @@ public class PassportClient {
   }
 
   /**
-   * Creates a webhook. You can optionally specify an id for the webhook when calling this
-   * method, but it is not required.
-   *
-   * @param webhookId (Optional) The id for the webhook.
-   * @param request   The webhook request that contains all of the information used to create the webhook.
-   * @return When successful, the response will contain the webhook object. If there was a validation error or any other
-   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
-   * because it is down or experiencing a failure, the response will contain an Exception, which could be an
-   * IOException.
-   */
-  public ClientResponse<WebhookResponse, Errors> createNotificationServer(UUID webhookId,
-                                                                          WebhookRequest request) {
-    return start(WebhookResponse.class).uri("/api/webhook")
-                                       .urlSegment(webhookId)
-                                       .bodyHandler(new JSONBodyHandler(request, objectMapper))
-                                       .post()
-                                       .go();
-  }
-
-  /**
-   * Money-version of the {@link #createNotificationServer(UUID, WebhookRequest)} method. This uses the
-   * Function and Consumer passed into the constructor to handle the ClientResponse and return either the success
-   * response or throw an exception (generally speaking).
-   *
-   * @param webhookId See other method.
-   * @param request   See other method.
-   * @return See other method.
-   */
-  public WebhookResponse createNotificationServer$(UUID webhookId,
-                                                   WebhookRequest request) {
-    return handle(createNotificationServer(webhookId, request));
-  }
-
-  /**
    * Creates a user without an id. This will create a random, secure id for the new user.
    *
    * @param request The user request that contains all of the information used to create the user.
@@ -528,6 +494,38 @@ public class PassportClient {
    */
   public UserActionReasonResponse createUserActionReason$(UUID userActionReasonId, UserActionReasonRequest request) {
     return handle(createUserActionReason(userActionReasonId, request));
+  }
+
+  /**
+   * Creates a webhook. You can optionally specify an id for the webhook when calling this
+   * method, but it is not required.
+   *
+   * @param webhookId (Optional) The id for the webhook.
+   * @param request   The webhook request that contains all of the information used to create the webhook.
+   * @return When successful, the response will contain the webhook object. If there was a validation error or any other
+   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
+   * because it is down or experiencing a failure, the response will contain an Exception, which could be an
+   * IOException.
+   */
+  public ClientResponse<WebhookResponse, Errors> createWebhook(UUID webhookId, WebhookRequest request) {
+    return start(WebhookResponse.class).uri("/api/webhook")
+                                       .urlSegment(webhookId)
+                                       .bodyHandler(new JSONBodyHandler(request, objectMapper))
+                                       .post()
+                                       .go();
+  }
+
+  /**
+   * Money-version of the {@link #createWebhook(UUID, WebhookRequest)} method. This uses the Function and Consumer
+   * passed into the constructor to handle the ClientResponse and return either the success response or throw an
+   * exception (generally speaking).
+   *
+   * @param webhookId See other method.
+   * @param request   See other method.
+   * @return See other method.
+   */
+  public WebhookResponse createWebhook$(UUID webhookId, WebhookRequest request) {
+    return handle(createWebhook(webhookId, request));
   }
 
   /**
@@ -711,7 +709,7 @@ public class PassportClient {
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
    * Exception, which could be an IOException.
    */
-  public ClientResponse<Void, Errors> deleteNotificationServer(UUID webhookId) {
+  public ClientResponse<Void, Errors> deleteWebhook(UUID webhookId) {
     return start(Void.TYPE).uri("/api/webhook")
                            .urlSegment(webhookId)
                            .delete()
@@ -719,14 +717,14 @@ public class PassportClient {
   }
 
   /**
-   * Money-version of the {@link #deleteNotificationServer(UUID)} method. This uses the Function and Consumer passed
+   * Money-version of the {@link #deleteWebhook(UUID)} method. This uses the Function and Consumer passed
    * into the constructor to handle the ClientResponse and return either the success response or throw an exception
    * (generally speaking).
    *
    * @param webhookId See other method.
    */
-  public void deleteNotificationServer$(UUID webhookId) {
-    handle(deleteNotificationServer(webhookId));
+  public void deleteWebhook$(UUID webhookId) {
+    handle(deleteWebhook(webhookId));
   }
 
   /**
@@ -1537,7 +1535,7 @@ public class PassportClient {
    * associated with this request. Additionally, if Passport could not be contacted because it is down or experiencing a
    * failure, the response will contain an Exception, which could be an IOException.
    */
-  public ClientResponse<WebhookResponse, Void> retrieveNotificationServer(UUID webhookId) {
+  public ClientResponse<WebhookResponse, Void> retrieveWebhook(UUID webhookId) {
     return startVoid(WebhookResponse.class).uri("/api/webhook")
                                            .urlSegment(webhookId)
                                            .get()
@@ -1545,15 +1543,15 @@ public class PassportClient {
   }
 
   /**
-   * Money-version of the {@link #retrieveNotificationServer(UUID)} method. This uses the Function and Consumer passed
+   * Money-version of the {@link #retrieveWebhook(UUID)} method. This uses the Function and Consumer passed
    * into the constructor to handle the ClientResponse and return either the success response or throw an exception
    * (generally speaking).
    *
    * @param webhookId See other method.
    * @return See other method.
    */
-  public WebhookResponse retrieveNotificationServer$(UUID webhookId) {
-    return handle(retrieveNotificationServer(webhookId));
+  public WebhookResponse retrieveWebhook$(UUID webhookId) {
+    return handle(retrieveWebhook(webhookId));
   }
 
   /**
@@ -1563,19 +1561,19 @@ public class PassportClient {
    * request. Additionally, if Passport could not be contacted because it is down or experiencing a failure, the
    * response will contain an Exception, which could be an IOException.
    */
-  public ClientResponse<WebhookResponse, Void> retrieveNotificationServers() {
-    return retrieveNotificationServer(null);
+  public ClientResponse<WebhookResponse, Void> retrieveWebhook() {
+    return retrieveWebhook(null);
   }
 
   /**
-   * Money-version of the {@link #retrieveNotificationServers()} method. This uses the Function and Consumer passed into
+   * Money-version of the {@link #retrieveWebhook()} method. This uses the Function and Consumer passed into
    * the constructor to handle the ClientResponse and return either the success response or throw an exception
    * (generally speaking).
    *
    * @return See other method.
    */
-  public WebhookResponse retrieveNotificationServers$() {
-    return handle(retrieveNotificationServers());
+  public WebhookResponse retrieveWebhook$() {
+    return handle(retrieveWebhook());
   }
 
   /**
@@ -2215,8 +2213,7 @@ public class PassportClient {
    * because it is down or experiencing a failure, the response will contain an Exception, which could be an
    * IOException.
    */
-  public ClientResponse<WebhookResponse, Errors> updateNotificationServer(UUID webhookId,
-                                                                          WebhookRequest request) {
+  public ClientResponse<WebhookResponse, Errors> updateWebhook(UUID webhookId, WebhookRequest request) {
     return start(WebhookResponse.class).uri("/api/webhook")
                                        .urlSegment(webhookId)
                                        .bodyHandler(new JSONBodyHandler(request, objectMapper))
@@ -2225,7 +2222,7 @@ public class PassportClient {
   }
 
   /**
-   * Money-version of the {@link #updateNotificationServer(UUID, WebhookRequest)} method. This uses the
+   * Money-version of the {@link #updateWebhook(UUID, WebhookRequest)} method. This uses the
    * Function and Consumer passed into the constructor to handle the ClientResponse and return either the success
    * response or throw an exception (generally speaking).
    *
@@ -2233,9 +2230,8 @@ public class PassportClient {
    * @param request   See other method.
    * @return See other method.
    */
-  public WebhookResponse updateNotificationServer$(UUID webhookId,
-                                                   WebhookRequest request) {
-    return handle(updateNotificationServer(webhookId, request));
+  public WebhookResponse updateWebhook$(UUID webhookId, WebhookRequest request) {
+    return handle(updateWebhook(webhookId, request));
   }
 
   /**
