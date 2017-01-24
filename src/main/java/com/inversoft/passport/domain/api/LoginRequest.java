@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,8 @@ public class LoginRequest {
    */
   public String device;
 
+  public String ipAddress;
+
   public String loginId;
 
   /**
@@ -45,6 +47,13 @@ public class LoginRequest {
 
   @JacksonConstructor
   public LoginRequest() {
+  }
+
+  public LoginRequest(UUID applicationId, String loginId, String password, String ipAddress) {
+    this.applicationId = applicationId;
+    this.ipAddress = ipAddress;
+    this.loginId = loginId;
+    this.password = password;
   }
 
   public LoginRequest(UUID applicationId, String loginId, String password) {

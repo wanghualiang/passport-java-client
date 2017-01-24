@@ -39,6 +39,7 @@ import com.inversoft.passport.domain.api.LoginRequest;
 import com.inversoft.passport.domain.api.LoginResponse;
 import com.inversoft.passport.domain.api.PreviewRequest;
 import com.inversoft.passport.domain.api.PreviewResponse;
+import com.inversoft.passport.domain.api.PublicKeyResponse;
 import com.inversoft.passport.domain.api.SystemConfigurationRequest;
 import com.inversoft.passport.domain.api.SystemConfigurationResponse;
 import com.inversoft.passport.domain.api.TwoFactorRequest;
@@ -54,6 +55,7 @@ import com.inversoft.passport.domain.api.WebhookRequest;
 import com.inversoft.passport.domain.api.WebhookResponse;
 import com.inversoft.passport.domain.api.email.SendRequest;
 import com.inversoft.passport.domain.api.email.SendResponse;
+import com.inversoft.passport.domain.api.jwt.RefreshRequest;
 import com.inversoft.passport.domain.api.jwt.RefreshResponse;
 import com.inversoft.passport.domain.api.report.DailyActiveUserReportResponse;
 import com.inversoft.passport.domain.api.report.LoginReportResponse;
@@ -845,6 +847,34 @@ public class PassportClient {
   }
 
   /**
+   * Retrieves the refresh tokens that belong to the user with the given id.
+   *
+   * @param request The refresh request.
+   * @return When successful, the response will contain the access token object. If there was a validation error or any
+   * other type of error, this will return the Errors object in the response. Additionally, if Passport could not be
+   * contacted because it is down or experiencing a failure, the response will contain an Exception, which could be an
+   * IOException.
+   */
+  public ClientResponse<RefreshResponse, Errors> exchangeRefreshTokenForAccessToken(RefreshRequest request) {
+    return start(RefreshResponse.class).uri("/api/jwt/refresh")
+                                       .bodyHandler(new JSONBodyHandler(request, objectMapper))
+                                       .post()
+                                       .go();
+  }
+
+  /**
+   * Money-version of the {@link #exchangeRefreshTokenForAccessToken(RefreshRequest)}  method. This uses the Function
+   * and Consumer passed into the constructor to handle the ClientResponse and return either the success response or
+   * throw an exception (generally speaking).
+   *
+   * @param request See other method.
+   * @return See other method.
+   */
+  public RefreshResponse exchangeRefreshTokenForAccessToken$(RefreshRequest request) {
+    return handle(exchangeRefreshTokenForAccessToken(request));
+  }
+
+  /**
    * Begins the forgot password sequence, which kicks off an email to the user so that they can reset their password.
    *
    * @param request The request that contains the information about the user so that they can be emailed.
@@ -909,33 +939,29 @@ public class PassportClient {
   /**
    * Logs a user in.
    *
-   * @param request         The login request that contains the user credentials used to log them in.
-   * @param callerIPAddress (Optional) The IP address of the end-user that is logging in. If a null value is provided
-   *                        the IP address will be that of the client or last proxy that sent the request.
+   * @param request The login request that contains the user credentials used to log them in.
    * @return When successful, the response will contain the user that was logged in. This user object is complete and
    * contains all of the registrations and data for the user. If there was a validation error or any other type of
    * error, this will return the Errors object in the response. Additionally, if Passport could not be contacted because
    * it is down or experiencing a failure, the response will contain an Exception, which could be an IOException.
    */
-  public ClientResponse<LoginResponse, Errors> login(LoginRequest request, String callerIPAddress) {
+  public ClientResponse<LoginResponse, Errors> login(LoginRequest request) {
     return start(LoginResponse.class).uri("/api/login")
-                                     .header("X-Forwarded-For", callerIPAddress)
                                      .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                      .post()
                                      .go();
   }
 
   /**
-   * Money-version of the {@link #login(LoginRequest, String)} method. This uses the Function and Consumer passed into
+   * Money-version of the {@link #login(LoginRequest)} method. This uses the Function and Consumer passed into
    * the constructor to handle the ClientResponse and return either the success response or throw an exception
    * (generally speaking).
    *
    * @param request         See other method.
-   * @param callerIPAddress See other method.
    * @return See other method.
    */
-  public LoginResponse login$(LoginRequest request, String callerIPAddress) {
-    return handle(login(request, callerIPAddress));
+  public LoginResponse login$(LoginRequest request) {
+    return handle(login(request));
   }
 
   /**
@@ -957,7 +983,7 @@ public class PassportClient {
     return start(Void.TYPE).uri("/api/login")
                            .urlSegment(userId)
                            .urlSegment(applicationId)
-                           .header("X-Forwarded-For", callerIPAddress)
+                           .urlParameter("ipAddress", callerIPAddress)
                            .put()
                            .go();
   }
@@ -1574,6 +1600,61 @@ public class PassportClient {
    */
   public WebhookResponse retrieveWebhook$() {
     return handle(retrieveWebhook());
+  }
+
+  /**
+   * Retrieves the Public Key configured for verifying JSON Web Tokens (JWT) by the key Id. If the key Id is provided a
+   * single public key will be returned if one is found by that id. If the optional parameter key Id is not provided all
+   * public keys will be returned.
+   *
+   * @param keyId (Optional) The id of the public key.
+   * @return When successful, the response will contain the public key(s). If there was a validation error or any other
+   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
+   * because it is down or experiencing a failure, the response will contain an Exception, which could be an
+   * IOException.
+   */
+  public ClientResponse<PublicKeyResponse, Errors> retrieveJwtPublicKey(String keyId) {
+    return start(PublicKeyResponse.class).uri("/api/jwt/public-key")
+                                         .urlSegment(keyId)
+                                         .get()
+                                         .go();
+  }
+
+  /**
+   * Retrieves all Public Keys configured for verifying JSON Web Tokens (JWT).
+   *
+   * @return When successful, the response will contain all of the public key configured for JWT verification. If there
+   * was a validation error or any other type of error, this will return the Errors object in the response.
+   * Additionally, if Passport could not be contacted because it is down or experiencing a failure, the response will
+   * contain an Exception, which could be an IOException.
+   */
+  public ClientResponse<PublicKeyResponse, Errors> retrieveJwtPublicKey() {
+    return start(PublicKeyResponse.class).uri("/api/jwt/public-key")
+                                         .get()
+                                         .go();
+  }
+
+  /**
+   * Money-version of the {@link #retrieveJwtPublicKey()} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @return See other method.
+   */
+  public PublicKeyResponse retrieveJwtPublicKey$() {
+    return handle(retrieveJwtPublicKey());
+  }
+
+  /**
+   * Money-version of the {@link #retrieveJwtPublicKey(String)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param keyId (Optional) See other method.
+   * @return See other method.
+   */
+  public PublicKeyResponse retrieveJwtPublicKey$(String keyId) {
+    return handle(retrieveJwtPublicKey(keyId));
   }
 
   /**

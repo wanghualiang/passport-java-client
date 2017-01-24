@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -112,7 +112,7 @@ public class User implements Buildable<User> {
               String fullName, String firstName, String middleName, String lastName, String encryptionScheme,
               ZonedDateTime expiry, boolean active, String timezone, UUID cleanSpeakId, UserData data, boolean verified,
               String verificationId, ContentStatus usernameStatus, String twoFactorSecret,
-              URI imageUri, UserRegistration... registrations) {
+              URI imageUrl, UserRegistration... registrations) {
     this.id = id;
     this.email = email;
     this.password = password;
@@ -133,7 +133,7 @@ public class User implements Buildable<User> {
     this.verified = verified;
     this.usernameStatus = usernameStatus;
     this.twoFactorSecret = twoFactorSecret;
-    this.imageUrl = imageUri;
+    this.imageUrl = imageUrl;
     Collections.addAll(this.registrations, registrations);
     normalize();
   }
