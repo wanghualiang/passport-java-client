@@ -703,33 +703,6 @@ public class PassportClient {
   }
 
   /**
-   * Deletes the webhook for the given id.
-   *
-   * @param webhookId The id of the webhook to delete.
-   * @return When successful, the response will not contain a response object but only contains the status. If there was
-   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
-   * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
-   * Exception, which could be an IOException.
-   */
-  public ClientResponse<Void, Errors> deleteWebhook(UUID webhookId) {
-    return start(Void.TYPE).uri("/api/webhook")
-                           .urlSegment(webhookId)
-                           .delete()
-                           .go();
-  }
-
-  /**
-   * Money-version of the {@link #deleteWebhook(UUID)} method. This uses the Function and Consumer passed
-   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
-   * (generally speaking).
-   *
-   * @param webhookId See other method.
-   */
-  public void deleteWebhook$(UUID webhookId) {
-    handle(deleteWebhook(webhookId));
-  }
-
-  /**
    * Deletes the user registration for the given user and application.
    *
    * @param userId        The id of the user whose registration is being deleted.
@@ -847,6 +820,33 @@ public class PassportClient {
   }
 
   /**
+   * Deletes the webhook for the given id.
+   *
+   * @param webhookId The id of the webhook to delete.
+   * @return When successful, the response will not contain a response object but only contains the status. If there was
+   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
+   * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
+   * Exception, which could be an IOException.
+   */
+  public ClientResponse<Void, Errors> deleteWebhook(UUID webhookId) {
+    return start(Void.TYPE).uri("/api/webhook")
+                           .urlSegment(webhookId)
+                           .delete()
+                           .go();
+  }
+
+  /**
+   * Money-version of the {@link #deleteWebhook(UUID)} method. This uses the Function and Consumer passed
+   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param webhookId See other method.
+   */
+  public void deleteWebhook$(UUID webhookId) {
+    handle(deleteWebhook(webhookId));
+  }
+
+  /**
    * Retrieves the refresh tokens that belong to the user with the given id.
    *
    * @param request The refresh request.
@@ -957,7 +957,7 @@ public class PassportClient {
    * the constructor to handle the ClientResponse and return either the success response or throw an exception
    * (generally speaking).
    *
-   * @param request         See other method.
+   * @param request See other method.
    * @return See other method.
    */
   public LoginResponse login$(LoginRequest request) {
@@ -1481,6 +1481,61 @@ public class PassportClient {
   }
 
   /**
+   * Retrieves the Public Key configured for verifying JSON Web Tokens (JWT) by the key Id. If the key Id is provided a
+   * single public key will be returned if one is found by that id. If the optional parameter key Id is not provided all
+   * public keys will be returned.
+   *
+   * @param keyId (Optional) The id of the public key.
+   * @return When successful, the response will contain the public key(s). If there was a validation error or any other
+   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
+   * because it is down or experiencing a failure, the response will contain an Exception, which could be an
+   * IOException.
+   */
+  public ClientResponse<PublicKeyResponse, Errors> retrieveJwtPublicKey(String keyId) {
+    return start(PublicKeyResponse.class).uri("/api/jwt/public-key")
+                                         .urlSegment(keyId)
+                                         .get()
+                                         .go();
+  }
+
+  /**
+   * Retrieves all Public Keys configured for verifying JSON Web Tokens (JWT).
+   *
+   * @return When successful, the response will contain all of the public key configured for JWT verification. If there
+   * was a validation error or any other type of error, this will return the Errors object in the response.
+   * Additionally, if Passport could not be contacted because it is down or experiencing a failure, the response will
+   * contain an Exception, which could be an IOException.
+   */
+  public ClientResponse<PublicKeyResponse, Errors> retrieveJwtPublicKey() {
+    return start(PublicKeyResponse.class).uri("/api/jwt/public-key")
+                                         .get()
+                                         .go();
+  }
+
+  /**
+   * Money-version of the {@link #retrieveJwtPublicKey()} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @return See other method.
+   */
+  public PublicKeyResponse retrieveJwtPublicKey$() {
+    return handle(retrieveJwtPublicKey());
+  }
+
+  /**
+   * Money-version of the {@link #retrieveJwtPublicKey(String)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param keyId (Optional) See other method.
+   * @return See other method.
+   */
+  public PublicKeyResponse retrieveJwtPublicKey$(String keyId) {
+    return handle(retrieveJwtPublicKey(keyId));
+  }
+
+  /**
    * Retrieves the login report between the two instants. If you specify an application id, it will only return the
    * login counts for that application.
    *
@@ -1550,111 +1605,6 @@ public class PassportClient {
    */
   public MonthlyActiveUserReportResponse retrieveMonthlyActiveReport$(UUID applicationId, long start, long end) {
     return handle(retrieveMonthlyActiveReport(applicationId, start, end));
-  }
-
-  /**
-   * Retrieves the webhook for the given id. If you pass in null for the id, this will return all the
-   * webhooks.
-   *
-   * @param webhookId (Optional) The id of the webhook.
-   * @return When successful, the response will contain the webhook for the id or all the webhooks. There are no errors
-   * associated with this request. Additionally, if Passport could not be contacted because it is down or experiencing a
-   * failure, the response will contain an Exception, which could be an IOException.
-   */
-  public ClientResponse<WebhookResponse, Void> retrieveWebhook(UUID webhookId) {
-    return startVoid(WebhookResponse.class).uri("/api/webhook")
-                                           .urlSegment(webhookId)
-                                           .get()
-                                           .go();
-  }
-
-  /**
-   * Money-version of the {@link #retrieveWebhook(UUID)} method. This uses the Function and Consumer passed
-   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
-   * (generally speaking).
-   *
-   * @param webhookId See other method.
-   * @return See other method.
-   */
-  public WebhookResponse retrieveWebhook$(UUID webhookId) {
-    return handle(retrieveWebhook(webhookId));
-  }
-
-  /**
-   * Retrieves all the webhooks.
-   *
-   * @return When successful, the response will contain all of the webhooks. There are no errors associated with this
-   * request. Additionally, if Passport could not be contacted because it is down or experiencing a failure, the
-   * response will contain an Exception, which could be an IOException.
-   */
-  public ClientResponse<WebhookResponse, Void> retrieveWebhook() {
-    return retrieveWebhook(null);
-  }
-
-  /**
-   * Money-version of the {@link #retrieveWebhook()} method. This uses the Function and Consumer passed into
-   * the constructor to handle the ClientResponse and return either the success response or throw an exception
-   * (generally speaking).
-   *
-   * @return See other method.
-   */
-  public WebhookResponse retrieveWebhook$() {
-    return handle(retrieveWebhook());
-  }
-
-  /**
-   * Retrieves the Public Key configured for verifying JSON Web Tokens (JWT) by the key Id. If the key Id is provided a
-   * single public key will be returned if one is found by that id. If the optional parameter key Id is not provided all
-   * public keys will be returned.
-   *
-   * @param keyId (Optional) The id of the public key.
-   * @return When successful, the response will contain the public key(s). If there was a validation error or any other
-   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
-   * because it is down or experiencing a failure, the response will contain an Exception, which could be an
-   * IOException.
-   */
-  public ClientResponse<PublicKeyResponse, Errors> retrieveJwtPublicKey(String keyId) {
-    return start(PublicKeyResponse.class).uri("/api/jwt/public-key")
-                                         .urlSegment(keyId)
-                                         .get()
-                                         .go();
-  }
-
-  /**
-   * Retrieves all Public Keys configured for verifying JSON Web Tokens (JWT).
-   *
-   * @return When successful, the response will contain all of the public key configured for JWT verification. If there
-   * was a validation error or any other type of error, this will return the Errors object in the response.
-   * Additionally, if Passport could not be contacted because it is down or experiencing a failure, the response will
-   * contain an Exception, which could be an IOException.
-   */
-  public ClientResponse<PublicKeyResponse, Errors> retrieveJwtPublicKey() {
-    return start(PublicKeyResponse.class).uri("/api/jwt/public-key")
-                                         .get()
-                                         .go();
-  }
-
-  /**
-   * Money-version of the {@link #retrieveJwtPublicKey()} method. This uses the Function and Consumer passed into
-   * the constructor to handle the ClientResponse and return either the success response or throw an exception
-   * (generally speaking).
-   *
-   * @return See other method.
-   */
-  public PublicKeyResponse retrieveJwtPublicKey$() {
-    return handle(retrieveJwtPublicKey());
-  }
-
-  /**
-   * Money-version of the {@link #retrieveJwtPublicKey(String)} method. This uses the Function and Consumer passed into
-   * the constructor to handle the ClientResponse and return either the success response or throw an exception
-   * (generally speaking).
-   *
-   * @param keyId (Optional) See other method.
-   * @return See other method.
-   */
-  public PublicKeyResponse retrieveJwtPublicKey$(String keyId) {
-    return handle(retrieveJwtPublicKey(keyId));
   }
 
   /**
@@ -2051,6 +2001,56 @@ public class PassportClient {
   }
 
   /**
+   * Retrieves the webhook for the given id. If you pass in null for the id, this will return all the
+   * webhooks.
+   *
+   * @param webhookId (Optional) The id of the webhook.
+   * @return When successful, the response will contain the webhook for the id or all the webhooks. There are no errors
+   * associated with this request. Additionally, if Passport could not be contacted because it is down or experiencing a
+   * failure, the response will contain an Exception, which could be an IOException.
+   */
+  public ClientResponse<WebhookResponse, Void> retrieveWebhook(UUID webhookId) {
+    return startVoid(WebhookResponse.class).uri("/api/webhook")
+                                           .urlSegment(webhookId)
+                                           .get()
+                                           .go();
+  }
+
+  /**
+   * Retrieves all the webhooks.
+   *
+   * @return When successful, the response will contain all of the webhooks. There are no errors associated with this
+   * request. Additionally, if Passport could not be contacted because it is down or experiencing a failure, the
+   * response will contain an Exception, which could be an IOException.
+   */
+  public ClientResponse<WebhookResponse, Void> retrieveWebhook() {
+    return retrieveWebhook(null);
+  }
+
+  /**
+   * Money-version of the {@link #retrieveWebhook(UUID)} method. This uses the Function and Consumer passed
+   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param webhookId See other method.
+   * @return See other method.
+   */
+  public WebhookResponse retrieveWebhook$(UUID webhookId) {
+    return handle(retrieveWebhook(webhookId));
+  }
+
+  /**
+   * Money-version of the {@link #retrieveWebhook()} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @return See other method.
+   */
+  public WebhookResponse retrieveWebhook$() {
+    return handle(retrieveWebhook());
+  }
+
+  /**
    * Searches the audit logs with the specified criteria and pagination.
    *
    * @param search The search criteria and pagination information.
@@ -2285,37 +2285,6 @@ public class PassportClient {
   }
 
   /**
-   * Updates the webhook with the given id.
-   *
-   * @param webhookId The id of the webhook to update.
-   * @param request   The request that contains all of the new webhook information.
-   * @return When successful, the response will contain the webhook. If there was a validation error or any other type
-   * of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
-   * because it is down or experiencing a failure, the response will contain an Exception, which could be an
-   * IOException.
-   */
-  public ClientResponse<WebhookResponse, Errors> updateWebhook(UUID webhookId, WebhookRequest request) {
-    return start(WebhookResponse.class).uri("/api/webhook")
-                                       .urlSegment(webhookId)
-                                       .bodyHandler(new JSONBodyHandler(request, objectMapper))
-                                       .put()
-                                       .go();
-  }
-
-  /**
-   * Money-version of the {@link #updateWebhook(UUID, WebhookRequest)} method. This uses the
-   * Function and Consumer passed into the constructor to handle the ClientResponse and return either the success
-   * response or throw an exception (generally speaking).
-   *
-   * @param webhookId See other method.
-   * @param request   See other method.
-   * @return See other method.
-   */
-  public WebhookResponse updateWebhook$(UUID webhookId, WebhookRequest request) {
-    return handle(updateWebhook(webhookId, request));
-  }
-
-  /**
    * Updates the registration for the user with the given id and the application defined in the request.
    *
    * @param userId  The id of the user whose registration is going to be updated.
@@ -2466,6 +2435,37 @@ public class PassportClient {
    */
   public UserActionReasonResponse updateUserActionReason$(UUID userActionReasonId, UserActionReasonRequest request) {
     return handle(updateUserActionReason(userActionReasonId, request));
+  }
+
+  /**
+   * Updates the webhook with the given id.
+   *
+   * @param webhookId The id of the webhook to update.
+   * @param request   The request that contains all of the new webhook information.
+   * @return When successful, the response will contain the webhook. If there was a validation error or any other type
+   * of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
+   * because it is down or experiencing a failure, the response will contain an Exception, which could be an
+   * IOException.
+   */
+  public ClientResponse<WebhookResponse, Errors> updateWebhook(UUID webhookId, WebhookRequest request) {
+    return start(WebhookResponse.class).uri("/api/webhook")
+                                       .urlSegment(webhookId)
+                                       .bodyHandler(new JSONBodyHandler(request, objectMapper))
+                                       .put()
+                                       .go();
+  }
+
+  /**
+   * Money-version of the {@link #updateWebhook(UUID, WebhookRequest)} method. This uses the
+   * Function and Consumer passed into the constructor to handle the ClientResponse and return either the success
+   * response or throw an exception (generally speaking).
+   *
+   * @param webhookId See other method.
+   * @param request   See other method.
+   * @return See other method.
+   */
+  public WebhookResponse updateWebhook$(UUID webhookId, WebhookRequest request) {
+    return handle(updateWebhook(webhookId, request));
   }
 
   /**
