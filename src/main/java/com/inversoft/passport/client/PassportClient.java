@@ -57,6 +57,7 @@ import com.inversoft.passport.domain.api.email.SendRequest;
 import com.inversoft.passport.domain.api.email.SendResponse;
 import com.inversoft.passport.domain.api.jwt.RefreshRequest;
 import com.inversoft.passport.domain.api.jwt.RefreshResponse;
+import com.inversoft.passport.domain.api.jwt.ValidateResponse;
 import com.inversoft.passport.domain.api.report.DailyActiveUserReportResponse;
 import com.inversoft.passport.domain.api.report.LoginReportResponse;
 import com.inversoft.passport.domain.api.report.MonthlyActiveUserReportResponse;
@@ -2466,6 +2467,36 @@ public class PassportClient {
    */
   public WebhookResponse updateWebhook$(UUID webhookId, WebhookRequest request) {
     return handle(updateWebhook(webhookId, request));
+  }
+
+  /**
+   * Validates the provided JWT (encoded JWT string) to ensure the token is valid. A valid access token is propertly
+   * signed and not expired.
+   * <p/>
+   * This API may be used to verify the JWT as well as decode the encoded JWT into human readable identity claims.
+   *
+   * @param encodedJWT The encoded JWT (access token)
+   * @return When successful, the response will contain a new acess token with an updated expiration and the payload of
+   * the JWT which contains the identity claims. Additionally, if Passport could not be contacted because it is down or
+   * experiencing a failure, the response will contain an Exception, which could be an IOException.
+   */
+  public ClientResponse<ValidateResponse, Errors> validateAccessToken(String encodedJWT) {
+    return start(ValidateResponse.class).uri("/api/jwt/validate")
+                                        .authorization("JWT " + encodedJWT)
+                                        .post()
+                                        .go();
+  }
+
+  /**
+   * Money-version of the {@link #validateAccessToken(String)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param encodedJWT See other method.
+   * @return See other method.
+   */
+  public ValidateResponse validateAccessToken$(String encodedJWT) {
+    return handle(validateAccessToken(encodedJWT));
   }
 
   /**
