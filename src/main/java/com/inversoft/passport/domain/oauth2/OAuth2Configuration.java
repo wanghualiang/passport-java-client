@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.inversoft.json.ToString;
 import static com.inversoft.passport.domain.util.Normalizer.removeEmpty;
 import static com.inversoft.passport.domain.util.Normalizer.trim;
@@ -28,8 +27,6 @@ import static com.inversoft.passport.domain.util.Normalizer.trim;
 /**
  * @author Daniel DeGroff
  */
-// Ignore grantType and tokenExpiresInSeconds, they are deprecated it may still exist in the database.
-@JsonIgnoreProperties({"grantType", "tokenExpiresInSeconds"})
 public class OAuth2Configuration {
   public List<URI> authorizedOriginURLs = new ArrayList<>();
 
