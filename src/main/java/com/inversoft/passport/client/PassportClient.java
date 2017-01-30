@@ -2470,7 +2470,7 @@ public class PassportClient {
   }
 
   /**
-   * Validates the provided JWT (encoded JWT string) to ensure the token is valid. A valid access token is propertly
+   * Validates the provided JWT (encoded JWT string) to ensure the token is valid. A valid access token is properly
    * signed and not expired.
    * <p/>
    * This API may be used to verify the JWT as well as decode the encoded JWT into human readable identity claims.
