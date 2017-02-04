@@ -2483,7 +2483,7 @@ public class PassportClient {
   public ClientResponse<ValidateResponse, Errors> validateAccessToken(String encodedJWT) {
     return start(ValidateResponse.class).uri("/api/jwt/validate")
                                         .authorization("JWT " + encodedJWT)
-                                        .post()
+                                        .get()
                                         .go();
   }
 
