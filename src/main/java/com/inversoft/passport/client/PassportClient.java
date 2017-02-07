@@ -319,7 +319,7 @@ public class PassportClient {
    * written to the audit log. However, if you are accessing the API, you must write the audit logs yourself.
    *
    * @param message    The message for the audit log.
-   * @param insertUser The user that took the action being logged.
+   * @param insertUser The user that took the action being logged. Generally an email or username.
    * @return When successful, the response will not contain a response but only contains the status code. If there was a
    * validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
@@ -470,8 +470,9 @@ public class PassportClient {
    * Creates a user reason. This user action reason cannot be used when actioning a user until this call completes
    * successfully. Anytime after that the user action reason can be used.
    *
-   * @param request The user action reason request that contains all of the information used to create the user action
-   *                reason.
+   * @param userActionReasonId (Optional) The id for the user action reason.
+   * @param request            The user action reason request that contains all of the information used to create the
+   *                           user action reason.
    * @return When successful, the response will contain the user action reason object. If there was a validation error
    * or any other type of error, this will return the Errors object in the response. Additionally, if Passport could not
    * be contacted because it is down or experiencing a failure, the response will contain an Exception, which could be
@@ -561,7 +562,7 @@ public class PassportClient {
   /**
    * Deactivates the user with the given id.
    *
-   * @param userId The id of the application to deactivate.
+   * @param userId The id of the user to deactivate.
    * @return When successful, the response will not contain a response object but only contains the status. If there was
    * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
    * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
@@ -848,7 +849,7 @@ public class PassportClient {
   }
 
   /**
-   * Retrieves the refresh tokens that belong to the user with the given id.
+   * Exchange a refresh token for a new Access Token (JWT).
    *
    * @param request The refresh request.
    * @return When successful, the response will contain the access token object. If there was a validation error or any
@@ -1500,31 +1501,6 @@ public class PassportClient {
   }
 
   /**
-   * Retrieves all Public Keys configured for verifying JSON Web Tokens (JWT).
-   *
-   * @return When successful, the response will contain all of the public key configured for JWT verification. If there
-   * was a validation error or any other type of error, this will return the Errors object in the response.
-   * Additionally, if Passport could not be contacted because it is down or experiencing a failure, the response will
-   * contain an Exception, which could be an IOException.
-   */
-  public ClientResponse<PublicKeyResponse, Errors> retrieveJwtPublicKey() {
-    return start(PublicKeyResponse.class).uri("/api/jwt/public-key")
-                                         .get()
-                                         .go();
-  }
-
-  /**
-   * Money-version of the {@link #retrieveJwtPublicKey()} method. This uses the Function and Consumer passed into
-   * the constructor to handle the ClientResponse and return either the success response or throw an exception
-   * (generally speaking).
-   *
-   * @return See other method.
-   */
-  public PublicKeyResponse retrieveJwtPublicKey$() {
-    return handle(retrieveJwtPublicKey());
-  }
-
-  /**
    * Money-version of the {@link #retrieveJwtPublicKey(String)} method. This uses the Function and Consumer passed into
    * the constructor to handle the ClientResponse and return either the success response or throw an exception
    * (generally speaking).
@@ -1534,6 +1510,31 @@ public class PassportClient {
    */
   public PublicKeyResponse retrieveJwtPublicKey$(String keyId) {
     return handle(retrieveJwtPublicKey(keyId));
+  }
+
+  /**
+   * Retrieves all Public Keys configured for verifying JSON Web Tokens (JWT).
+   *
+   * @return When successful, the response will contain all of the public key configured for JWT verification. If there
+   * was a validation error or any other type of error, this will return the Errors object in the response.
+   * Additionally, if Passport could not be contacted because it is down or experiencing a failure, the response will
+   * contain an Exception, which could be an IOException.
+   */
+  public ClientResponse<PublicKeyResponse, Errors> retrieveJwtPublicKeys() {
+    return start(PublicKeyResponse.class).uri("/api/jwt/public-key")
+                                         .get()
+                                         .go();
+  }
+
+  /**
+   * Money-version of the {@link #retrieveJwtPublicKeys()} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @return See other method.
+   */
+  public PublicKeyResponse retrieveJwtPublicKeys$() {
+    return handle(retrieveJwtPublicKeys());
   }
 
   /**
@@ -1966,8 +1967,7 @@ public class PassportClient {
   }
 
   /**
-   * Retrieves the login report between the two instants. If you specify an application id, it will only return the
-   * login counts for that application.
+   * Retrieves the the last number of login records for a user.
    *
    * @param userId The user's id.
    * @param offset The initial record. e.g. 0 is the last login, 100 will be the 100th most recent login.
@@ -1982,7 +1982,7 @@ public class PassportClient {
     return start(UserLoginReportResponse.class).uri("/api/report/user-login")
                                                .urlParameter("userId", userId)
                                                .urlParameter("offset", offset)
-                                               .urlParameter("limit", limit != null ? limit : 10)
+                                               .urlParameter("limit", limit)
                                                .get()
                                                .go();
   }
@@ -2018,17 +2018,6 @@ public class PassportClient {
   }
 
   /**
-   * Retrieves all the webhooks.
-   *
-   * @return When successful, the response will contain all of the webhooks. There are no errors associated with this
-   * request. Additionally, if Passport could not be contacted because it is down or experiencing a failure, the
-   * response will contain an Exception, which could be an IOException.
-   */
-  public ClientResponse<WebhookResponse, Void> retrieveWebhook() {
-    return retrieveWebhook(null);
-  }
-
-  /**
    * Money-version of the {@link #retrieveWebhook(UUID)} method. This uses the Function and Consumer passed
    * into the constructor to handle the ClientResponse and return either the success response or throw an exception
    * (generally speaking).
@@ -2041,14 +2030,25 @@ public class PassportClient {
   }
 
   /**
-   * Money-version of the {@link #retrieveWebhook()} method. This uses the Function and Consumer passed into
+   * Retrieves all the webhooks.
+   *
+   * @return When successful, the response will contain all of the webhooks. There are no errors associated with this
+   * request. Additionally, if Passport could not be contacted because it is down or experiencing a failure, the
+   * response will contain an Exception, which could be an IOException.
+   */
+  public ClientResponse<WebhookResponse, Void> retrieveWebhooks() {
+    return retrieveWebhook(null);
+  }
+
+  /**
+   * Money-version of the {@link #retrieveWebhooks()} method. This uses the Function and Consumer passed into
    * the constructor to handle the ClientResponse and return either the success response or throw an exception
    * (generally speaking).
    *
    * @return See other method.
    */
-  public WebhookResponse retrieveWebhook$() {
-    return handle(retrieveWebhook());
+  public WebhookResponse retrieveWebhooks$() {
+    return handle(retrieveWebhooks());
   }
 
   /**
