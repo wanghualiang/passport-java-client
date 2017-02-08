@@ -2387,7 +2387,8 @@ public class PassportClient {
    * IOException.
    */
   public ClientResponse<UserActionResponse, Errors> updateUserAction(UUID userActionId, UserActionRequest request) {
-    return start(UserActionResponse.class).uri("/api/user-action/" + userActionId)
+    return start(UserActionResponse.class).uri("/api/user-action")
+                                          .urlSegment(userActionId)
                                           .bodyHandler(new JSONBodyHandler(request, objectMapper))
                                           .put()
                                           .go();
