@@ -3,8 +3,13 @@ If you're integrating Passport with a Java application, this library will speed 
 
 For additional information and documentation on Passport refer to [https://www.inversoft.com](https://www.inversoft.com).
 
-Released versions can be downloaded from the Public Savant Repository. [http://savant.inversoft.org/com/inversoft/passport/passport-java-client/](http://savant.inversoft.org/com/inversoft/passport/passport-java-client/)
 
+## Downloading
+Released versions can be downloaded from the Savant Repository.
+ 
+ * http://savant.inversoft.org/com/inversoft/passport/passport-java-client/
+
+## Building
 **Note:** This project uses the Savant build tool. To compile using using Savant, follow these instructions:
 
 ```bash
