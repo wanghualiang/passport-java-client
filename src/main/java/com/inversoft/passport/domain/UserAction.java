@@ -30,7 +30,7 @@ import com.inversoft.passport.domain.util.Normalizer;
  *
  * @author Brian Pontarelli
  */
-public class UserAction implements Comparable<UserAction> {
+public class UserAction implements Comparable<UserAction>, Buildable<UserAction> {
   public boolean active;
 
   /**
@@ -71,6 +71,8 @@ public class UserAction implements Comparable<UserAction> {
   public UUID startEmailTemplateId;
 
   public boolean temporal;
+
+  public TransactionType transactionType;
 
   /**
    * Passport emailing
@@ -130,6 +132,7 @@ public class UserAction implements Comparable<UserAction> {
         Objects.equals(preventLogin, that.preventLogin) &&
         Objects.equals(sendEndEvent, that.sendEndEvent) &&
         Objects.equals(temporal, that.temporal) &&
+        Objects.equals(transactionType, that.transactionType) &&
         Objects.equals(userNotificationsEnabled, that.userNotificationsEnabled) &&
         Objects.equals(userEmailingEnabled, that.userEmailingEnabled) &&
         Objects.equals(localizedNames, that.localizedNames) &&
@@ -159,8 +162,8 @@ public class UserAction implements Comparable<UserAction> {
   @Override
   public int hashCode() {
     return Objects.hash(active, includeEmailInEventJSON, localizedNames, name, options, preventLogin, sendEndEvent,
-        temporal, userNotificationsEnabled, userEmailingEnabled, startEmailTemplateId, modifyEmailTemplateId, cancelEmailTemplateId,
-        endEmailTemplateId);
+                        temporal, transactionType, userNotificationsEnabled, userEmailingEnabled, startEmailTemplateId,
+                        modifyEmailTemplateId, cancelEmailTemplateId, endEmailTemplateId);
   }
 
   public void normalize() {

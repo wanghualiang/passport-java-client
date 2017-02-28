@@ -15,18 +15,26 @@
  */
 package com.inversoft.passport.domain.event;
 
+import com.inversoft.json.JacksonConstructor;
+import com.inversoft.json.ToString;
+
 /**
- * Container for the user action event information. This is the JSON that is sent from Passport to webhooks.
+ * Container for the event information. This is the JSON that is sent from Passport to webhooks.
  *
  * @author Brian Pontarelli
  */
-public class UserActionEventRequest {
-  public UserActionEvent event;
+public class EventRequest {
+  public BaseEvent event;
 
-  public UserActionEventRequest() {
+  @JacksonConstructor
+  public EventRequest() {
   }
 
-  public UserActionEventRequest(UserActionEvent event) {
+  public EventRequest(BaseEvent event) {
     this.event = event;
+  }
+
+  public String toString() {
+    return ToString.toString(this);
   }
 }

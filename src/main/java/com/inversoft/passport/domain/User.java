@@ -21,11 +21,13 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.inversoft.json.ToString;
@@ -138,6 +140,47 @@ public class User implements Buildable<User> {
     normalize();
   }
 
+  public User(User user) {
+    this.active = user.active;
+    this.birthDate = user.birthDate;
+    this.childIds.addAll(user.childIds);
+    this.cleanSpeakId = user.cleanSpeakId;
+    this.email = user.email;
+    this.encryptionScheme = user.encryptionScheme;
+    this.expiry = user.expiry;
+    this.factor = user.factor;
+    this.firstName = user.firstName;
+    this.fullName = user.fullName;
+    this.id = user.id;
+    this.imageUrl = user.imageUrl;
+    this.insertInstant = user.insertInstant;
+    this.lastLoginInstant = user.lastLoginInstant;
+    this.lastName = user.lastName;
+    this.middleName = user.middleName;
+    this.mobilePhone = user.mobilePhone;
+    this.parentalConsentType = user.parentalConsentType;
+    this.parentId = user.parentId;
+    this.password = user.password;
+    this.passwordChangeRequired = user.passwordChangeRequired;
+    this.passwordLastUpdateInstant = user.passwordLastUpdateInstant;
+    this.registrations.addAll(user.registrations.stream().map(UserRegistration::new).collect(Collectors.toList()));
+    this.salt = user.salt;
+    this.timezone = user.timezone;
+    this.twoFactorEnabled = user.twoFactorEnabled;
+    this.twoFactorSecret = user.twoFactorSecret;
+    this.username = user.username;
+    this.usernameStatus = user.usernameStatus;
+    this.verificationId = user.verificationId;
+    this.verificationIdCreateInstant = user.verificationIdCreateInstant;
+    this.verified = user.verified;
+
+    if (user.data != null) {
+      this.data = new UserData(user.data);
+    }
+  }
+
+
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -147,6 +190,10 @@ public class User implements Buildable<User> {
       return false;
     }
     User user = (User) o;
+    this.childIds.sort(UUID::compareTo);
+    user.childIds.sort(UUID::compareTo);
+    user.registrations.sort(Comparator.comparing(ur -> ur.applicationId));
+    this.registrations.sort(Comparator.comparing(ur -> ur.applicationId));
     return Objects.equals(active, user.active) &&
         Objects.equals(birthDate, user.birthDate) &&
         Objects.equals(childIds, user.childIds) &&

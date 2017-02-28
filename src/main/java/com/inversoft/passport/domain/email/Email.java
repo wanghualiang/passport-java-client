@@ -20,13 +20,14 @@ import java.util.List;
 import java.util.Objects;
 
 import com.inversoft.json.ToString;
+import com.inversoft.passport.domain.Buildable;
 
 /**
  * This class is an abstraction of a simple email message.
  *
  * @author Brian Pontarelli
  */
-public class Email {
+public class Email implements Buildable<Email> {
   public List<Attachment> attachments = new ArrayList<>();
 
   public List<EmailAddress> bcc = new ArrayList<>();

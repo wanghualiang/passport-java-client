@@ -47,6 +47,11 @@ public class UserData {
     }
   }
 
+  public UserData(UserData data) {
+    this.attributes.putAll(data.attributes);
+    this.preferredLanguages.addAll(data.preferredLanguages);
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {

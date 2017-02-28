@@ -18,12 +18,16 @@ package com.inversoft.passport.domain;
 import java.net.URI;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.inversoft.json.JacksonConstructor;
 import com.inversoft.json.ToString;
+import com.inversoft.passport.domain.event.EventType;
 
 /**
  * @author Brian Pontarelli
@@ -31,8 +35,8 @@ import com.inversoft.json.ToString;
 public class SystemConfiguration implements Buildable<SystemConfiguration> {
   public CleanSpeakConfiguration cleanSpeakConfiguration = new CleanSpeakConfiguration();
 
-  @JsonIgnore
-  public SystemConfigurationData configuration = new SystemConfigurationData();
+  @JsonUnwrapped
+  public SystemConfigurationData data = new SystemConfigurationData();
 
   public EmailConfiguration emailConfiguration = new EmailConfiguration();
 
@@ -89,7 +93,7 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
     SystemConfiguration that = (SystemConfiguration) o;
     return Objects.equals(cleanSpeakConfiguration, that.cleanSpeakConfiguration) &&
         Objects.equals(emailConfiguration, that.emailConfiguration) &&
-        Objects.equals(configuration, that.configuration) &&
+        Objects.equals(data, that.data) &&
         Objects.equals(failedAuthenticationUserActionId, that.failedAuthenticationUserActionId) &&
         Objects.equals(forgotEmailTemplateId, that.forgotEmailTemplateId) &&
         Objects.equals(httpSessionMaxInactiveInterval, that.httpSessionMaxInactiveInterval) &&
@@ -105,52 +109,11 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
         Objects.equals(verificationEmailTemplateId, that.verificationEmailTemplateId);
   }
 
-  public List<URI> getBackendServers() {
-    return configuration.backendServers;
-  }
-
-  public void setBackendServers(List<URI> backendServers) {
-    configuration.backendServers = backendServers;
-  }
-
-  public String getCookieEncryptionIV() {
-    return configuration.cookieEncryptionIV;
-  }
-
-  public void setCookieEncryptionIV(String cookieEncryptionIV) {
-    configuration.cookieEncryptionIV = cookieEncryptionIV;
-  }
-
-  public String getCookieEncryptionKey() {
-    return configuration.cookieEncryptionKey;
-  }
-
-  public void setCookieEncryptionKey(String cookieEncryptionKey) {
-    configuration.cookieEncryptionKey = cookieEncryptionKey;
-  }
-
-  public FailedAuthenticationConfiguration getFailedAuthenticationConfiguration() {
-    return configuration.failedAuthenticationConfiguration;
-  }
-
-  public void setFailedAuthenticationConfiguration(
-      FailedAuthenticationConfiguration failedAuthenticationConfiguration) {
-    configuration.failedAuthenticationConfiguration = failedAuthenticationConfiguration;
-  }
-
-  public JWTConfiguration getJwtConfiguration() {
-    return configuration.jwtConfiguration;
-  }
-
-  public void setJwtConfiguration(JWTConfiguration jwtConfiguration) {
-    configuration.jwtConfiguration = jwtConfiguration;
-  }
-
   @Override
   public int hashCode() {
-    return Objects.hash(cleanSpeakConfiguration, configuration, failedAuthenticationUserActionId, forgotEmailTemplateId, httpSessionMaxInactiveInterval,
-        logoutURL, reportTimezone, passportFrontendURL, passwordExpirationDays, passwordValidationRules,
-        setPasswordEmailTemplateId, useOauthForBackend, verificationEmailTemplateId, verifyEmail, verifyEmailWhenChanged);
+    return Objects.hash(cleanSpeakConfiguration, data, failedAuthenticationUserActionId, forgotEmailTemplateId, httpSessionMaxInactiveInterval,
+                        logoutURL, reportTimezone, passportFrontendURL, passwordExpirationDays, passwordValidationRules,
+                        setPasswordEmailTemplateId, useOauthForBackend, verificationEmailTemplateId, verifyEmail, verifyEmailWhenChanged);
   }
 
   public void normalize() {
@@ -159,8 +122,8 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
     }
 
     // Normalize Line returns in the public / private keys
-    if (configuration.jwtConfiguration != null) {
-      configuration.jwtConfiguration.normalize();
+    if (data.jwtConfiguration != null) {
+      data.jwtConfiguration.normalize();
     }
   }
 
@@ -212,7 +175,6 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
   }
 
   public static class SystemConfigurationData {
-
     /**
      * List of one or more Passport Backend Servers. This list of systems is used to distribute cache reload
      * notifications.
@@ -230,6 +192,8 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
      * cookies.
      */
     public String cookieEncryptionKey;
+
+    public EventConfiguration eventConfiguration = new EventConfiguration();
 
     /**
      * Failed Authentication Cache.
@@ -265,6 +229,25 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
     @Override
     public String toString() {
       return ToString.toString(this);
+    }
+
+    public static class EventConfiguration implements Buildable<EventConfiguration> {
+      public Map<EventType, EventConfigurationData> events = new HashMap<>();
+
+      public static class EventConfigurationData {
+        public boolean enabled;
+
+        public TransactionType transactionType;
+
+        @JacksonConstructor
+        public EventConfigurationData() {
+        }
+
+        public EventConfigurationData(boolean enabled, TransactionType transactionType) {
+          this.enabled = enabled;
+          this.transactionType = transactionType;
+        }
+      }
     }
   }
 }

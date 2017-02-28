@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package com.inversoft.passport.domain.api;
 
+import java.util.List;
+
 import com.inversoft.json.JacksonConstructor;
 import com.inversoft.passport.domain.User;
 
@@ -22,6 +24,10 @@ import com.inversoft.passport.domain.User;
  * @author Brian Pontarelli
  */
 public class LoginResponse {
+  public List<LoginPreventedResponse> actions;
+
+  public String refreshToken;
+
   public String token;
 
   public User user;
@@ -32,5 +38,9 @@ public class LoginResponse {
 
   public LoginResponse(User user) {
     this.user = user;
+  }
+
+  public LoginResponse(List<LoginPreventedResponse> actions) {
+    this.actions = actions;
   }
 }

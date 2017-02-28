@@ -34,10 +34,8 @@ import com.inversoft.passport.domain.email.Email;
  *
  * @author Brian Pontarelli
  */
-public class UserActionEvent implements Buildable<UserActionEvent> {
+public class UserActionEvent extends BaseEvent implements Buildable<UserActionEvent> {
   public static ZonedDateTime Infinite = ZonedDateTime.ofInstant(Instant.ofEpochMilli(Long.MAX_VALUE), ZoneOffset.UTC);
-
-  public final List<UUID> applicationIds = new ArrayList<>();
 
   public String action;
 
@@ -46,6 +44,8 @@ public class UserActionEvent implements Buildable<UserActionEvent> {
   public UUID actioneeUserId;
 
   public UUID actionerUserId;
+
+  public final List<UUID> applicationIds = new ArrayList<>();
 
   public String comment;
 
@@ -83,6 +83,11 @@ public class UserActionEvent implements Buildable<UserActionEvent> {
   public String reasonCode;
 
   public UserActionEvent() {
+  }
+
+  @Override
+  public EventType type() {
+    return EventType.UserAction;
   }
 
   /**
@@ -147,33 +152,32 @@ public class UserActionEvent implements Buildable<UserActionEvent> {
       return false;
     }
     UserActionEvent that = (UserActionEvent) o;
-    return
-        Objects.equals(actionId, that.actionId) &&
-            Objects.equals(notifyUser, that.notifyUser) &&
-            Objects.equals(passportEmailedUser, that.passportEmailedUser) &&
-            Objects.equals(applicationIds, that.applicationIds) &&
-            Objects.equals(action, that.action) &&
-            Objects.equals(actioneeUserId, that.actioneeUserId) &&
-            Objects.equals(actionerUserId, that.actionerUserId) &&
-            Objects.equals(comment, that.comment) &&
-            Objects.equals(createInstant, that.createInstant) &&
-            Objects.equals(email, that.email) &&
-            Objects.equals(expiry, that.expiry) &&
-            Objects.equals(localizedAction, that.localizedAction) &&
-            Objects.equals(localizedDuration, that.localizedDuration) &&
-            Objects.equals(localizedOption, that.localizedOption) &&
-            Objects.equals(localizedReason, that.localizedReason) &&
-            Objects.equals(option, that.option) &&
-            Objects.equals(phase, that.phase) &&
-            Objects.equals(reason, that.reason) &&
-            Objects.equals(reasonCode, that.reasonCode);
+    return Objects.equals(actionId, that.actionId) &&
+        Objects.equals(notifyUser, that.notifyUser) &&
+        Objects.equals(passportEmailedUser, that.passportEmailedUser) &&
+        Objects.equals(applicationIds, that.applicationIds) &&
+        Objects.equals(action, that.action) &&
+        Objects.equals(actioneeUserId, that.actioneeUserId) &&
+        Objects.equals(actionerUserId, that.actionerUserId) &&
+        Objects.equals(comment, that.comment) &&
+        Objects.equals(createInstant, that.createInstant) &&
+        Objects.equals(email, that.email) &&
+        Objects.equals(expiry, that.expiry) &&
+        Objects.equals(localizedAction, that.localizedAction) &&
+        Objects.equals(localizedDuration, that.localizedDuration) &&
+        Objects.equals(localizedOption, that.localizedOption) &&
+        Objects.equals(localizedReason, that.localizedReason) &&
+        Objects.equals(option, that.option) &&
+        Objects.equals(phase, that.phase) &&
+        Objects.equals(reason, that.reason) &&
+        Objects.equals(reasonCode, that.reasonCode);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(actionId, applicationIds, action, actioneeUserId, actionerUserId, comment, createInstant, email, expiry,
-        localizedAction, localizedDuration, localizedOption, localizedReason, notifyUser, option, passportEmailedUser,
-        phase, reason, reasonCode);
+                        localizedAction, localizedDuration, localizedOption, localizedReason, notifyUser, option, passportEmailedUser,
+                        phase, reason, reasonCode);
   }
 
   public String toString() {

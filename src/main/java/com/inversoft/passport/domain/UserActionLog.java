@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,17 +50,21 @@ public class UserActionLog implements Buildable<UserActionLog> {
 
   public Boolean endEventSent;
 
+  public UserActionEvent event;
+
   public ZonedDateTime expiry;
 
   public LogHistory history;
 
   public UUID id;
 
+  public String localizedName;
+
   public String localizedOption;
 
   public String localizedReason;
 
-  public UserActionEvent event;
+  public String name;
 
   /**
    * Webhooks will use this to determine if they should notify the user
@@ -79,9 +83,9 @@ public class UserActionLog implements Buildable<UserActionLog> {
   }
 
   public UserActionLog(UUID actioneeUserId, UUID actionerUserId, UUID userActionId, List<UUID> applicationIds,
-                       String comment, ZonedDateTime expiry, String option, String localizedOption, String reason,
-                       String localizedReason, String reasonCode, ZonedDateTime createInstant,
-                       Boolean endEventSent, LogHistory history, boolean notifyUserOnEnd,
+                       String comment, ZonedDateTime expiry, String name, String localizedName, String option,
+                       String localizedOption, String reason, String localizedReason, String reasonCode,
+                       ZonedDateTime createInstant, Boolean endEventSent, LogHistory history, boolean notifyUserOnEnd,
                        boolean emailUserOnEnd) {
     this.actioneeUserId = actioneeUserId;
     this.actionerUserId = actionerUserId;
@@ -93,6 +97,8 @@ public class UserActionLog implements Buildable<UserActionLog> {
 
     this.comment = comment;
     this.expiry = expiry;
+    this.name = name;
+    this.localizedName = localizedName;
     this.option = option;
     this.reason = reason;
     this.reasonCode = reasonCode;
@@ -126,8 +132,10 @@ public class UserActionLog implements Buildable<UserActionLog> {
         Objects.equals(notifyUserOnEnd, that.notifyUserOnEnd) &&
         Objects.equals(expiry, that.expiry) &&
         Objects.equals(history, that.history) &&
+        Objects.equals(localizedName, that.localizedName) &&
         Objects.equals(localizedOption, that.localizedOption) &&
         Objects.equals(localizedReason, that.localizedReason) &&
+        Objects.equals(name, that.name) &&
         Objects.equals(option, that.option) &&
         Objects.equals(reason, that.reason) &&
         Objects.equals(reasonCode, that.reasonCode) &&
@@ -136,8 +144,8 @@ public class UserActionLog implements Buildable<UserActionLog> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(actioneeUserId, actionerUserId, applicationIds, comment, createInstant, endEventSent, expiry,
-        history, localizedOption, localizedReason, emailUserOnEnd, option, reason, reasonCode, userActionId, notifyUserOnEnd);
+    return Objects.hash(actioneeUserId, actionerUserId, applicationIds, comment, createInstant, emailUserOnEnd, endEventSent, expiry,
+                        history, localizedName, localizedOption, localizedReason, name, option, reason, reasonCode, userActionId, notifyUserOnEnd);
   }
 
   @JsonIgnore

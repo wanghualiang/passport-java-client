@@ -25,6 +25,24 @@ import com.inversoft.passport.domain.util.Normalizer;
  * @author Brian Pontarelli
  */
 public class HTTPHeaders extends HashMap<String, String> {
+  public HTTPHeaders() {
+  }
+
+  public HTTPHeaders(String key, String value) {
+    this.put(key, value);
+  }
+
+  public HTTPHeaders(String key, String value, String key2, String value2) {
+    this.put(key, value);
+    this.put(key2, value2);
+  }
+
+  public HTTPHeaders(String key, String value, String key2, String value2, String key3, String value3) {
+    this.put(key, value);
+    this.put(key2, value2);
+    this.put(key3, value3);
+  }
+
   public void normalize() {
     Normalizer.trimMap(this);
   }

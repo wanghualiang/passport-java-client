@@ -17,13 +17,16 @@ package com.inversoft.passport.domain;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.inversoft.json.ToString;
+import com.inversoft.passport.domain.event.EventType;
 import com.inversoft.passport.domain.util.Normalizer;
 
 /**
@@ -35,6 +38,9 @@ public class Webhook implements Buildable<Webhook> {
   public List<UUID> applicationIds = new ArrayList<>();
 
   public Integer connectTimeout;
+
+  @JsonUnwrapped
+  public WebhookData data = new WebhookData();
 
   public String description;
 
@@ -54,32 +60,6 @@ public class Webhook implements Buildable<Webhook> {
 
   public URI url;
 
-  public Webhook() {
-  }
-
-  public Webhook(URI url) {
-    this(null, url, false, null, null, null, null, 1000, 2000);
-  }
-
-  public Webhook(UUID id, URI url, boolean global, String httpAuthenticationUsername,
-                 String httpAuthenticationPassword, String sslCertificate, Map<String, String> headers,
-                 int connectTimeout, int readTimeout, UUID... applicationIds) {
-    this.id = id;
-    this.url = url;
-    this.global = global;
-    this.httpAuthenticationUsername = httpAuthenticationUsername;
-    this.httpAuthenticationPassword = httpAuthenticationPassword;
-    this.sslCertificate = sslCertificate;
-
-    if (headers != null) {
-      this.headers.putAll(headers);
-    }
-
-    this.connectTimeout = connectTimeout;
-    this.readTimeout = readTimeout;
-    Collections.addAll(this.applicationIds, applicationIds);
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -89,9 +69,12 @@ public class Webhook implements Buildable<Webhook> {
       return false;
     }
     Webhook that = (Webhook) o;
+    applicationIds.sort(UUID::compareTo);
+    that.applicationIds.sort(UUID::compareTo);
     return Objects.equals(global, that.global) &&
         Objects.equals(applicationIds, that.applicationIds) &&
         Objects.equals(connectTimeout, that.connectTimeout) &&
+        Objects.equals(data, that.data) &&
         Objects.equals(description, that.description) &&
         Objects.equals(headers, that.headers) &&
         Objects.equals(httpAuthenticationPassword, that.httpAuthenticationPassword) &&
@@ -104,7 +87,12 @@ public class Webhook implements Buildable<Webhook> {
   @Override
   public int hashCode() {
     return Objects.hash(applicationIds, connectTimeout, description, global, headers, httpAuthenticationPassword, httpAuthenticationUsername,
-        readTimeout, sslCertificate, url);
+                        readTimeout, sslCertificate, url);
+  }
+
+  @JsonIgnore
+  public boolean isTestable() {
+    return data.eventsEnabled.entrySet().stream().anyMatch(e -> e.getValue() != null && e.getValue());
   }
 
   public void normalize() {
@@ -116,5 +104,26 @@ public class Webhook implements Buildable<Webhook> {
 
   public String toString() {
     return ToString.toString(this);
+  }
+
+  public static class WebhookData {
+    public Map<EventType, Boolean> eventsEnabled = new HashMap<>();
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (!(o instanceof WebhookData)) {
+        return false;
+      }
+      WebhookData that = (WebhookData) o;
+      return Objects.equals(eventsEnabled, that.eventsEnabled);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(eventsEnabled);
+    }
   }
 }

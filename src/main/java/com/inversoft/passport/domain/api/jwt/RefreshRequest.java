@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2016-2017, Inversoft Inc., All Rights Reserved
  */
 package com.inversoft.passport.domain.api.jwt;
 
@@ -10,13 +10,13 @@ import com.inversoft.json.JacksonConstructor;
  */
 public class RefreshRequest {
 
-  public String token;
+  public String refreshToken;
 
   @JacksonConstructor
   public RefreshRequest() {
   }
 
   public RefreshRequest(String token) {
-    this.token = token;
+    this.refreshToken = token;
   }
 }

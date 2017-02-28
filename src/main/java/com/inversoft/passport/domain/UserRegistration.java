@@ -72,6 +72,23 @@ public class UserRegistration implements Buildable<UserRegistration> {
     Collections.addAll(this.roles, roles);
   }
 
+  public UserRegistration(UserRegistration userRegistration) {
+    this.application = userRegistration.application;
+    this.applicationId = userRegistration.applicationId;
+    this.cleanSpeakId = userRegistration.cleanSpeakId;
+    this.id = userRegistration.id;
+    this.insertInstant = userRegistration.insertInstant;
+    this.lastLoginInstant = userRegistration.lastLoginInstant;
+    this.roles.addAll(userRegistration.roles);
+    this.userId = userRegistration.userId;
+    this.username = userRegistration.username;
+    this.usernameStatus = userRegistration.usernameStatus;
+
+    if (userRegistration.data != null) {
+      this.data = new UserData(userRegistration.data);
+    }
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
