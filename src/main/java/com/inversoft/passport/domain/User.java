@@ -179,8 +179,6 @@ public class User implements Buildable<User> {
     }
   }
 
-
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -311,9 +309,9 @@ public class User implements Buildable<User> {
   @Override
   public int hashCode() {
     return Objects.hash(active, birthDate, childIds, cleanSpeakId, parentalConsentType, data, email, encryptionScheme, expiry,
-        factor, firstName, fullName, imageUrl, insertInstant, lastLoginInstant, lastName, middleName, mobilePhone, parentId, password,
-        passwordChangeRequired, passwordLastUpdateInstant, registrations, salt, timezone, twoFactorSecret, username,
-        usernameStatus, verificationId, verificationIdCreateInstant, verified);
+                        factor, firstName, fullName, imageUrl, insertInstant, lastLoginInstant, lastName, middleName, mobilePhone, parentId, password,
+                        passwordChangeRequired, passwordLastUpdateInstant, registrations, salt, timezone, twoFactorSecret, username,
+                        usernameStatus, verificationId, verificationIdCreateInstant, verified);
   }
 
   /**
