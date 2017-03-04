@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +21,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.inversoft.json.ToString;
 import com.inversoft.passport.domain.oauth2.OAuth2Configuration;
+import org.primeframework.mvc.parameter.annotation.FieldUnwrapped;
 import static com.inversoft.passport.domain.util.Normalizer.trim;
 
 /**
@@ -36,8 +37,9 @@ public class Application implements Buildable<Application> {
 
   public CleanSpeakConfiguration cleanSpeakConfiguration;
 
-  @JsonIgnore
-  public ApplicationConfiguration configuration = new ApplicationConfiguration();
+  @JsonUnwrapped
+  @FieldUnwrapped
+  public ApplicationConfiguration data = new ApplicationConfiguration();
 
   public UUID id;
 
@@ -84,18 +86,10 @@ public class Application implements Buildable<Application> {
     Application that = (Application) o;
     return Objects.equals(active, that.active) &&
         Objects.equals(cleanSpeakConfiguration, that.cleanSpeakConfiguration) &&
-        Objects.equals(configuration, that.configuration) &&
+        Objects.equals(data, that.data) &&
         Objects.equals(oauthConfiguration, that.oauthConfiguration) &&
         Objects.equals(name, that.name) &&
         Objects.equals(roles, that.roles);
-  }
-
-  public JWTConfiguration getJwtConfiguration() {
-    return configuration.jwtConfiguration;
-  }
-
-  public void setJwtConfiguration(JWTConfiguration jwtConfiguration) {
-    this.configuration.jwtConfiguration = jwtConfiguration;
   }
 
   public ApplicationRole getRole(String name) {
@@ -110,7 +104,7 @@ public class Application implements Buildable<Application> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(active, name, cleanSpeakConfiguration, configuration, oauthConfiguration, roles);
+    return Objects.hash(active, name, cleanSpeakConfiguration, data, oauthConfiguration, roles);
   }
 
   public void normalize() {
@@ -124,11 +118,11 @@ public class Application implements Buildable<Application> {
       oauthConfiguration.normalize();
     }
 
-    if (configuration.jwtConfiguration != null) {
-      configuration.jwtConfiguration.normalize();
+    if (data.jwtConfiguration != null) {
+      data.jwtConfiguration.normalize();
       // issuer and refresh token TTL only applies to the global JWT configuration.
-      configuration.jwtConfiguration.issuer = null;
-      configuration.jwtConfiguration.refreshTokenTimeToLiveInMinutes = 0;
+      data.jwtConfiguration.issuer = null;
+      data.jwtConfiguration.refreshTokenTimeToLiveInMinutes = 0;
     }
 
     roles.forEach(ApplicationRole::normalize);

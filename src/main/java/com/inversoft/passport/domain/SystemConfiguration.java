@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.inversoft.json.JacksonConstructor;
 import com.inversoft.json.ToString;
 import com.inversoft.passport.domain.event.EventType;
+import org.primeframework.mvc.parameter.annotation.FieldUnwrapped;
 
 /**
  * @author Brian Pontarelli
@@ -36,6 +37,7 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
   public CleanSpeakConfiguration cleanSpeakConfiguration = new CleanSpeakConfiguration();
 
   @JsonUnwrapped
+  @FieldUnwrapped
   public SystemConfigurationData data = new SystemConfigurationData();
 
   public EmailConfiguration emailConfiguration = new EmailConfiguration();
