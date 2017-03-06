@@ -86,6 +86,7 @@ import com.inversoft.rest.RESTClient;
  *
  * @author Brian Pontarelli
  */
+@SuppressWarnings("unused")
 public class PassportClient {
   public static final ObjectMapper objectMapper = new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL)
                                                                     .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
@@ -301,7 +302,7 @@ public class PassportClient {
   }
 
   /**
-   * Money-version of the {@link #createApplicationRole$(UUID, ApplicationRequest)} method. This uses the Function and
+   * Money-version of the {@link #createApplicationRole(UUID, ApplicationRequest)} method. This uses the Function and
    * Consumer passed into the constructor to handle the ClientResponse and return either the success response or throw
    * an exception (generally speaking).
    *
@@ -730,7 +731,6 @@ public class PassportClient {
    *
    * @param userId        See other method.
    * @param applicationId See other method.
-   * @return See other method.
    */
   public void deleteRegistration$(UUID userId, UUID applicationId) {
     handle(deleteRegistration(userId, applicationId));
@@ -2553,6 +2553,7 @@ public class PassportClient {
     handle(verifyTwoFactor(request));
   }
 
+  @SuppressWarnings("unchecked")
   private <T, U> T handle(ClientResponse<T, U> response) {
     Objects.requireNonNull(successFunction, "You can't use the money-methods unless you supply a success Function and error Consumer");
     Objects.requireNonNull(errorConsumer, "You can't use the money-methods unless you supply a success Function and error Consumer");
