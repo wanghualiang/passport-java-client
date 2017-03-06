@@ -24,7 +24,6 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.inversoft.json.ToString;
 import com.inversoft.passport.domain.oauth2.OAuth2Configuration;
-import org.primeframework.mvc.parameter.annotation.FieldUnwrapped;
 import static com.inversoft.passport.domain.util.Normalizer.trim;
 
 /**
@@ -38,7 +37,6 @@ public class Application implements Buildable<Application> {
   public CleanSpeakConfiguration cleanSpeakConfiguration;
 
   @JsonUnwrapped
-  @FieldUnwrapped
   public ApplicationConfiguration data = new ApplicationConfiguration();
 
   public UUID id;

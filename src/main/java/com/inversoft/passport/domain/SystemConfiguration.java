@@ -28,7 +28,6 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.inversoft.json.JacksonConstructor;
 import com.inversoft.json.ToString;
 import com.inversoft.passport.domain.event.EventType;
-import org.primeframework.mvc.parameter.annotation.FieldUnwrapped;
 
 /**
  * @author Brian Pontarelli
@@ -37,7 +36,6 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
   public CleanSpeakConfiguration cleanSpeakConfiguration = new CleanSpeakConfiguration();
 
   @JsonUnwrapped
-  @FieldUnwrapped
   public SystemConfigurationData data = new SystemConfigurationData();
 
   public EmailConfiguration emailConfiguration = new EmailConfiguration();
