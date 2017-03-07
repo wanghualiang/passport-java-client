@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,8 @@ import com.inversoft.json.JacksonConstructor;
  * @author Brian Pontarelli
  */
 public class ChangePasswordRequest {
+  public String currentPassword;
+
   public String password;
 
   @JacksonConstructor
@@ -30,6 +32,11 @@ public class ChangePasswordRequest {
   }
 
   public ChangePasswordRequest(String password) {
+    this.password = password;
+  }
+
+  public ChangePasswordRequest(String currentPassword, String password) {
+    this.currentPassword = currentPassword;
     this.password = password;
   }
 }
