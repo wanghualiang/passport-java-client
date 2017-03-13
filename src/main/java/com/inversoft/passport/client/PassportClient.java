@@ -55,6 +55,7 @@ import com.inversoft.passport.domain.api.WebhookRequest;
 import com.inversoft.passport.domain.api.WebhookResponse;
 import com.inversoft.passport.domain.api.email.SendRequest;
 import com.inversoft.passport.domain.api.email.SendResponse;
+import com.inversoft.passport.domain.api.jwt.IssueResponse;
 import com.inversoft.passport.domain.api.jwt.RefreshRequest;
 import com.inversoft.passport.domain.api.jwt.RefreshResponse;
 import com.inversoft.passport.domain.api.jwt.ValidateResponse;
@@ -936,6 +937,40 @@ public class PassportClient {
    */
   public void importUsers$(ImportRequest request) {
     handle(importUsers(request));
+  }
+
+  /**
+   * Issue a new access token (JWT) for the requested Application after ensuring the provided JWT is valid. A valid
+   * access token is properly signed and not expired.
+   * <p/>
+   * This API may be used in an SSO configuration to issue new tokens for another application after the user has
+   * obtained a valid token from authentication.
+   *
+   * @param applicationId The Application Id for which you are requesting a new access token be issued.
+   * @param encodedJWT    The encoded JWT (access token)
+   * @return When successful, the response will contain a new access token with an updated expiration and the payload of
+   * the JWT which contains the identity claims. Additionally, if Passport could not be contacted because it is down or
+   * experiencing a failure, the response will contain an Exception, which could be an IOException.
+   */
+  public ClientResponse<IssueResponse, Errors> issueAccessToken(UUID applicationId, String encodedJWT) {
+    return start(IssueResponse.class).uri("/api/jwt/issue")
+                                     .authorization("JWT " + encodedJWT)
+                                     .urlParameter("applicationId", applicationId)
+                                     .get()
+                                     .go();
+  }
+
+  /**
+   * Money-version of the {@link #issueAccessToken(UUID, String)} method. This uses the Function and Consumer passed
+   * into the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param applicationId See other method.
+   * @param encodedJWT    See other method.
+   * @return See other method.
+   */
+  public IssueResponse issueAccessToken$(UUID applicationId, String encodedJWT) {
+    return handle(issueAccessToken(applicationId, encodedJWT));
   }
 
   /**
