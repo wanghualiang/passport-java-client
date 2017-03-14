@@ -211,6 +211,21 @@ public class PassportClient {
   }
 
   /**
+   * Changes a user's password using a loginId. Using a loginId instead of the verificationId bypasses the email
+   * verification and allows a password to be changed directly without first calling {@link
+   * #forgotPassword(ForgotPasswordRequest)}.
+   *
+   * @param request The change password request that contains all of the information used to change the password.
+   * @return When successful, the response will contains no body, just a status code. If there was a validation error or
+   * any other type of error, this will return the Errors object in the response. Additionally, if Passport could not be
+   * contacted because it is down or experiencing a failure, the response will contain an Exception, which could be an
+   * IOException.
+   */
+  public ClientResponse<Void, Errors> changePassword(ChangePasswordRequest request) {
+    return changePassword(null, request);
+  }
+
+  /**
    * Money-version of the {@link #changePassword(String, ChangePasswordRequest)} method. This uses the Function and
    * Consumer passed into the constructor to handle the ClientResponse and return either the success response or throw
    * an exception (generally speaking).
@@ -220,6 +235,17 @@ public class PassportClient {
    */
   public void changePassword$(String verificationId, ChangePasswordRequest request) {
     handle(changePassword(verificationId, request));
+  }
+
+  /**
+   * Money-version of the {@link #changePassword(ChangePasswordRequest)} method. This uses the Function and
+   * Consumer passed into the constructor to handle the ClientResponse and return either the success response or throw
+   * an exception (generally speaking).
+   *
+   * @param request See other method.
+   */
+  public void changePassword$(ChangePasswordRequest request) {
+    handle(changePassword(request));
   }
 
   /**

@@ -25,6 +25,8 @@ import com.inversoft.json.JacksonConstructor;
 public class ChangePasswordRequest {
   public String currentPassword;
 
+  public String loginId;
+
   public String password;
 
   @JacksonConstructor
@@ -35,8 +37,9 @@ public class ChangePasswordRequest {
     this.password = password;
   }
 
-  public ChangePasswordRequest(String currentPassword, String password) {
+  public ChangePasswordRequest(String loginId, String currentPassword, String password) {
     this.currentPassword = currentPassword;
+    this.loginId = loginId;
     this.password = password;
   }
 }
