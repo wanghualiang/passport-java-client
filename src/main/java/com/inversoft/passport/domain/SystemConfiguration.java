@@ -205,6 +205,8 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
      */
     public JWTConfiguration jwtConfiguration = new JWTConfiguration();
 
+    public PasswordEncryptionConfiguration passwordEncryptionConfiguration = new PasswordEncryptionConfiguration();
+
     @Override
     public boolean equals(Object o) {
       if (this == o) {
@@ -218,12 +220,13 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
           Objects.equals(cookieEncryptionIV, that.cookieEncryptionIV) &&
           Objects.equals(cookieEncryptionKey, that.cookieEncryptionKey) &&
           Objects.equals(failedAuthenticationConfiguration, that.failedAuthenticationConfiguration) &&
-          Objects.equals(jwtConfiguration, that.jwtConfiguration);
+          Objects.equals(jwtConfiguration, that.jwtConfiguration) &&
+          Objects.equals(passwordEncryptionConfiguration, that.passwordEncryptionConfiguration);
     }
 
     @Override
     public int hashCode() {
-      return Objects.hash(backendServers, cookieEncryptionIV, cookieEncryptionKey, failedAuthenticationConfiguration, jwtConfiguration);
+      return Objects.hash(backendServers, cookieEncryptionIV, cookieEncryptionKey, failedAuthenticationConfiguration, jwtConfiguration, passwordEncryptionConfiguration);
     }
 
     @Override
