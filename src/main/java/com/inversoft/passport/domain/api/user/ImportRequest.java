@@ -28,7 +28,7 @@ import com.inversoft.passport.domain.User;
 public class ImportRequest {
   public String encryptionScheme;
 
-  public int factor;
+  public Integer factor;
 
   public List<User> users;
 
