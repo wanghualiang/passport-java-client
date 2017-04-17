@@ -167,6 +167,11 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
       return Objects.hash(host, password, port, security, username);
     }
 
+    @Override
+    public String toString() {
+      return ToString.toString(this);
+    }
+
     public enum EmailSecurityType {
       NONE,
       SSL,
@@ -219,6 +224,7 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
       return Objects.equals(backendServers, that.backendServers) &&
           Objects.equals(cookieEncryptionIV, that.cookieEncryptionIV) &&
           Objects.equals(cookieEncryptionKey, that.cookieEncryptionKey) &&
+          Objects.equals(eventConfiguration, that.eventConfiguration) &&
           Objects.equals(failedAuthenticationConfiguration, that.failedAuthenticationConfiguration) &&
           Objects.equals(jwtConfiguration, that.jwtConfiguration) &&
           Objects.equals(passwordEncryptionConfiguration, that.passwordEncryptionConfiguration);
@@ -226,7 +232,7 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
 
     @Override
     public int hashCode() {
-      return Objects.hash(backendServers, cookieEncryptionIV, cookieEncryptionKey, failedAuthenticationConfiguration, jwtConfiguration, passwordEncryptionConfiguration);
+      return Objects.hash(backendServers, cookieEncryptionIV, cookieEncryptionKey, eventConfiguration, failedAuthenticationConfiguration, jwtConfiguration, passwordEncryptionConfiguration);
     }
 
     @Override
@@ -236,6 +242,28 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
 
     public static class EventConfiguration implements Buildable<EventConfiguration> {
       public Map<EventType, EventConfigurationData> events = new HashMap<>();
+
+      @Override
+      public boolean equals(Object o) {
+        if (this == o) {
+          return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+          return false;
+        }
+        EventConfiguration that = (EventConfiguration) o;
+        return Objects.equals(events, that.events);
+      }
+
+      @Override
+      public int hashCode() {
+        return Objects.hash(events);
+      }
+
+      @Override
+      public String toString() {
+        return ToString.toString(this);
+      }
 
       public static class EventConfigurationData {
         public boolean enabled;
@@ -249,6 +277,29 @@ public class SystemConfiguration implements Buildable<SystemConfiguration> {
         public EventConfigurationData(boolean enabled, TransactionType transactionType) {
           this.enabled = enabled;
           this.transactionType = transactionType;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+          if (this == o) {
+            return true;
+          }
+          if (o == null || getClass() != o.getClass()) {
+            return false;
+          }
+          EventConfigurationData that = (EventConfigurationData) o;
+          return enabled == that.enabled &&
+              transactionType == that.transactionType;
+        }
+
+        @Override
+        public int hashCode() {
+          return Objects.hash(enabled, transactionType);
+        }
+
+        @Override
+        public String toString() {
+          return ToString.toString(this);
         }
       }
     }

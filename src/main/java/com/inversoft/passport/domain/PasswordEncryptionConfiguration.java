@@ -14,15 +14,11 @@ import com.inversoft.json.ToString;
  */
 public class PasswordEncryptionConfiguration implements Buildable<PasswordEncryptionConfiguration> {
 
-  public String defaultEncryptionScheme;
+  public String encryptionScheme;
 
-  public int defaultEncryptionSchemeFactor;
+  public int encryptionSchemeFactor;
 
   public boolean upgradeEncryptionSchemeOnLogin;
-
-  public String upgradedEncryptionScheme;
-
-  public int upgradedEncryptionSchemeFactor;
 
   @Override
   public boolean equals(Object o) {
@@ -34,15 +30,13 @@ public class PasswordEncryptionConfiguration implements Buildable<PasswordEncryp
     }
     PasswordEncryptionConfiguration that = (PasswordEncryptionConfiguration) o;
     return upgradeEncryptionSchemeOnLogin == that.upgradeEncryptionSchemeOnLogin &&
-        Objects.equals(defaultEncryptionScheme, that.defaultEncryptionScheme) &&
-        Objects.equals(defaultEncryptionSchemeFactor, that.defaultEncryptionSchemeFactor) &&
-        Objects.equals(upgradedEncryptionScheme, that.upgradedEncryptionScheme) &&
-        Objects.equals(upgradedEncryptionSchemeFactor, that.upgradedEncryptionSchemeFactor);
+        Objects.equals(encryptionScheme, that.encryptionScheme) &&
+        Objects.equals(encryptionSchemeFactor, that.encryptionSchemeFactor);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(defaultEncryptionScheme, defaultEncryptionSchemeFactor, upgradedEncryptionScheme, upgradedEncryptionSchemeFactor, upgradeEncryptionSchemeOnLogin);
+    return Objects.hash(encryptionScheme, encryptionSchemeFactor, upgradeEncryptionSchemeOnLogin);
   }
 
   @Override

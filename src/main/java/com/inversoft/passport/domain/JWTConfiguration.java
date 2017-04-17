@@ -17,6 +17,7 @@ package com.inversoft.passport.domain;
 
 import java.util.Objects;
 
+import com.inversoft.json.ToString;
 import org.primeframework.jwt.domain.Algorithm;
 
 /**
@@ -100,5 +101,10 @@ public class JWTConfiguration implements Buildable<JWTConfiguration> {
     if (privateKey != null) {
       privateKey = privateKey.replace("\r\n", "\n").replace("\r", "\n");
     }
+  }
+
+  @Override
+  public String toString() {
+    return ToString.toString(this);
   }
 }
