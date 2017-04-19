@@ -642,6 +642,33 @@ public class PassportClient {
   }
 
   /**
+   * Deactivates the users with the given ids.
+   *
+   * @param userIds The ids of the users to deactivate.
+   * @return When successful, the response will not contain a response object but only contains the status. If there was
+   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
+   * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
+   * Exception, which could be an IOException.
+   */
+  public ClientResponse<Void, Errors> deactivateUsers(Collection<UUID> userIds) {
+    return start(Void.TYPE).uri("/api/user/bulk")
+                           .urlParameter("userId", userIds)
+                           .delete()
+                           .go();
+  }
+
+  /**
+   * Money-version of the {@link #deactivateUsers$(Collection)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param userIds See other method.
+   */
+  public void deactivateUsers$(Collection<UUID> userIds) {
+    handle(deactivateUsers(userIds));
+  }
+
+  /**
    * Hard deletes an application. This is a dangerous operation and should not be used in most circumstances. This will
    * delete the application, any registrations for that application, metrics and reports for the application, all the
    * roles for the application, and any other data associated with the application. This operation could take a very
@@ -782,6 +809,17 @@ public class PassportClient {
   }
 
   /**
+   * Money-version of the {@link #deleteUsers(Collection)} method. This uses the Function and Consumer passed into the
+   * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
+   * speaking).
+   *
+   * @param userIds See other method.
+   */
+  public void deleteUser$(Collection<UUID> userIds) {
+    handle(deleteUsers(userIds));
+  }
+
+  /**
    * Money-version of the {@link #deleteUser(UUID)} method. This uses the Function and Consumer passed into the
    * constructor to handle the ClientResponse and return either the success response or throw an exception (generally
    * speaking).
@@ -846,6 +884,24 @@ public class PassportClient {
    */
   public void deleteUserActionReason$(UUID userActionReasonId) {
     handle(deleteUserActionReason(userActionReasonId));
+  }
+
+  /**
+   * Deletes users for the given ids. This permanently deletes all information, metrics, reports and data associated
+   * with the user.
+   *
+   * @param userIds The ids of the users to delete.
+   * @return When successful, the response will not contain a response object but only contains the status. If there was
+   * a validation error or any other type of error, this will return the Errors object in the response. Additionally, if
+   * Passport could not be contacted because it is down or experiencing a failure, the response will contain an
+   * Exception, which could be an IOException.
+   */
+  public ClientResponse<Void, Errors> deleteUsers(Collection<UUID> userIds) {
+    return start(Void.TYPE).uri("/api/user/bulk")
+                           .urlParameter("userId", userIds)
+                           .urlParameter("hardDelete", true)
+                           .delete()
+                           .go();
   }
 
   /**
