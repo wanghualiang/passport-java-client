@@ -18,7 +18,7 @@ public class PasswordEncryptionConfiguration implements Buildable<PasswordEncryp
 
   public int encryptionSchemeFactor;
 
-  public boolean upgradeEncryptionSchemeOnLogin;
+  public boolean modifyEncryptionSchemeOnLogin;
 
   @Override
   public boolean equals(Object o) {
@@ -29,14 +29,14 @@ public class PasswordEncryptionConfiguration implements Buildable<PasswordEncryp
       return false;
     }
     PasswordEncryptionConfiguration that = (PasswordEncryptionConfiguration) o;
-    return upgradeEncryptionSchemeOnLogin == that.upgradeEncryptionSchemeOnLogin &&
+    return modifyEncryptionSchemeOnLogin == that.modifyEncryptionSchemeOnLogin &&
         Objects.equals(encryptionScheme, that.encryptionScheme) &&
         Objects.equals(encryptionSchemeFactor, that.encryptionSchemeFactor);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(encryptionScheme, encryptionSchemeFactor, upgradeEncryptionSchemeOnLogin);
+    return Objects.hash(encryptionScheme, encryptionSchemeFactor, modifyEncryptionSchemeOnLogin);
   }
 
   @Override
