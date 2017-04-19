@@ -2028,6 +2028,34 @@ public class PassportClient {
   }
 
   /**
+   * Retrieves the user for the loginId. The loginId can be either the username or the email.
+   *
+   * @param loginId The email or username of the user.
+   * @return When successful, the response will contain the user object. If there was a validation error or any other
+   * type of error, this will return the Errors object in the response. Additionally, if Passport could not be contacted
+   * because it is down or experiencing a failure, the response will contain an Exception, which could be an
+   * IOException.
+   */
+  public ClientResponse<UserResponse, Errors> retrieveUserByLoginId(String loginId) {
+    return start(UserResponse.class).uri("/api/user")
+                                    .urlParameter("loginId", loginId)
+                                    .get()
+                                    .go();
+  }
+
+  /**
+   * Money-version of the {@link #retrieveUserByLoginId(String)} method. This uses the Function and Consumer passed into
+   * the constructor to handle the ClientResponse and return either the success response or throw an exception
+   * (generally speaking).
+   *
+   * @param loginId See other method.
+   * @return See other method.
+   */
+  public UserResponse retrieveUserByLoginId$(String loginId) {
+    return handle(retrieveUserByLoginId(loginId));
+  }
+
+  /**
    * Retrieves the user for the given username.
    *
    * @param username The username of the user.
